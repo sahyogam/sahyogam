@@ -45,3 +45,35 @@ class Volunteer(models.Model):
 
     def __str__(self):
         return self.full_name
+
+
+
+# class SkillAssignment(models.Model):
+#     # Organization info
+#     organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
+    
+#     # Task details
+#     title = models.CharField(max_length=100)
+#     description = models.TextField()
+#     skill_needed = models.CharField(max_length=100)
+#     location = models.CharField(max_length=100)
+#     date_posted = models.DateTimeField(auto_now_add=True)
+
+#     # Volunteer who applied or was assigned
+#     volunteer = models.ForeignKey(Volunteer, on_delete=models.SET_NULL, null=True, blank=True)
+
+#     # Application status
+#     status = models.CharField(max_length=20, choices=[
+#         ('open', 'Open for Application'),
+#         ('applied', 'Volunteer Applied'),
+#         ('assigned', 'Volunteer Assigned'),
+#         ('completed', 'Completed'),
+#     ], default='open')
+
+#     # Timestamps
+#     applied_date = models.DateTimeField(null=True, blank=True)
+#     assigned_date = models.DateTimeField(null=True, blank=True)
+#     completed_date = models.DateTimeField(null=True, blank=True)
+
+#     def __str__(self):
+#         return f"{self.title} ({self.skill_needed}) - {self.status}"
