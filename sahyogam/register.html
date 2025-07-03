@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sahyogam Register</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f4f4;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 60px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 14px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    h2 {
+      text-align: center;
+      color: #003366;
+      margin-bottom: 30px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+      margin-top: 15px;
+    }
+
+    select, input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+
+    .form-box {
+      display: none;
+    }
+
+    .form-box.active {
+      display: block;
+    }
+
+    button {
+      background-color: #003366;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+      width: 100%;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #00509e;
+    }
+
+
+
+
+ .skills-section {
+    margin-bottom: 20px;
+  }
+
+  .skills-section h4 {
+    margin: 10px 0;
+    padding: 6px 12px;
+    border-radius: 6px;
+    display: inline-block;
+    color: white;
+    font-size: 16px;
+  }
+
+  .professional { background-color: #6f42c1; }  /* Purple */
+  .worker { background-color: #17a2b8; }        /* Teal */
+  .general { background-color: #28a745; }       /* Green */
+
+  .skills-checkboxes label {
+    display: inline-block;
+    margin-right: 15px;
+    margin-top: 5px;
+  }
+
+  .custom-skill-group {
+    margin-top: 10px;
+  }
+
+  .custom-skill-group input[type="text"] {
+    padding: 8px;
+    width: 65%;
+  }
+
+  .custom-skill-group button {
+    padding: 8px 12px;
+    background-color: #003366;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .custom-skill-group button:hover {
+    background-color: #00509e;
+  }
+
+
+
+
+
+
+
+    .availability-group {
+    margin-bottom: 20px;
+  }
+
+  .time-slot {
+    display: none;
+    margin-top: 10px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .time-slot select, .availability-group select {
+    padding: 6px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    min-width: 120px;
+  }
+
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Register on Sahyogam</h2>
+
+    <form method="post">
+      {% csrf_token %}
+
+      <label for="role">Register as:</label>
+      <select name="role" id="role" onchange="toggleForm(this.value)" required>
+        <option value="">-- Select --</option>
+        <option value="organization" {% if request.POST.role == 'organization' %}selected{% endif %}>Organization</option>
+        <option value="volunteer" {% if request.POST.role == 'volunteer' %}selected{% endif %}>Volunteer</option>
+      </select>
+
+      <!-- ORGANIZATION FORM -->
+      <div id="organizationForm" class="form-box {% if request.POST.role == 'organization' %}active{% endif %}">
+        <h3>Organization Details</h3>
+
+<label for="name">Organization Name:</label>
+<input type="text" name="name" id="name" required maxlength="100">
+
+<label for="registration_number">Registration Number:</label>
+<input type="text" name="registration_number" id="registration_number" required maxlength="50">
+
+<label for="org_type">Organization Type:</label>
+<select name="org_type" id="org_type" required>
+  <option value="">-- Select Type --</option>
+  <option value="Temple">Temple</option>
+  <option value="NGO">NGO</option>
+  <option value="School">School</option>
+  <option value="Other">Other</option>
+</select>
+
+<label for="established_year">Established Year:</label>
+<input type="number" name="established_year" id="established_year" required min="1800" max="2099">
+
+<label for="address">Address:</label>
+<textarea name="address" id="address" required></textarea>
+
+<label for="city">City:</label>
+<input type="text" name="city" id="city" required maxlength="50">
+
+<label for="state">State:</label>
+<input type="text" name="state" id="state" required maxlength="50">
+
+<label for="country">Country:</label>
+<input type="text" name="country" id="country" required maxlength="50">
+
+<label for="pincode">Pincode:</label>
+<input type="text" name="pincode" id="pincode" required maxlength="10" pattern="\d{5,10}">
+
+<label for="contact_person">Contact Person:</label>
+<input type="text" name="contact_person" id="contact_person" required maxlength="100">
+
+<label for="contact_email">Contact Email:</label>
+<input type="email" name="contact_email" id="contact_email" required>
+
+<label for="contact_phone">Contact Phone:</label>
+<input type="text" name="contact_phone" id="contact_phone" required pattern="\d{7,15}">
+
+<label for="registered_doc">Upload Registration Document (PDF/Image):</label>
+<input type="file" name="registered_doc" id="registered_doc" accept=".pdf,.jpg,.jpeg,.png" required>
+
+<label>
+  <input type="checkbox" name="agree_to_terms" required>
+  I agree to the terms and conditions
+</label>
+      </div>
+
+      <!-- VOLUNTEER FORM -->
+      <div id="volunteerForm" class="form-box {% if request.POST.role == 'volunteer' %}active{% endif %}">
+       <h3>Volunteer Details</h3>
+
+<label for="full_name">Full Name:</label>
+<input type="text" name="full_name" id="full_name" required maxlength="100">
+
+<label for="email">Email:</label>
+<input type="email" name="email" id="email" required>
+
+<label for="phone">Phone Number:</label>
+<input type="text" name="phone" id="phone" required pattern="\d{7,15}">
+
+<label for="date_of_birth">Date of Birth:</label>
+<input type="date" name="date_of_birth" id="date_of_birth" required>
+
+<label for="city">City:</label>
+<input type="text" name="city" id="city" required maxlength="50">
+
+<label for="state">State:</label>
+<input type="text" name="state" id="state" required maxlength="50">
+
+<label for="pincode">Pincode:</label>
+<input type="text" name="pincode" id="pincode" required maxlength="10" pattern="\d{5,10}">
+
+<!-- SKILLS CONTAINER -->
+<div id="skills-container">
+
+  <!-- 🟣 Professional Skills -->
+  <div class="skills-section">
+    <h4 class="professional">Professional Skills </h4>
+    <div class="skills-checkboxes" id="professional-skills">
+      <label><input type="checkbox" name="skills" class="professional-skill" value="Doctor"> Doctor</label>
+      <label><input type="checkbox" name="skills" class="professional-skill" value="CA"> CA</label>
+      <label><input type="checkbox" name="skills" class="professional-skill" value="Lawyer"> Lawyer</label>
+      <label><input type="checkbox" name="skills" class="professional-skill" value="Engineer"> Engineer</label>
+      <label><input type="checkbox" name="skills" class="professional-skill" value="Architect"> Architect</label>
+      <label><input type="checkbox" name="skills" class="professional-skill" value="Teacher"> Teacher</label>
+    </div>
+  </div>
+
+  <!-- 🔵 Worker Skills -->
+  <div class="skills-section">
+    <h4 class="worker">Worker Skills</h4>
+    <div class="skills-checkboxes">
+      <label><input type="checkbox" name="skills" value="Carpenter"> Carpenter</label>
+      <label><input type="checkbox" name="skills" value="Mason"> Mason</label>
+      <label><input type="checkbox" name="skills" value="Electrician"> Electrician</label>
+      <label><input type="checkbox" name="skills" value="Plumber"> Plumber</label>
+      <label><input type="checkbox" name="skills" value="Welder"> Welder</label>
+    </div>
+  </div>
+
+  <!-- 🟢 General Skills -->
+  <div class="skills-section">
+    <h4 class="general">General Skills</h4>
+    <div class="skills-checkboxes">
+      <label><input type="checkbox" name="skills" value="Swayam Sevak"> Swayam Sevak</label>
+      <label><input type="checkbox" name="skills" value="Event Volunteer"> Event Volunteer</label>
+      <label><input type="checkbox" name="skills" value="Blood Donor"> Blood Donor</label>
+      <label><input type="checkbox" name="skills" value="Fundraiser"> Fundraiser</label>
+    </div>
+  </div>
+</div>
+
+<!-- ➕ Custom Skill -->
+<div class="custom-skill-group">
+  <input type="text" id="custom-skill-input" placeholder="Add custom skill">
+  <button type="button" onclick="addSkill()">Add Skill</button>
+</div>
+
+<!-- Hidden input for backend -->
+<input type="hidden" name="skill" id="combined-skills" required>
+
+<label for="experience_years">Experience (in years):</label>
+<input type="number" name="experience_years" id="experience_years" required min="0" max="100">
+
+
+<!-- Step 1: Availability Selection -->
+  <div class="availability-group">
+    <label for="availability_type"><strong>Availability Type:</strong></label><br>
+    <select id="availability_type" name="availability_type" required onchange="showTimeSlot()">
+      <option value="">-- Select Availability --</option>
+      <option value="Weekends">Weekends</option>
+      <option value="Regular Days">Regular Days</option>
+    </select>
+  </div>
+
+  <!-- Step 2: Time Slot Selection (Shown only after availability type) -->
+  <div id="time-slot" class="time-slot">
+    <label for="start-time">Start Time:</label>
+    <select id="start-time" onchange="updateEndTimes()">
+      <option value="">-- Start Time --</option>
+    </select>
+
+    <label for="end-time">End Time:</label>
+    <select id="end-time">
+      <option value="">-- End Time --</option>
+    </select>
+  </div>
+
+  <!-- Step 3: Hidden field to submit final value -->
+  <input type="hidden" name="final_availability" id="final-availability" required>
+
+  <br><br>
+ 
+<label>
+  <input type="checkbox" name="consent_public" checked>
+  I consent to publicly display my profile
+</label>
+
+<label>
+  <input type="checkbox" name="agree_to_terms" required>
+  I agree to the terms and conditions
+</label>
+
+      </div>
+
+      <button type="submit">Register</button>
+    </form>
+  </div>
+
+  <script>
+    function toggleForm(role) {
+      document.getElementById('organizationForm').classList.remove('active');
+      document.getElementById('volunteerForm').classList.remove('active');
+
+      if (role === 'organization') {
+        document.getElementById('organizationForm').classList.add('active');
+      } else if (role === 'volunteer') {
+        document.getElementById('volunteerForm').classList.add('active');
+      }
+    }
+
+    // Optional: Maintain selection after page reload
+    document.addEventListener("DOMContentLoaded", function () {
+      const selectedRole = "{{ request.POST.role|default_if_none:'' }}";
+      if (selectedRole) toggleForm(selectedRole);
+    });
+
+
+ // Limit professional skill checkboxes to 5
+  /* const maxProfessional = 5;
+  const professionalCheckboxes = document.querySelectorAll('.professional-skill');
+
+  professionalCheckboxes.forEach(cb => {
+    cb.addEventListener('change', () => {
+      const checkedCount = document.querySelectorAll('.professional-skill:checked').length;
+      if (checkedCount >= maxProfessional) {
+        professionalCheckboxes.forEach(box => {
+          if (!box.checked) box.disabled = true;
+        });
+      } else {
+        professionalCheckboxes.forEach(box => box.disabled = false);
+      }
+    });
+  }); */
+
+  // Add custom skill
+  function addSkill() {
+    const input = document.getElementById("custom-skill-input");
+    const value = input.value.trim();
+    if (value === "") return;
+
+    const label = document.createElement("label");
+    label.style.marginRight = "10px";
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.name = "skills";
+    checkbox.value = value;
+    checkbox.checked = true;
+
+    label.appendChild(checkbox);
+    label.appendChild(document.createTextNode(" " + value));
+
+    document.getElementById("skills-container").appendChild(label);
+    input.value = "";
+  }
+
+  // Combine selected skills before submit
+  document.querySelector("form").addEventListener("submit", function () {
+    const selected = Array.from(document.querySelectorAll('input[name="skills"]:checked')).map(cb => cb.value);
+    document.getElementById("combined-skills").value = selected.join(", ");
+  });
+
+
+
+
+    const timeSlots = [
+      "08:00 AM", "09:00 AM", "10:00 AM",
+      "11:00 AM", "12:00 PM", "01:00 PM",
+      "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM"
+    ];
+
+    const startSelect = document.getElementById("start-time");
+    const endSelect = document.getElementById("end-time");
+
+    function showTimeSlot() {
+      const type = document.getElementById("availability_type").value;
+      const slotDiv = document.getElementById("time-slot");
+
+      if (type) {
+        slotDiv.style.display = "flex";
+
+        // Populate start times
+        startSelect.innerHTML = '<option value="">-- Start Time --</option>';
+        timeSlots.forEach(time => {
+          const opt = document.createElement("option");
+          opt.value = time;
+          opt.textContent = time;
+          startSelect.appendChild(opt);
+        });
+
+        endSelect.innerHTML = '<option value="">-- End Time --</option>';
+      } else {
+        slotDiv.style.display = "none";
+      }
+    }
+
+    function updateEndTimes() {
+      const selectedStart = startSelect.value;
+      const startIndex = timeSlots.indexOf(selectedStart);
+
+      endSelect.innerHTML = '<option value="">-- End Time --</option>';
+
+      if (startIndex !== -1 && startIndex < timeSlots.length - 1) {
+        for (let i = startIndex + 1; i < timeSlots.length; i++) {
+          const opt = document.createElement("option");
+          opt.value = timeSlots[i];
+          opt.textContent = timeSlots[i];
+          endSelect.appendChild(opt);
+        }
+      }
+    }
+
+    // Combine everything before form submission
+    document.querySelector("form").addEventListener("submit", function (e) {
+      const type = document.getElementById("availability_type").value;
+      const start = startSelect.value;
+      const end = endSelect.value;
+
+      if (!type || !start || !end) {
+        alert("Please select availability type and valid start/end times.");
+        e.preventDefault();
+        return;
+      }
+
+      const finalValue = `${type}: ${start} to ${end}`;
+      document.getElementById("final-availability").value = finalValue;
+    });
+
+
+
+  </script>
+</body>
+</html>
