@@ -224,38 +224,10 @@
 </body>
 </html>
 
-<!-- 
-------------Volunteer---------<br>
- fname : {{volunteer_fname}}<br>
- Email : {{volunteer_email}}<br>
- Phone : {{volunteer_phno}}<br>
-DOB : {{volunteer_dob}}<br>
-City : {{volunteer_ct}}<br>
-State : {{volunteer_state}}<Br>
-Pincode : {{volunteer_pincode}}<br>
-Skill : {{volunteer_skill}}<Br>
-Experience : {{volunteer_experience_years}}<br>
-Availibility : {{volunteer_availability}}<br>
-Public DP : {{volunteer_consent_public}}<br>
-Agree Term : {{volunteer_agree_to_terms}}<Br>
-    User type:{{userType}}
-<br><Br>
--->
--------------Organization---------<br>
 
-Org name:{{org_Name}}<br>
-Org No :{{org_reg_number}}<br>
-Org type: {{org_type}}<br>
-Established year:{{org_established_yer}}<br>
-Address:{{org_address}}<br>
-City:{{org_city}}<br>
-State:{{org_state}}<br>
-Country:{{org_country}}<br>
-contact_person:{{org_contact_person}}<br>
-contact_email: {{org_contact_email}}<br>
-contact_phone:{{org_contact_phone}} <br>
-org_reg_doc :: {{org_reg_doc}}<br>
-org_agree_to_terms:: {{org_agree_to_terms}}
+{% if msg %}
+<h3> volunteer added successfuly</h3>
+{% endif %}
 
 {% endblock %}
 
