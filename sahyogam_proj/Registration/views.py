@@ -23,7 +23,7 @@ def registrations(request):
                 volunteer_consent_public=request.POST.get("agree_consent_public") == "on",
                 volunteer_agree_to_terms=request.POST.get("agree_terms") == "on"
             )
-            return redirect("volunteer_profile", volunteer_id=volunteer.id)
+            return redirect("volunteer_dashboard", vol_id=volunteer.id)
 
         elif user_type == "Organization":
             # Collect Organization Data
@@ -47,9 +47,9 @@ def registrations(request):
 
     return render(request, "registrations.html")
 
-def volunteer_profile(request, volunteer_id):
-    volunteer = get_object_or_404(Volunteer, id=volunteer_id)
-    return render(request, "volunteer_profile.html", {"volunteer": volunteer})
+# def volunteer_profile(request, volunteer_id):
+#     volunteer = get_object_or_404(Volunteer, id=volunteer_id)
+#     return render(request, "volunteer_profile.html", {"volunteer": volunteer})
 
 # def organization_profile(request, org_id):
 #     org = get_object_or_404(Organization, id=org_id)

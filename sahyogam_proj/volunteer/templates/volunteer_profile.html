@@ -1,3 +1,8 @@
+{% extends "base.html" %}
+     {% block username %}|
+        {{ volunteer.volunteer_fname }}
+    {% endblock %}
+{% block volunteer_profile %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,11 +21,11 @@
         label { font-weight: bold; color: #333; }
         span { color: #555; }
     </style>
+
 </head>
 <body>
-
 <div class="card">
-    <h2>Welcome, {{ volunteer.volunteer_fname }}!</h2>
+    <!-- <h2>Welcome, {{ volunteer.volunteer_fname }}!</h2> -->
 
     <div class="row"><label>Email:</label> <span>{{ volunteer.volunteer_email }}</span></div>
     <div class="row"><label>Phone:</label> <span>{{ volunteer.volunteer_phno }}</span></div>
@@ -41,3 +46,4 @@
 
 </body>
 </html>
+{% endblock %}

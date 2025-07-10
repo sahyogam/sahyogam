@@ -156,7 +156,7 @@
 
         <img src="{% static 'images/sahyogam.png' %}" alt="Sahyogam Logo" id="logo">
 
-        <h1>Welcome to Sahyogam</h1>
+        <h1>Welcome to Sahyogam {% block username %}{% endblock %}</h1>
         
         <nav>
             <a href="/">Home</a> <a href="/about">About</a>
@@ -179,6 +179,10 @@
     <div>
          {% block organization_profile %}
           {% endblock %}
+    </div>
+    <div>
+        {% block volunteer_profile%}
+        {% endblock %}
     </div>
 
     <hr>
