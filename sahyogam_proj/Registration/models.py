@@ -24,7 +24,7 @@ class Organization(models.Model):
     org_agree_to_terms = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.name
+        return self.org_name
 
 
 
