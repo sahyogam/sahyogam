@@ -1,4 +1,9 @@
 {% extends "base.html" %}
+
+{% block username %}|
+        {{ org.org_name  }}
+    {% endblock %}
+
 {% block organization_profile %}
 <!DOCTYPE html>
 <html>
