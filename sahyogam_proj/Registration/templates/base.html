@@ -1,3 +1,5 @@
+{% load static %}
+
 
 <!DOCTYPE html>
 <html>
@@ -7,14 +9,14 @@
     <style>
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #f0f2f5;
-        margin: 0;
+        background-color: #eee6d8;
         padding: 0;
+        margin: 0;
     }
 
     /* ====== HEADER ====== */
     header {
-        background-color: #2c3e50;
+        background-color: #03365f;
         color: white;
         padding: 16px 32px;
         display: flex;
@@ -39,14 +41,17 @@
     }
 
     nav a {
-        color: #1100ff;
+        color: #ffffff;
         text-decoration: none;
         margin-left: 16px;
         font-weight: bold;
+        transition: 0.5s;
     }
-
+    
     nav a:hover {
         text-decoration: underline;
+        
+
     }
 
     /* ====== FORM WRAPPER ====== */
@@ -131,18 +136,32 @@
             padding: 20px;
         }
     }
+
+    #logo{
+        height: 3rem;
+        width: 3rem;
+        margin-right: 1rem;
+    }
+
 </style>
 
 
 </head>
-<body>
+<body style="background-color: #eee6d8;">
     <header>
-        <img src="sahyogam.png" alt="Logo">
-        <h1>Welcome to Sahyogam</h1></header>
+        <!-- <img src="sahyogam.png" alt="Logo">
+          -->
 
-    <nav>
-        <a href="/">Home</a> <a href="/about">About</a>
-    </nav>
+          {% load static %}
+
+        <img src="{% static 'images/sahyogam.png' %}" alt="Sahyogam Logo" id="logo">
+
+        <h1>Welcome to Sahyogam</h1>
+        
+        <nav>
+            <a href="/">Home</a> <a href="/about">About</a>
+        </nav>
+    </header>
 
     <hr>
 
@@ -151,6 +170,12 @@
         <!-- Specific content will go here -->
         {% endblock %}
     </div>
+
+    <div>
+         {% block about %}
+         {% endblock %}
+    </div>
+
 
     <hr>
     <footer><p>&copy; 2025 Sahyogam</p></footer>

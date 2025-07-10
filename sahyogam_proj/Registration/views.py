@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Volunteer
+from .models import Volunteer,Organization
 
 # Create your views here.
 def registrations(request):
@@ -101,11 +101,13 @@ def registrations(request):
                 "org_contact_email":org_contact_email,
                 "org_contact_phone":org_contact_phone,  
                 "org_reg_doc":org_reg_doc,
-                "org_agree_to_terms":org_agree_to_terms
-                
-                
+                "org_agree_to_terms":org_agree_to_terms                                
             }
-            return render(request,"registrations.html",context)
+            
+            org_register = Organization.objects.create(org_name=org_name,org_reg_number=org_reg_number,org_type=org_type,org_established_yer=org_established_yer,org_address=org_address,org_city=org_city,org_state=org_state,org_country=org_country,org_contact_person=org_contact_person,org_contact_email=org_contact_email,org_contact_phone=org_contact_phone,org_registered_doc=org_reg_doc,org_agree_to_terms=org_agree_to_terms)
+            
+            if org_register:
+                return render(request,"registrations.html",{"msg":True})
 
     return render(request,"registrations.html")
         
@@ -115,3 +117,5 @@ def registrations(request):
 # def regisrationVolunteer(request):
     
     
+def about(request):
+    return render(request,"about.html")
