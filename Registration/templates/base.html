@@ -1,0 +1,194 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sahyogam | {% block title %} {% endblock %}</title>
+
+    <style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #eee6d8;
+        padding: 0;
+        margin: 0;
+    }
+
+    /* ====== HEADER ====== */
+    header {
+        background-color: #03365f;
+        color: white;
+        padding: 16px 32px;
+        display: flex;
+        align-items: center;
+        /* justify-content: space-between; */
+    }
+
+    header img.logo {
+        height: 40px;
+        margin-right: 12px;
+    }
+
+    header h1 {
+        font-size: 24px;
+        margin: 0;
+        display: flex;
+        align-items: center;
+    }
+
+    nav {
+        margin-left: auto;
+    }
+
+    nav a {
+        color: #ffffff;
+        text-decoration: none;
+        margin-left: 16px;
+        font-weight: bold;
+        transition: 0.5s;
+    }
+    
+    nav a:hover {
+        text-decoration: underline;
+        
+
+    }
+
+    /* ====== FORM WRAPPER ====== */
+    .form-container {
+        max-width: 700px;
+        margin: 30px auto;
+        padding: 30px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    }
+
+    h2, h3, h4 {
+        color: #2c3e50;
+    }
+
+    label {
+        display: block;
+        margin: 12px 0 5px;
+        font-weight: 600;
+        color: #34495e;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    input[type="file"],
+    input[type="password"],
+    select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #bdc3c7;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+    }
+
+    input[type="checkbox"] {
+        margin-right: 8px;
+    }
+
+    .checkbox-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .checkbox-group label {
+        font-weight: normal;
+        display: flex;
+        align-items: center;
+    }
+
+    button {
+        background-color: #27ae60;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    button:hover {
+        background-color: #2ecc71;
+    }
+
+    hr {
+        border: none;
+        border-top: 1px solid #ddd;
+        margin: 30px 0;
+    }
+
+    @media (max-width: 768px) {
+        header h1 {
+            font-size: 20px;
+        }
+
+        .form-container {
+            padding: 20px;
+        }
+    }
+
+    #logo{
+        height: 3rem;
+        width: 3rem;
+        margin-right: 1rem;
+    }
+
+</style>
+
+
+</head>
+<body style="background-color: #eee6d8;">
+    <header>
+        <!-- <img src="sahyogam.png" alt="Logo">
+          -->
+
+          {% load static %}
+
+        <img src="{% static 'images/sahyogam.png' %}" alt="Sahyogam Logo" id="logo">
+
+        <h1>Welcome to Sahyogam {% block username %}{% endblock %}</h1>
+        
+        <nav>
+            <a href="/">Home</a> <a href="/about">About</a>
+        </nav>
+    </header>
+
+    <hr>
+
+    <div>
+        {% block registrationBlock %}
+        <!-- Specific content will go here -->
+        {% endblock %}
+    </div>
+
+    <div>
+         {% block about %}
+         {% endblock %}
+    </div>
+
+    <div>
+         {% block organization_profile %}
+          {% endblock %}
+    </div>
+    <div>
+        {% block volunteer_profile%}
+        {% endblock %}
+    </div>
+
+    <hr>
+    <footer><p>&copy; 2025 Sahyogam</p></footer>
+
+
+
+</body>
+</html>

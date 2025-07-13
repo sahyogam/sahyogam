@@ -1,0 +1,130 @@
+<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Volunteer Profile</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 2rem;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .profile-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .photo-preview img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #007bff;
+        }
+
+        ul.profile-info {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul.profile-info li {
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background: #f0f0f0;
+            border-left: 4px solid #007bff;
+        }
+
+        button {
+            padding: 0.5rem 1rem;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="profile-container">
+    <h2>Volunteer Profile</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="hidden" id="id_latitude" name="latitude">
+        <input type="hidden" id="id_longitude" name="longitude">
+        <button type="button" onclick="getLocation()">Use My Current Location</button>
+        <button type="submit">Save Profile</button>
+    </form>
+
+    {% if form.instance.profile_photo %}
+    <div class="photo-preview">
+        <img src="{{ form.instance.profile_photo.url }}" alt="Profile Photo" id="profilePhoto">
+
+        <form method="post" action="{% url 'delete_vol_photo' vol_id=volunteer.id %}">
+            {% csrf_token %}
+            <button type="submit" style="background-color: red;">Delete Photo</button>
+        </form>
+    </div>
+    {% endif %}
+
+    <h3>Registration Details</h3>
+    <ul class="profile-info">
+        <li><strong>Name:</strong> {{ volunteer.volunteer_fname }}</li>
+        <li><strong>Email:</strong> {{ volunteer.volunteer_email }}</li>
+        <li><strong>Phone:</strong> {{ volunteer.volunteer_phno }}</li>
+        <li><strong>DOB:</strong> {{ volunteer.volunteer_dob }}</li>
+        <li><strong>Skill:</strong> {{ volunteer.volunteer_skill }}</li>
+        <li><strong>Experience:</strong> {{ volunteer.volunteer_experience_years }} years</li>
+        <li><strong>Availability:</strong> {{ volunteer.volunteer_availability }}</li>
+        <li><strong>City/State:</strong> {{ volunteer.volunteer_city }}, {{ volunteer.volunteer_state }}</li>
+    </ul>
+</div>
+
+<script>
+    function getLocation() {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            document.getElementById("id_latitude").value = position.coords.latitude;
+            document.getElementById("id_longitude").value = position.coords.longitude;
+        });
+    }
+
+    const input = document.querySelector('input[type="file"]');
+    if (input) {
+        input.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    let img = document.getElementById('profilePhoto');
+                    if (!img) {
+                        img = document.createElement('img');
+                        img.id = 'profilePhoto';
+                        document.querySelector('.photo-preview').appendChild(img);
+                    }
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+</script>
+</body>
+</html>

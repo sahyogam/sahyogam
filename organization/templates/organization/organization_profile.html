@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block username %}|
+        {{ org.org_name  }}
+    {% endblock %}
+
+{% block organization_profile %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ org.org_name }} Profile</title>
+    <style>
+        /* body { font-family: sans-serif; background: #f5f5f5; padding: 40px; }
+        .card { max-width: 800px; margin: auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 0 12px rgba(0,0,0,0.1); }
+        .row { margin-bottom: 12px; }
+        label { font-weight: bold; } */
+
+    body {
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+        background-color: #f0f2f5;
+        margin: 0;
+        padding: 40px 20px;
+    }
+
+    .card {
+        max-width: 800px;
+        margin: auto;
+        background: #ffffff;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    h2 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 30px;
+    }
+
+    .row {
+        display: flex;
+        justify-content: left;
+        margin-bottom: 16px;
+        padding: 2px 0;
+        border-bottom: 1px solid #ecf0f1;
+    }
+
+    label {
+        font-weight: 600;
+        color: #34495e;
+        width: 40%;
+    }
+
+    .value {
+        color: #2f3640;
+        width: 58%;
+        text-align: right;
+    }
+
+    a {
+        color: #2980b9;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+        .row {
+            flex-direction: column;
+            text-align: left;
+        }
+
+        label,
+        .value {
+            width: 100%;
+        }
+
+        .value {
+            margin-top: 4px;
+            text-align: left;
+        }
+    }
+
+
+
+
+    </style>
+</head>
+<body>
+
+
+<div class="card">
+    <h2>{{ org.org_name }} Profile</h2>
+    <div class="row"><label>Type:</label> {{ org.org_type }}</div>
+    <div class="row"><label>Reg. Number:</label> {{ org.org_reg_number }}</div>
+    <div class="row"><label>Established:</label> {{ org.org_established_yer }}</div>
+    <div class="row"><label>Address:</label> {{ org.org_address }}</div>
+    <div class="row"><label>City:</label> {{ org.org_city }}</div>
+    <div class="row"><label>State:</label> {{ org.org_state }}</div>
+    <div class="row"><label>Country:</label> {{ org.org_country }}</div>
+    <div class="row"><label>Pincode:</label> {{ org.org_pincode }}</div>
+    <div class="row"><label>Contact Person:</label> {{ org.org_contact_person }}</div>
+    <div class="row"><label>Contact Email:</label> {{ org.org_contact_email }}</div>
+    <div class="row"><label>Contact Phone:</label> {{ org.org_contact_phone }}</div>
+    <div class="row"><label>Document:</label> 
+        {% if org.org_registered_doc %}
+            <a href="{{ org.org_registered_doc.url }}" target="_blank">View File</a>
+        {% else %}
+            Not Uploaded
+        {% endif %}
+    </div>
+    <div class="row"><label>Agreed to Terms:</label> {{ org.org_agree_to_terms|yesno:"Yes,No" }}</div>
+</div>
+
+{% endblock %}
+</body>
+</html>
