@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} About {% endblock %}</title>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f6fa;
+        padding: 20px;
+        margin: 0px;
+    }
+
+    </style>
+</head>
+<body>
+    {% block about %}
+
+    <h3>This is about block</h3>
+
+    {% endblock %}   
+</body>
+</html>

@@ -1,0 +1,241 @@
+
+
+<!-- templates/main/home.html -->
+{% extends "base.html" %}
+
+{% block title %}Registration{% endblock %}
+
+{% block registrationBlock %}
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration Page</title>
+    <script>
+        function toggleFields() {
+            const userType = document.getElementById("user_type").value;
+            document.getElementById("volunteer_fields").style.display = (userType === "Volunteer") ? "block" : "none";
+            document.getElementById("organization_fields").style.display = (userType === "Organization") ? "block" : "none";
+        }
+    </script>
+
+    <style>
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f6fa;
+        padding: 20px;
+    }
+
+    h2, h3, h4 {
+        color: #2f3640;
+    }
+
+    form {
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 700px;
+        margin: 0 auto 30px;
+    }
+
+    label {
+        display: block;
+        margin: 12px 0 4px;
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    input[type="file"],
+    input[type="password"],
+    select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #dcdde1;
+        border-radius: 6px;
+        box-sizing: border-box;
+    }
+
+    input[type="checkbox"] {
+        margin-right: 6px;
+    }
+
+    button {
+        background-color: #44bd32;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    button:hover {
+        background-color: #4cd137;
+    }
+
+    select {
+        background-color: white;
+    }
+
+    hr {
+        border: none;
+        border-top: 1px solid #dcdde1;
+        margin: 30px 0;
+    }
+
+    .checkbox-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .checkbox-group label {
+        font-weight: normal;
+    }
+
+    #msg{
+        font-size: xx-large;
+        color: #329323;
+        
+    }
+
+</style>
+
+</head>
+<body>
+
+<h2>Register</h2>
+
+<!-- User Type Selector -->
+<label for="user_type">Register as:</label>
+<select id="user_type" name="user_type" onchange="toggleFields()">
+    <option value="">-- Select --</option>
+    <option value="Volunteer">Volunteer</option>
+    <option value="Organization">Organization</option>
+</select>
+
+<hr>
+
+<!-- =================== VOLUNTEER SECTION =================== -->
+<div id="volunteer_fields" style="display:none;">
+    <h3>Volunteer Details</h3>
+    <form method="post">
+        {% csrf_token %}
+
+        <input type="hidden" name="user_type" value="Volunteer">
+
+        <label>Full Name:</label><input type="text" name="full_name"><br>
+        <label>Email:</label><input type="email" name="email"><br>
+        <label>Phone Number:</label><input type="text" name="phone"><br>
+        <label>Date of Birth (dd-mm-yyyy):</label><input type="text" name="dob"><br>
+        <label>City:</label><input type="text" name="city"><br>
+        <label>State:</label><input type="text" name="state"><br>
+        <label>Pincode:</label><input type="text" name="pincode"><br>
+
+        <h4>Professional Skills</h4>
+        <input type="radio" name="skills" value="Doctor">Doctor
+        <input type="radio" name="skills" value="CA">CA
+        <input type="radio" name="skills" value="Lawyer">Lawyer
+        <input type="radio" name="skills" value="Engineer">Engineer
+        <input type="radio" name="skills" value="Architect">Architect
+        <input type="radio" name="skills" value="Teacher">Teacher
+
+        <h4>Worker Skills</h4>
+        <input type="radio" name="skills" value="Carpenter">Carpenter
+        <input type="radio" name="skills" value="Mason">Mason
+        <input type="radio" name="skills" value="Electrician">Electrician
+        <input type="radio" name="skills" value="Plumber">Plumber
+        <input type="radio" name="skills" value="Welder">Welder
+
+        <h4>General Skills</h4>
+        <input type="radio" name="skills" value="Swayam Sevak">Swayam Sevak
+        <input type="radio" name="skills" value="Event Volunteer">Event Volunteer
+        <input type="radio" name="skills" value="Blood Donor">Blood Donor
+        <input type="radio" name="skills" value="Fundraiser">Fundraiser
+
+        <br><br>
+        <label>Add Custom Skill:</label><input type="text" name="skills1"><br>
+
+        <!-- <button type="submit" name="action" value="add_skill">Add Skill</button><br><br> -->
+
+        <label>Experience (in years):</label><input type="number" name="experience"><br>
+
+        <label>Availability Type:</label>
+        <select name="availability">
+            <option value="">-- Select Availability --</option>
+            <option value="Weekends">Weekends</option>
+            <option value="Regular Days">Regular Days</option>
+        </select><br><br>
+
+        <label>
+            <input type="checkbox" name="agree_consent_public"> I consent to publicly display my profile<br>
+        </label>
+        <label>
+            <input type="checkbox" name="agree_terms"> I agree to the terms and conditions<br><br>
+        </label>
+
+        <button type="submit">Register</button>
+    </form>
+</div>
+
+<!-- =================== ORGANIZATION SECTION =================== -->
+<div id="organization_fields" style="display:none;">
+    <h3>Organization Details</h3>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <input type="hidden" name="user_type" value="Organization">
+
+        <label>Organization Name:</label><input type="text" name="org_name"><br>
+        <label>Registration Number:</label><input type="text" name="reg_number"><br>
+
+        <label>Organization Type:</label>
+        <select name="org_type">
+            <option value="">-- Select Type --</option>
+            <option value="Temple">Temple</option>
+            <option value="NGO">NGO</option>
+            <option value="School">School</option>
+            <option value="Other">Other</option>
+        </select><br>
+
+        <label>Established Year:</label><input type="text" name="established"><br>
+        <label>Address:</label><input type="text" name="address"><br>
+        <label>City:</label><input type="text" name="city"><br>
+        <label>State:</label><input type="text" name="state"><br>
+        <label>Country:</label><input type="text" name="country"><br>
+        <label>Pincode:</label><input type="text" name="pincode"><br>
+        <label>Contact Person:</label><input type="text" name="contact_person"><br>
+        <label>Contact Email:</label><input type="email" name="contact_email"><br>
+        <label>Contact Phone:</label><input type="text" name="contact_phone"><br>
+
+        <label>Upload Registration Document (PDF/Image):</label>
+        <input type="file" name="org_reg_doc" accept=".pdf"><br><br>
+
+
+        <label>
+            <input type="checkbox" name="org_agree_to_terms">
+            I agree to the terms and conditions
+        </label>
+        <br><br>
+
+        <button type="submit">Register</button>
+    </form>
+</div>
+
+</body>
+</html>
+
+
+{% if msg %}
+<script> alert("Registration successfuly")</script> 
+{% endif %}
+
+{% endblock %}
+

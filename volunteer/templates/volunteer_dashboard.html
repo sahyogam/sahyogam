@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block registrationBlock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Volunteer Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: #f5f6fa;
+            padding: 30px;
+        }
+        .dashboard {
+            max-width: 850px;
+            margin: auto;
+            background: #fff;
+            padding: 25px 35px;
+            border-radius: 10px;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+        }
+        .info {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        label {
+            font-weight: bold;
+            color: #34495e;
+            display: inline-block;
+            width: 200px;
+        }
+        .value {
+            color: #2f3640;
+        }
+        .btn {
+            background-color: #44bd32;
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 15px;
+            margin-top: 15px;
+            display: inline-block;
+        }
+        .btn:hover {
+            background-color: #4cd137;
+        }
+
+        .cardbtn{
+            background-color: #44bd32;
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            /* font-size: 15px; */
+            margin: 1px;                   
+        }
+
+       .cardbtn:hover {
+            background-color: #4cd137;
+        }
+
+        #cards{
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .card{
+            background-color: aqua;
+            width: 10rem;
+            height: 9.5rem;
+            margin: 2rem;
+            border: 1px solid black;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard">
+    {% block username %}|
+        {{ volunteer.volunteer_fname }}
+    {% endblock %}
+    <br>
+   
+    <a class="btn" href="{% url 'volunteer_profile' volunteer.id %}">Your Profile</a>
+    <br><br>
+    
+    <div>
+        Suggested Organizations for skill donation
+    </div>
+
+    <div id="cards">
+    <div class="card">
+        <h3>Skill Title</h3>
+        <img src="#" alt="Banner"><br>
+        <button class="cardbtn">Aply for donation</button>
+    </div>
+
+    <div class="card">
+        <h3>Skill Title</h3>
+        <img src="#" alt="Banner"><br>
+        <button class="cardbtn">Aply for donation</button>
+    </div>
+
+   <div class="card">
+        <h3>Skill Title</h3>
+        <img src="#" alt="Banner"><br>
+        <button class="cardbtn">Aply for donation</button>
+    </div>
+    </div>
+
+</div>
+</body>
+</html>
+{% endblock %}
