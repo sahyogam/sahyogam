@@ -1,7 +1,5 @@
 {% extends "base.html" %}
-     {% block username %}|
-        {{ volunteer.volunteer_fname }}
-    {% endblock %}
+{% block username %}| {{ volunteer.volunteer_fname }}{% endblock %}
 {% block volunteer_profile %}
 <!DOCTYPE html>
 <html>
@@ -19,31 +17,30 @@
         }
         .row { margin-bottom: 12px; }
         label { font-weight: bold; color: #333; }
-        span { color: #555; }
+        span, input, select { color: #555; padding: 6px; width: 100%; box-sizing: border-box; }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
     </style>
-
 </head>
 <body>
 <div class="card">
-    <!-- <h2>Welcome, {{ volunteer.volunteer_fname }}!</h2> -->
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
 
-    <div class="row"><label>Email:</label> <span>{{ volunteer.volunteer_email }}</span></div>
-    <div class="row"><label>Phone:</label> <span>{{ volunteer.volunteer_phno }}</span></div>
-    <div class="row"><label>Date of Birth:</label> <span>{{ volunteer.volunteer_dob }}</span></div>
-    <div class="row"><label>City:</label> <span>{{ volunteer.volunteer_city }}</span></div>
-    <div class="row"><label>State:</label> <span>{{ volunteer.volunteer_state }}</span></div>
-    <div class="row"><label>Pincode:</label> <span>{{ volunteer.volunteer_pincode }}</span></div>
-    <div class="row"><label>Skill:</label> <span>{{ volunteer.volunteer_skill }}</span></div>
-    <div class="row"><label>Experience (Years):</label> <span>{{ volunteer.volunteer_experience_years }}</span></div>
-    <div class="row"><label>Availability:</label> <span>{{ volunteer.volunteer_availability }}</span></div>
-    <div class="row"><label>Public Display Consent:</label>
-        <span>{{ volunteer.volunteer_consent_public|yesno:"Yes,No" }}</span>
-    </div>
-    <div class="row"><label>Agreed to Terms:</label>
-        <span>{{ volunteer.volunteer_agree_to_terms|yesno:"Yes,No" }}</span>
-    </div>
+        <input type="submit" value="Save Changes">
+    </form>
 </div>
-
 </body>
 </html>
 {% endblock %}
