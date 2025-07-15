@@ -21,10 +21,15 @@
 
     <style>
 
+        *{
+            margin :0;
+            padding:0;
+        }
+
     body {
         font-family: Arial, sans-serif;
         background-color: #f5f6fa;
-        padding: 20px;
+        padding: 0px;
     }
 
     h2, h3, h4 {
@@ -105,21 +110,37 @@
         color: #329323;
         
     }
+    .main{
+        padding-left:20px;
+        padding-right: 20px;
+    }
+    
+      
+
 
 </style>
 
 </head>
 <body>
 
-<h2>Register</h2>
+    <div class="main">
 
-<!-- User Type Selector -->
-<label for="user_type">Register as:</label>
-<select id="user_type" name="user_type" onchange="toggleFields()">
+        <h2>Register</h2>
+        
+        <!-- User Type Selector -->
+        <label for="user_type">Register as:</label>
+        <select id="user_type" name="user_type" onchange="toggleFields()">
     <option value="">-- Select --</option>
     <option value="Volunteer">Volunteer</option>
     <option value="Organization">Organization</option>
 </select>
+</div>
+
+
+{% if error %}
+    <p style="color:red;">{{ error }}</p>
+{% endif %}
+
 
 <hr>
 
