@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Detail - Sahyogam</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Campaign Banner */
+        .campaign-banner {
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .campaign-banner h1 {
+            font-size: 2.5em;
+            margin: 0;
+            color: #333;
+        }
+
+        .campaign-banner h2 {
+            font-size: 1.5em;
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .campaign-banner p {
+            font-size: 1.1em;
+            color: #777;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            gap: 20px;
+        }
+
+        .main-column {
+            flex: 2;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .sidebar {
+            flex: 1;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .main-column h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .main-column p {
+            font-size: 1em;
+            line-height: 1.5;
+        }
+
+        .main-column .info {
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .main-column .skills {
+            margin-bottom: 15px;
+        }
+
+        .main-column .skills span {
+            background-color: #eaf2ff;
+            color: #448aff;
+            padding: 5px 8px;
+            border-radius: 5px;
+            margin-right: 5px;
+            font-size: 0.9em;
+        }
+
+        /* Sidebar Actions */
+        .sidebar button {
+            background-color: #5DADE2;
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            outline: none;
+            transition: background-color 0.3s;
+            width: 100%;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        .sidebar button:hover {
+            background-color: #448aff;
+        }
+
+        .sidebar a {
+            display: block;
+            text-align: center;
+            color: #5DADE2;
+            text-decoration: none;
+            margin-bottom: 10px;
+        }
+
+        .sidebar a:hover {
+            text-decoration: underline;
+        }
+
+        /* Optional Features */
+        .volunteer-progress {
+            background-color: #eee;
+            border-radius: 5px;
+            height: 10px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .volunteer-progress .progress {
+            background-color: #4CAF50;
+            height: 100%;
+            width: 60%; /* Example */
+        }
+
+        /* NGO Card */
+        .ngo-card {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .ngo-card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .campaign-banner {
+                padding: 20px;
+            }
+
+            .main-content {
+                flex-direction: column;
+            }
+
+            .main-column,
+            .sidebar {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Campaign Banner -->
+        <div class="campaign-banner">
+            <h1>School Building Project in Rural India</h1>
+            <h2>Green Earth Initiative</h2>
+            <p>Help us build a school for underprivileged children and provide quality education.</p>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="main-column">
+                <h3>Campaign Details</h3>
+                <p class="info">
+                    <i class="far fa-calendar-alt"></i> Duration: August 1 - August 31, 2025<br>
+                    <i class="fas fa-map-marker-alt"></i> Location: Rural India
+                </p>
+                <div class="skills">
+                    <span>Carpentry</span>
+                    <span>Construction</span>
+                    <span>Teaching</span>
+                </div>
+                <p>
+                    We are embarking on an ambitious project to build a school in a remote rural area
+                    where access to education is severely limited. Our goal is to provide a safe
+                    and conducive learning environment for children who currently have no access to formal schooling.
+                </p>
+                <p>
+                    This campaign seeks dedicated volunteers with skills in carpentry, construction,
+                    and teaching. Volunteers will work alongside local communities to construct
+                    classrooms, set up basic infrastructure, and conduct initial educational programs.
+                </p>
+                <h3>Goals</h3>
+                <ul>
+                    <li>Construct 3 classrooms</li>
+                    <li>Install basic sanitation facilities</li>
+                    <li>Launch a basic literacy program</li>
+                </ul>
+
+                <div class="volunteer-progress">
+                    <div class="progress" style="width: 60%;"></div>
+                </div>
+                <p>Needed Volunteers: 3 of 5 filled</p>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <button>Apply Now</button>
+                <a href="#">Save Campaign</a>
+                <a href="#">Ask a Question</a>
+                <a href="#">Share Campaign</a>
+            </div>
+        </div>
+
+        <!-- Optional NGO Card -->
+        <div class="ngo-card">
+            <img src="default-avatar.png" alt="NGO Logo">
+            <h3>Green Earth Initiative</h3>
+            <p>Committed to sustainable development and education.</p>
+        </div>
+    </div>
+</body>
+</html>

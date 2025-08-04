@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post a New Campaign - Sahyogam</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Page Title */
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title h1 {
+            font-size: 2em;
+            margin: 0;
+            color: #333;
+        }
+
+        .page-title p {
+            font-size: 1.1em;
+            color: #777;
+        }
+
+        /* Form */
+        .post-campaign-form {
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            /* Two-column layout */
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 1em;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group textarea,
+        .form-group input[type="date"] {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 1em;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input[type="date"] {
+            font-family: 'Poppins', sans-serif;
+            /* Ensure date picker uses correct font */
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            border-radius: 10px;
+        }
+
+        .form-group input[type="file"] {
+            font-size: 1em;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 1em;
+            outline: none;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            /* Ensure select uses correct font */
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #5DADE2;
+            /* Highlight on focus */
+        }
+
+        /* Submit Section */
+        .submit-section {
+            grid-column: 1 / span 2;
+            /* Span both columns */
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .submit-section button {
+            background-color: #5DADE2;
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            outline: none;
+            transition: background-color 0.3s;
+        }
+
+        .submit-section button:hover {
+            background-color: #448aff;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .post-campaign-form {
+                grid-template-columns: 1fr;
+                /* Single column on mobile */
+            }
+
+            .submit-section {
+                grid-column: 1;
+                /* Ensure submit section is full width */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Page Title -->
+        <div class="page-title">
+            <h1>Post a New Campaign</h1>
+            <p>Fill in the details to request volunteers for your cause.</p>
+        </div>
+
+        <!-- Post Campaign Form -->
+        <form class="post-campaign-form">
+            <div class="form-group">
+                <label for="campaignTitle">Campaign Title</label>
+                <input type="text" id="campaignTitle" placeholder="Enter campaign title">
+            </div>
+
+            <div class="form-group">
+                <label for="shortDescription">Short Description</label>
+                <input type="text" id="shortDescription" placeholder="1-2 line summary">
+            </div>
+
+            <div class="form-group">
+                <label for="fullDescription">Full Description</label>
+                <textarea id="fullDescription" rows="4" placeholder="Detailed campaign description"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="skillsRequired">Skills Required</label>
+                <input type="text" id="skillsRequired" placeholder="e.g., Coding, Carpentry">
+            </div>
+
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" id="location" placeholder="Enter location">
+            </div>
+
+            <div class="form-group">
+                <label for="totalVolunteers">Total Volunteers Needed</label>
+                <input type="number" id="totalVolunteers" placeholder="Number of volunteers">
+            </div>
+
+            <div class="form-group">
+                <label for="startDate">Start Date</label>
+                <input type="date" id="startDate">
+            </div>
+
+            <div class="form-group">
+                <label for="endDate">End Date</label>
+                <input type="date" id="endDate">
+            </div>
+
+            <div class="form-group">
+                <label for="timeSlot">Time Slot / Duration (Optional)</label>
+                <input type="text" id="timeSlot" placeholder="e.g., 10am to 1pm">
+            </div>
+
+            <div class="form-group">
+                <label for="bannerImage">Upload Banner Image (Optional)</label>
+                <input type="file" id="bannerImage">
+            </div>
+
+            <div class="form-group">
+                <label for="additionalInstructions">Additional Instructions</label>
+                <textarea id="additionalInstructions" rows="2" placeholder="Any specific instructions"></textarea>
+            </div>
+
+            <!-- Submit Section -->
+            <div class="submit-section">
+                <button type="submit">Post Campaign</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

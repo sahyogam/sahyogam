@@ -1,0 +1,10 @@
+{% extends "sahyogam/base.html" %}
+{% block content %}
+<h2>Verify OTP</h2>
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="otp" placeholder="Enter OTP">
+    <button type="submit">Verify</button>
+    {% if error %}<p style="color:red">{{ error }}</p>{% endif %}
+</form>
+{% endblock %}
