@@ -12,10 +12,8 @@ urlpatterns = [
     path('', views.register_view, name='register'),
 
     path('verify-otp/', views.verify_otp_view, name='verify_otp'),
-    
-    
+     
     # path('login/', ...),  # Add login view if needed
-    
     
     path('404/', views.page_404, name='404'),
     path('base/', views.base_page, name='base'),
@@ -30,5 +28,6 @@ urlpatterns = [
     path('signup-login/', views.signup_login, name='signup-login'),
     path('verify-otp/', views.verify_otp, name='verify-otp'),
     path('home/', views.home, name='home'),
+    
     
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
