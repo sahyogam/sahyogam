@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Campaigns - Sahyogam</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Top Navbar */
+        .navbar {
+            background-color: #fff;
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            box-sizing: border-box;
+        }
+
+        .navbar-left .logo {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .navbar-center {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-center a {
+            color: #555;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+
+        .navbar-center .search-bar {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-center .search-bar input[type="text"] {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+            width: 250px;
+        }
+
+        /* Filter Sidebar */
+        .filter-sidebar {
+            width: 250px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .filter-sidebar h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .filter-sidebar .filter-group {
+            margin-bottom: 15px;
+        }
+
+        .filter-sidebar label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .filter-sidebar select,
+        .filter-sidebar input[type="text"] {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .filter-sidebar .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .filter-sidebar .skill-tags span {
+            background-color: #eaf2ff;
+            color: #448aff;
+            padding: 5px 8px;
+            border-radius: 5px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        /* Main Content - Campaign Grid */
+        .main-content {
+            display: flex;
+            margin-top: 20px;
+            gap: 20px;
+        }
+
+        .campaign-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .campaign-card {
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+
+        .campaign-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .campaign-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .campaign-card h3 {
+            margin-top: 0;
+            font-size: 18px;
+        }
+
+        .campaign-card p {
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .campaign-card .skills {
+            margin-bottom: 10px;
+        }
+
+        .campaign-card .skills span {
+            background-color: #eaf2ff;
+            color: #448aff;
+            padding: 5px 8px;
+            border-radius: 5px;
+            margin-right: 5px;
+            font-size: 14px;
+        }
+
+        .campaign-card .location {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .campaign-card button {
+            background-color: #5DADE2;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            outline: none;
+            transition: background-color 0.3s;
+        }
+
+        .campaign-card button:hover {
+            background-color: #448aff;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar-center {
+                margin-top: 10px;
+                width: 100%;
+            }
+
+            .navbar-center .search-bar {
+                width: 100%;
+            }
+
+            .navbar-center .search-bar input[type="text"] {
+                width: 100%;
+            }
+
+            .main-content {
+                flex-direction: column;
+                margin-top: 120px;
+            }
+
+            .filter-sidebar {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .campaign-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Top Navbar -->
+        <nav class="navbar">
+            <div class="navbar-left">
+                <a href="#" class="logo">Sahyogam</a>
+            </div>
+            <div class="navbar-center">
+                <a href="#">Home</a>
+                <a href="#">Messages</a>
+                <a href="#">My Applications</a>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search by campaign name, location, or skill">
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Filter Sidebar -->
+            <aside class="filter-sidebar">
+                <h3>Filter Campaigns</h3>
+
+                <div class="filter-group">
+                    <label for="location">Location</label>
+                    <select id="location">
+                        <option value="all">All Locations</option>
+                        <option value="online">Online</option>
+                        <option value="india">India</option>
+                        <option value="usa">USA</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="skills">Skills</label>
+                    <div class="skill-tags">
+                        <span data-skill="carpentry">Carpentry</span>
+                        <span data-skill="teaching">Teaching</span>
+                        <span data-skill="webdev">Web Development</span>
+                        <span data-skill="medical">Medical</span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label>Organization Type</label>
+                    <label><input type="checkbox" name="org-type" value="ngo"> NGO</label>
+                    <label><input type="checkbox" name="org-type" value="school"> School</label>
+                    <label><input type="checkbox" name="org-type" value="temple"> Temple</label>
+                </div>
+
+                <div class="filter-group">
+                    <label for="date">Availability</label>
+                    <input type="text" id="date" placeholder="Start Date">
+                    <input type="text" id="date" placeholder="End Date">
+                </div>
+            </aside>
+
+            <!-- Main Content - Campaign Grid -->
+            <main class="campaign-grid">
+                <div class="campaign-card" data-location="india" data-skills="carpentry,construction" data-org-type="ngo">
+                    <img src="campaign-banner.jpg" alt="Campaign Banner">
+                    <h3>School Building Project</h3>
+                    <p>Help build a school for underprivileged children in rural India.</p>
+                    <div class="skills">
+                        <span>Carpentry</span>
+                        <span>Construction</span>
+                    </div>
+                    <p class="location">Location: Rural India</p>
+                    <button>Apply</button>
+                </div>
+
+                <div class="campaign-card" data-location="online" data-skills="teaching,coding" data-org-type="school">
+                    <img src="campaign-banner.jpg" alt="Campaign Banner">
+                    <h3>Coding Workshop for Kids</h3>
+                    <p>Teach basic coding to children in our community. Online Volunteers are welcome.</p>
+                    <div class="skills">
+                        <span>Teaching</span>
+                        <span>Coding</span>
+                    </div>
+                    <p class="location">Location: Online</p>
+                    <button>Apply</button>
+                </div>
+
+                <div class="campaign-card" data-location="usa" data-skills="medical" data-org-type="charity">
+                    <img src="campaign-banner.jpg" alt="Campaign Banner">
+                    <h3>Medical Camp in Rural USA</h3>
+                    <p>Volunteers needed for free medical camp.</p>
+                    <div class="skills">
+                        <span>Medical</span>
+                        <span>Nursing</span>
+                    </div>
+                    <p class="location">Location: Rural USA</p>
+                    <button>Apply</button>
+                </div>
+                <!-- More Campaign Cards -->
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const locationFilter = document.getElementById('location');
+            const skillTags = document.querySelectorAll('.skill-tags span');
+            const orgTypeCheckboxes = document.querySelectorAll('input[name="org-type"]');
+            const campaignCards = document.querySelectorAll('.campaign-card');
+
+            // Function to filter campaigns
+            function filterCampaigns() {
+                const selectedLocation = locationFilter.value;
+                const selectedSkills = Array.from(skillTags)
+                    .filter(tag => tag.classList.contains('selected'))
+                    .map(tag => tag.dataset.skill);
+                const selectedOrgTypes = Array.from(orgTypeCheckboxes)
+                    .filter(checkbox => checkbox.checked)
+                    .map(checkbox => checkbox.value);
+
+                campaignCards.forEach(card => {
+                    const cardLocation = card.dataset.location;
+                    const cardSkills = card.dataset.skills.split(',');
+                    const cardOrgType = card.dataset.orgType;
+
+                    const locationMatch = selectedLocation === 'all' || cardLocation === selectedLocation;
+                    const skillMatch = selectedSkills.length === 0 || selectedSkills.some(skill => cardSkills.includes(skill));
+                    const orgTypeMatch = selectedOrgTypes.length === 0 || selectedOrgTypes.includes(cardOrgType);
+
+                    if (locationMatch && skillMatch && orgTypeMatch) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            }
+
+            // Add event listeners
+            locationFilter.addEventListener('change', filterCampaigns);
+
+            skillTags.forEach(tag => {
+                tag.addEventListener('click', () => {
+                    tag.classList.toggle('selected');
+                    filterCampaigns();
+                });
+            });
+
+            orgTypeCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', filterCampaigns);
+            });
+
+            // Initial filter
+            filterCampaigns();
+        });
+    </script>
+</body>
+</html>

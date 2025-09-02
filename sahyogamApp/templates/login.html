@@ -1,0 +1,294 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}Login{% endblock %}</title>
+        {% block content %}
+        <style>
+
+        /* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 450px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Login Container */
+.login-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Role Selection */
+.role-selection {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.role-selection label {
+    display: inline-block;
+    margin: 0 15px;
+    font-size: 16px;
+    color: #555;
+    cursor: pointer;
+}
+
+.role-selection input[type="radio"] {
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.role-selection label i {
+    margin-right: 5px;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.form-group .icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    pointer-events: none;
+    /* Make sure the icon doesn't block clicks */
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px 15px 12px 45px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+input:focus {
+    border-color: #5DADE2;
+    box-shadow: 0 0 5px rgba(93, 173, 226, 0.3);
+}
+
+/* Buttons */
+.login-button {
+    background-color: #6DD5FA;
+    border: none;
+    color: white;
+    padding: 15px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-size: 18px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 20px;
+}
+
+.login-button:hover:enabled {
+    background-color: #46A2D1;
+    transform: scale(1.02);
+}
+
+.login-button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+/* Register Link */
+.register-link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Error Messages */
+.error-message {
+    color: #e74c3c;
+    /* Red color */
+    margin-top: 5px;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+    .container {
+        padding: 10px;
+    }
+
+    .login-container {
+        padding: 20px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        padding: 10px 10px 10px 40px;
+        font-size: 14px;
+    }
+
+    .login-button {
+        padding: 12px 25px;
+        font-size: 16px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+   
+}
+
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <div class="container">
+
+        <div class="login-container">
+            <div id="alertBox">
+        
+                {% if ErrorMSG %}
+                    <font style="color:red;font-size:1.5cap;">
+                        Invalid email or password
+                    </font>
+                {% endif %}
+
+            </div>
+
+            <h1>Login to Sahyogam</h1>
+            <form id="login-form" method="post">
+
+                {% csrf_token %}
+
+            <div class="role-selection">
+                <label>
+                    <input type="radio" name="role" value="organization" required>
+                    <i class="fas fa-building"></i> Organization
+                </label>
+                <label>
+                    <input type="radio" name="role" value="volunteer" required>
+                    <i class="fas fa-hands-helping"></i> Volunteer
+                </label>
+                <p class="role-error error-message"></p> <!-- Role error message -->
+            </div>
+
+
+                <div class="form-group">
+                    <i class="fas fa-user icon"></i>
+                    <input type="text" id="email" name="email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-lock icon"></i>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="login-button" >Login</button> <!-- Initially disabled -->
+                <p class="form-error error-message"></p> <!-- Form error message -->
+            </form>
+
+            <div class="register-link">
+                Don't have an account? <a href=" {% url 'register' %}">Register here</a>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+    const roleRadios = document.querySelectorAll('input[name="role"]');
+    // const loginButton = document.querySelector('.login-button');
+    const roleError = document.querySelector('.role-error');
+    const loginForm = document.getElementById('login-form');
+
+    // Function to check if a role is selected
+    function isRoleSelected() {
+        let selected = false;
+        roleRadios.forEach(radio => {
+            if (radio.checked) {
+                selected = true;
+            }
+        });
+        return selected;
+    }
+
+    // Function to update login button state
+    function updateLoginButtonState() {
+        if (isRoleSelected()) {
+            loginButton.disabled = false;
+            loginButton.style.cursor = 'pointer'; // Re-enable cursor
+            roleError.textContent = ''; // Clear any previous error message
+        } else {
+            loginButton.disabled = true;
+            loginButton.style.cursor = 'not-allowed'; // Visually indicate disabled
+            roleError.textContent = 'Please select a role.';
+        }
+    }
+
+    // Add event listeners to radio buttons
+    roleRadios.forEach(radio => {
+        radio.addEventListener('change', updateLoginButtonState);
+    });
+
+    // Initial state of login button
+    updateLoginButtonState();
+
+    // Login Form Submission
+    loginForm.addEventListener('submit', function (event) {
+        // event.preventDefault();
+
+        const selectedRole = document.querySelector('input[name="role"]:checked').value;
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        //Show Error message if the username and password field is empty.
+        if(!username || !password){
+          document.querySelector('.form-error').textContent = "Please enter your username and password.";
+          return;
+        }
+
+        // Here, you would typically send the data to your server for authentication.
+        // For this example, we'll just show an alert.
+        // alert(`Logging in as ${selectedRole} with username: ${username}`);
+    });
+});
+
+    </script>
+
+</body>
+</html>
+{% endblock %}

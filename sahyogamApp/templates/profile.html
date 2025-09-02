@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Sahyogam</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Profile Header */
+        .profile-header {
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .profile-header img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .profile-header h2 {
+            margin: 0 0 5px;
+            font-size: 24px;
+        }
+
+        .profile-header p {
+            color: #777;
+        }
+
+        /* Details Section */
+        .details-section {
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .details-section h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .field-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .field-row i {
+            margin-right: 10px;
+            color: #5DADE2;
+            width: 20px; /* Make sure icons align */
+            text-align: center; /* Center the icon horizontally */
+        }
+
+        .field-row label {
+            font-weight: bold;
+            width: 150px;
+            /* Adjust width */
+            text-align: right;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+
+        .field-row .value {
+            flex: 1;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .field-row input[type="text"],
+        .field-row textarea,
+        .field-row select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+            box-sizing: border-box;
+            margin-left: 5px;
+        }
+
+        .field-row textarea {
+            resize: vertical;
+        }
+
+        /* Edit Mode Styles */
+        .edit-mode .value {
+            display: none;
+        }
+
+        .edit-mode input[type="text"],
+        .edit-mode textarea,
+        .edit-mode select {
+            display: block;
+        }
+
+        .edit-buttons {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        .edit-buttons button {
+            background-color: #5DADE2;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            outline: none;
+            transition: background-color 0.3s;
+            margin-left: 10px;
+        }
+
+        .edit-buttons button:hover {
+            background-color: #448aff;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+
+            .profile-header {
+                padding: 15px;
+            }
+
+            .details-section {
+                padding: 15px;
+            }
+
+            .field-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .field-row label {
+                width: 100%;
+                text-align: left;
+                margin-bottom: 5px;
+            }
+
+            .field-row input[type="text"],
+            .field-row textarea,
+            .field-row select {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-header">
+            <img src="default-avatar.png" alt="Profile Picture">
+            <h2>John Doe</h2>
+            <p>Volunteer</p>
+        </div>
+
+        <div class="details-section">
+            <h3>Profile Details</h3>
+            <div class="field-row">
+                <i class="fas fa-user"></i>
+                <label>Full Name:</label>
+                <span class="value">John Doe</span>
+                <input type="text" value="John Doe" style="display:none;">
+            </div>
+            <div class="field-row">
+                <i class="fas fa-envelope"></i>
+                <label>Email Address:</label>
+                <span class="value">john.doe@example.com</span>
+                <input type="text" value="john.doe@example.com" style="display:none;">
+            </div>
+            <div class="field-row">
+                <i class="fas fa-phone"></i>
+                <label>Phone Number:</label>
+                <span class="value">123-456-7890</span>
+                <input type="text" value="123-456-7890" style="display:none;">
+            </div>
+            <div class="field-row">
+                <i class="fas fa-map-marker-alt"></i>
+                <label>Location:</label>
+                <span class="value">New York, USA</span>
+                <input type="text" value="New York, USA" style="display:none;">
+            </div>
+
+            <div class="edit-buttons">
+                <button id="edit-button">Edit</button>
+                <button id="save-button" style="display:none;">Save Changes</button>
+                <button id="cancel-button" style="display:none;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const editButton = document.getElementById('edit-button');
+            const saveButton = document.getElementById('save-button');
+            const cancelButton = document.getElementById('cancel-button');
+            const detailsSection = document.querySelector('.details-section');
+            const fieldRows = document.querySelectorAll('.field-row');
+
+            editButton.addEventListener('click', () => {
+                detailsSection.classList.add('edit-mode');
+                editButton.style.display = 'none';
+                saveButton.style.display = 'inline-block';
+                cancelButton.style.display = 'inline-block';
+            });
+
+            saveButton.addEventListener('click', () => {
+                 // In a real implementation, you would collect the data from the
+                // input fields and send it to the server to update the profile.
+                alert("Profile saved!");
+
+                detailsSection.classList.remove('edit-mode');
+                editButton.style.display = 'inline-block';
+                saveButton.style.display = 'none';
+                cancelButton.style.display = 'none';
+            });
+
+            cancelButton.addEventListener('click', () => {
+                detailsSection.classList.remove('edit-mode');
+                editButton.style.display = 'inline-block';
+                saveButton.style.display = 'none';
+                cancelButton.style.display = 'none';
+            });
+
+        });
+    </script>
+</body>
+</html>

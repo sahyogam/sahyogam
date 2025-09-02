@@ -1,0 +1,288 @@
+/* General Styles (Keep existing styles, and add/modify as needed) */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Register Container */
+.register-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+    transition: all 0.3s ease; /* Smooth transition */
+}
+
+/* Registration Type Selector */
+.register-type-selector {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.register-type-selector label {
+    font-size: 16px;
+    margin-right: 10px;
+    color: #555;
+}
+
+.register-type-selector select {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    font-size: 16px;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+    transition: border-color 0.3s;
+    appearance: none; /* Remove default arrow */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px top 50%;
+    background-size: 16px;
+    padding-right: 30px; /* Space for the arrow */
+}
+
+.register-type-selector select:focus {
+    border-color: #5DADE2;
+    box-shadow: 0 0 5px rgba(93, 173, 226, 0.3);
+}
+
+/* Form Styles */
+.form-wrapper {
+    position: relative;
+    height: auto; /* Adjust to content height */
+    transition: height 0.3s ease;
+}
+
+.register-form {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 1;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.register-form.hidden {
+    opacity: 0;
+    transform: translateY(20px); /* Slide out */
+    pointer-events: none; /* Prevent clicks */
+    display: none; /*Hide it completely so it does not take space*/
+}
+
+.form-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.form-group .icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    pointer-events: none;
+    /* Make sure the icon doesn't block clicks */
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"],
+input[type="tel"],
+textarea,
+select {
+    width: 100%;
+    padding: 12px 15px 12px 45px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #5DADE2;
+    box-shadow: 0 0 5px rgba(93, 173, 226, 0.3);
+}
+
+textarea {
+    resize: vertical;
+    height: 120px;
+}
+
+select {
+    padding-left: 45px;
+    /* Match input padding */
+    appearance: none;
+    /* Remove default arrow */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px top 50%;
+    background-size: 16px;
+}
+
+.location-button {
+    background-color: #5DADE2;
+    color: white;
+    border: none;
+    padding: 12px 15px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 14px;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+.location-button:hover {
+    background-color: #2E86C1;
+}
+
+/* Buttons */
+.register-button {
+    background-color: #6DD5FA;
+    border: none;
+    color: white;
+    padding: 15px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-size: 18px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 20px;
+}
+
+.register-button:hover {
+    background-color: #46A2D1;
+    transform: scale(1.02);
+}
+
+/* Volunteer Card Styles */
+.volunteer-card {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.profile-header {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.profile-image-container {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+}
+
+#profile-image-preview {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #eee;
+    display: block;
+}
+
+.profile-image-upload-button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 5px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.profile-image-upload-button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Password Strength Indicator */
+.password-strength {
+    height: 5px;
+    background-color: #ddd;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+    .container {
+        padding: 10px;
+    }
+
+    .register-container {
+        padding: 20px;
+    }
+
+    .register-type-selector label {
+        font-size: 14px;
+    }
+
+    .register-type-selector select {
+        font-size: 14px;
+    }
+
+    input[type="email"],
+    input[type="password"],
+    input[type="text"],
+    input[type="tel"],
+    textarea,
+    select {
+        padding: 10px 10px 10px 40px;
+        font-size: 14px;
+    }
+
+    .location-button {
+        padding: 10px 12px;
+        font-size: 12px;
+    }
+
+    .register-button {
+        padding: 12px 25px;
+        font-size: 16px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+}

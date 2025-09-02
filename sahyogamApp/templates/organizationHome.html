@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahyogam - Home</title>
+    <style>
+        /* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f6f8;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #fff;
+    padding: 15px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.navbar-left .logo {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    text-decoration: none;
+}
+
+.navbar-center .search-bar {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-center .search-bar input[type="text"] {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    font-size: 16px;
+    outline: none;
+    width: 300px;
+}
+
+.navbar-center .search-bar button {
+    background-color: #5DADE2;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-left: 5px;
+    outline: none;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-right a {
+    color: #555;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+.navbar-right .explore-button {
+  background-color: #6DD5FA;
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  outline: none;
+}
+
+.navbar-right .dropdown-button {
+  background-color: transparent;
+  border: none;
+  color: black;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  outline: none;
+}
+
+.user-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 10px;
+    z-index: 1;
+    right: 0;
+    border-radius: 10px;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 5px;
+    text-decoration: none;
+    display: block;
+}
+
+.user-dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Main Content */
+.main-content {
+    display: flex;
+    margin-top: 20px;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-sizing: border-box;
+    margin-right: 20px;
+}
+
+.user-profile-card {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.user-profile-card .profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.user-profile-card h3 {
+    margin: 0;
+    color: #333;
+}
+
+.user-profile-card p {
+    color: #777;
+    margin-bottom: 10px;
+}
+
+.user-profile-card .view-profile-button {
+    background-color: #5DADE2;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.quick-links h3 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.quick-links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.quick-links li {
+    margin-bottom: 10px;
+}
+
+.quick-links li a {
+    color: #555;
+    text-decoration: none;
+    display: block;
+    padding: 8px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.quick-links li a:hover {
+    background-color: #f0f0f0;
+}
+
+.quick-links li a i {
+    margin-right: 8px;
+}
+
+/* Feed */
+.feed {
+    flex: 1;
+}
+
+.feed h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.campaign-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+    transition: transform 0.2s;
+}
+
+.campaign-card:hover {
+    transform: translateY(-5px);
+}
+
+.campaign-card .campaign-banner {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.campaign-card h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.campaign-card .description {
+    color: #555;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.campaign-card .progress-bar {
+    background-color: #eee;
+    border-radius: 5px;
+    height: 8px;
+    margin-bottom: 8px;
+    overflow: hidden;
+}
+
+.campaign-card .progress-bar .progress {
+    background-color: #4CAF50;
+    height: 100%;
+    border-radius: 5px;
+}
+
+.campaign-card .amounts {
+    display: flex;
+    justify-content: space-between;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+.campaign-card .tags {
+    margin-bottom: 15px;
+}
+
+.campaign-card .tags span {
+    background-color: #eaf2ff;
+    color: #448aff;
+    padding: 5px 8px;
+    border-radius: 5px;
+    margin-right: 5px;
+    font-size: 14px;
+}
+
+.campaign-card .apply-button {
+    background-color: #5DADE2;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    outline: none;
+}
+
+/* Floating Button */
+.floating-button {
+    background-color: #6DD5FA;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 18px;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.floating-button:hover {
+    background-color: #46A2D1;
+    transform: scale(1.05);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar-center,
+    .navbar-right {
+        margin-top: 10px;
+    }
+
+    .navbar-center .search-bar input[type="text"] {
+        width: 100%;
+    }
+
+    .main-content {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .floating-button {
+        bottom: 20px;
+        right: 20px;
+    }
+}
+
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <div class="navbar-left">
+                <a href="#" class="logo">Sahyogam</a>
+            </div>
+            <div class="navbar-center">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search by name, cause, or location">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+            <div class="navbar-right">
+                <a href="#" class="explore-button">
+                  <i class="fas fa-compass"></i> Explore Campaigns
+                </a>
+                <a href="#" class="notification-icon">
+                    <i class="fas fa-bell"></i>
+                </a>
+                <div class="user-dropdown">
+                    <button class="dropdown-button">
+                        <i class="fas fa-user-circle"></i> <!-- Example User Icon -->
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="#">Profile</a>
+                        <a href="{% url 'logout' 'org' %}">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="main-content">
+            <aside class="sidebar">
+                <div class="user-profile-card">
+                    <img src="{{ORG_DP}}" alt="Profile Picture" class="profile-pic">
+                    
+                    <h3>{{OrgName}}</h3>
+                    <p>{{userType}}</p>
+                    <a href="#" class="view-profile-button">View Profile</a>
+                </div>
+
+                <div class="quick-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="{% url 'post-campaign' OrgName %}"><i class="fas fa-plus-circle"></i> Post a Campaign</a></li>
+                        <li><a href="#"><i class="fas fa-folder-open"></i> My Applications</a></li>
+                        <li><a href="#"><i class="fas fa-compass"></i> Explore More</a></li>
+                        <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                    </ul>
+                </div>
+            </aside>
+
+            <main class="feed">
+                <h2>Campaign Feed</h2>
+
+                {% for Campaign in Campaigns %}
+                   
+                    <div class="campaign-card">
+                        <img src="{{Campaign.banner_image.url}}" alt="Campaign Banner" class="campaign-banner">
+                    <h3>{{Campaign.title}}</h3>
+
+                    <p style="font-weight:500;">
+                        {{Campaign.short_description}}
+                    </p>
+
+                    <p class="description">
+                        {{Campaign.full_description}}
+                    </p>
+
+
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 40%;"></div>
+                    </div>
+                    
+                    <div class="amounts">
+                        <span>Location: <b>{{Campaign.location}}</b></span>
+                        <span>Total needs of volunteer: <b>{{Campaign.total_volunteers_needed}}</b></span>
+                        <span>Total Applied:<b>{{Campaign.applied}}</b></span>
+                    </div>
+<!--                 
+                    <div class="tags">
+                        
+                        <span>Education</span>
+                        <span>Children</span>
+                        <span>Poverty</span> 
+                        
+                    </div> -->
+                    <a href="{% url 'detailCampaign' Campaign.pk userType %}" class="apply-button">View Detail</a>
+                </div>
+                
+                {% endfor %}
+
+                
+            </main>
+        </div>
+
+        <!-- Optional Floating Button -->
+        <a href="{% url 'post-campaign' OrgName %}" class="floating-button">
+            <i class="fas fa-plus-circle"></i> Post Campaign
+        </a>
+    </div>
+</body>
+</html>

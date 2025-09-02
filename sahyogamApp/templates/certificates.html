@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Certificates - Sahyogam</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Header Section */
+        .header-section {
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-section h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .header-section .sort-filter {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-section .sort-filter label {
+            margin-right: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .header-section .sort-filter select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        /* Certificate Grid */
+        .certificate-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .certificate-card {
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            transition: transform 0.2s;
+        }
+
+        .certificate-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .certificate-card h3 {
+            margin-top: 0;
+            font-size: 18px;
+        }
+
+        .certificate-card .info {
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .certificate-card .rating {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .certificate-card .thumbnail {
+            width: 100%;
+            height: 150px;
+            background-color: #eee;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            color: #aaa;
+        }
+
+        .certificate-card .buttons {
+            text-align: right;
+        }
+
+        .certificate-card .buttons button {
+            background-color: #5DADE2;
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            outline: none;
+            transition: background-color 0.3s;
+            margin-left: 5px;
+        }
+
+        .certificate-card .buttons button:hover {
+            background-color: #448aff;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            right: 10px;
+            top: 0;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .full-certificate {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .full-certificate h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .full-certificate p {
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header-section {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-section .sort-filter {
+                margin-top: 10px;
+            }
+
+            .certificate-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header-section">
+            <h1>My Certificates</h1>
+            <div class="sort-filter">
+                <label for="sort">Sort by:</label>
+                <select id="sort">
+                    <option value="newest">Newest</option>
+                    <option value="oldest">Oldest</option>
+                    <option value="rating">Rating</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Certificate Grid -->
+        <div class="certificate-grid">
+            <div class="certificate-card">
+                <h3>Volunteer at Green Earth Initiative</h3>
+                <p class="info">Completion Date: July 20, 2025</p>
+                <p class="rating">⭐ 4.8/5</p>
+                <div class="thumbnail">
+                    <i class="fas fa-certificate"></i>
+                </div>
+                <div class="buttons">
+                    <button onclick="openModal('certificate1')">Preview</button>
+                    <button onclick="downloadCertificate('certificate1.pdf')">Download</button>
+                </div>
+            </div>
+
+            <div class="certificate-card">
+                <h3>Teach Kids Coding at Code Camp</h3>
+                <p class="info">Completion Date: June 15, 2025</p>
+                <p class="rating">⭐ 4.5/5</p>
+                <div class="thumbnail">
+                    <i class="fas fa-certificate"></i>
+                </div>
+                <div class="buttons">
+                    <button onclick="openModal('certificate2')">Preview</button>
+                    <button onclick="downloadCertificate('certificate2.pdf')">Download</button>
+                </div>
+            </div>
+
+             <div class="certificate-card">
+                <h3>Medical camp at California</h3>
+                <p class="info">Completion Date: April 10, 2024</p>
+                <p class="rating">⭐ 4.0/5</p>
+                <div class="thumbnail">
+                    <i class="fas fa-certificate"></i>
+                </div>
+                <div class="buttons">
+                    <button onclick="openModal('certificate3')">Preview</button>
+                    <button onclick="downloadCertificate('certificate3.pdf')">Download</button>
+                </div>
+            </div>
+            <!-- More Certificates -->
+        </div>
+
+        <!-- Certificate Preview Modal -->
+        <div id="certificate1" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('certificate1')">&times;</span>
+                <div class="full-certificate">
+                    <h3>Certificate of Completion</h3>
+                    <p>This is to certify that John Doe has successfully volunteered at Green Earth Initiative.</p>
+                    <p>Completion Date: July 20, 2025</p>
+                    <p>Campaign: Volunteer at Green Earth Initiative</p>
+                    <p>Organization: Green Earth Initiative</p>
+                    <p>Admin Signature</p>
+                </div>
+            </div>
+        </div>
+
+         <div id="certificate2" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('certificate2')">&times;</span>
+                <div class="full-certificate">
+                    <h3>Certificate of Completion</h3>
+                    <p>This is to certify that John Doe has successfully volunteered at Code Camp.</p>
+                    <p>Completion Date: June 15, 2025</p>
+                    <p>Campaign: Teaching coding</p>
+                    <p>Organization: CodeCamp organization</p>
+                    <p>Admin Signature</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="certificate3" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('certificate3')">&times;</span>
+                <div class="full-certificate">
+                    <h3>Certificate of Completion</h3>
+                    <p>This is to certify that John Doe has successfully volunteered at Mercy org.</p>
+                    <p>Completion Date: April 10, 2024</p>
+                    <p>Campaign: Medical camp at california</p>
+                    <p>Organization: Mercy organization</p>
+                    <p>Admin Signature</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "block";
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+        function downloadCertificate(pdfUrl) {
+            // For demonstration purposes only. In a real implementation,
+            // you would trigger a server-side PDF generation and download.
+            alert("Downloading " + pdfUrl);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,403 @@
+
+{% extends "base.html" %}
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> {% block title %}REGISTER{% endblock %}</title>
+        {% block content %}
+        
+        
+        <style>
+                
+        .login-link{
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        
+        .skill-selection {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .skill-tag {
+            background-color: #eaf2ff;
+            color: #448aff;
+            padding: 5px 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+        
+        .skill-tag.selected {
+            background-color: #448aff;
+            color: #fff;
+        }
+        
+        .skill-input-container {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            padding: 5px 10px;
+        }
+
+        .skill-input {
+            border: none;
+            outline: none;
+            flex: 1;
+            font-size: 1em;
+            padding: 5px;
+        }
+        
+        #selectedSkillsDisplay {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        #selectedSkillsDisplay span {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 5px 8px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            display: inline-flex; /* For alignment */
+            align-items: center; /* Vertically center content */
+        }
+        
+        #selectedSkillsDisplay span button {
+            background: none;
+            border: none;
+            color: #155724; /* Adjust color as needed */
+            cursor: pointer;
+            font-size: 0.8em;
+            margin-left: 5px; /* Spacing between skill and "x" */
+            padding: 0;
+            outline: none;
+        }
+    
+
+     
+
+    </style>
+
+
+<link rel="stylesheet" href="{% static 'style.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+    <br><br>
+    
+
+    <div class="container" >
+        <div class="register-container">
+
+            <div>
+                 <font style="color:red;font-size:1.5cap;">
+                    {{ErrMSG}}
+                </font>
+            </div>
+
+            <h1>Register with Sahyogam</h1>
+
+            <div class="register-type-selector">
+                <label for="register-as">Register As:</label>
+                <select id="register-as" name="register-as" >
+                    <option value="organization">Organization</option>
+                    <option value="volunteer">Volunteer</option>
+                </select>
+            </div>  
+            <!-- <form method="POST" enctype="multipart/form-data"> -->
+            
+            <form method="post" enctype="multipart/form-data" action="{% url 'register_organization' %}">
+                {% csrf_token %}
+
+            <div class="form-wrapper">
+                <div class="register-form" id="organization-register">
+                        {% csrf_token %}
+
+                        <!-- <div class="profile-image-container">
+                                <img id="profile-image-preview" src="../static/images/profile.png" alt="Profile Preview" required>
+                                <label for="org_profile-image-upload" class="profile-image-upload-button">
+                                    <i class="fa fa-camera"></i>
+                                </label>
+                                <input type="file" id="org_profile-image-upload" name="org_profile_image_upload" accept="image/*" style="display:none;" required>
+                        </div> -->
+
+                        <div class="form-group">
+                            <i class="fas fa-building icon"></i>
+                            <input type="text" id="org-name" name="org-name" placeholder="Organization Name" required >
+                        </div>
+                        <div class="form-group">
+                            <i class="fas fa-envelope icon"></i>
+                            <input type="email" id="org-email" name="org-email" placeholder="Email" required>
+                        </div>
+
+                        
+
+                        <div class="form-group">
+                            <i class="fas fa-phone icon"></i>
+                            <input type="tel" id="org-phone" name="org-phone" placeholder="Phone Number" required>
+                        </div>
+                        <div class="form-group">
+                            <i class="fas fa-lock icon"></i>
+                            <input type="password" id="org-password" name="org-password" placeholder="Password" required>
+                            <!-- <div class="password-strength"></div> -->
+                        </div>
+                        <div class="form-group">
+                            <i class="fas fa-lock icon"></i>
+                            <input type="password" id="org-confirm-password" name="org-confirm-password" placeholder="Confirm Password" required>
+                        </div>
+                        <div class="form-group">
+                            <i class="fas fa-handshake icon"></i>
+                            <select id="org-type" name="org-type" required>
+                                <option value="ngo">NGO</option>
+                                <option value="research">Research Group</option>
+                                <option value="education">Education Institute</option>
+                                <option value="charity">Charity</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <i class="fas fa-map-marker-alt icon"></i>
+                            <textarea id="org-address" name="org-address" placeholder="Address" required></textarea>
+                            <button type="button" class="location-button"><i class="fas fa-location-arrow"></i> Get Location</button>
+                        </div>
+                        
+                        <button type="submit" class="register-button">Register</button>
+                    </form>
+
+                        <div class="login-link">
+                            Don you have an account? <a href=" {% url 'login' %}">login here</a>
+                        </div>
+                </div>
+
+                <div class="register-form hidden" id="volunteer-register">
+                    <!-- <form id="volunteer-form" method="post" enctype="multipart/form-data">
+                        {% csrf_token %} -->
+
+                    <form id="volunteer-form" method="post" enctype="multipart/form-data" action="{% url 'register_volunteer' %}">
+                    {% csrf_token %}
+                    <!-- <div class="volunteer-card"> -->
+
+
+                        <div class="profile-header">
+
+                            <div class="profile-image-container">
+                                <img id="profile-image-preview" src="../static/images/profile.png" alt="Profile Preview" required>
+                                
+                                <label for="profile-image-upload" class="profile-image-upload-button">
+                                    <i class="fas fa-camera"></i>
+                                </label>
+                                <input type="file" id="profile-image-upload" name="vol_profile_image_upload" accept="image/*" style="display:none;" required>
+                            </div>
+
+                        </div>
+
+
+                                                  
+                            <div class="form-group">
+                                <i class="fas fa-user icon"></i>
+                                <input type="text" id="vol-name" name="vol-name" placeholder="What's your name?" required>
+                            </div>
+                            <div class="form-group">
+                                <i class="fas fa-at icon"></i>
+                                <input type="text" id="vol-username" name="vol-username" placeholder="Create a username" required>
+                            </div>
+                            <div class="form-group">
+                                <i class="fas fa-envelope icon"></i>
+                                <input type="email" id="vol-email" name="vol-email" placeholder="Your email address" required>
+                            </div>
+                            <div class="form-group">
+                                <i class="fas fa-phone icon"></i>
+                                <input type="tel" id="vol-phone" name="vol-phone" placeholder="Your phone number" required>
+                            </div>
+                            <div class="form-group">
+                                <i class="fas fa-lock icon"></i>
+                                <input type="password" id="vol-password" name="vol-password" placeholder="Create a password" required>
+                            </div>
+                            <div class="form-group">
+                                <i class="fas fa-lock icon"></i>
+                                <input type="password" id="vol-confirm-password" name="vol-confirm-password" placeholder="Confirm your password" required>
+                            </div>
+                            
+   
+        
+        <div class="form-group">
+            <label for="skills">Skills</label>
+            <div class="skill-selection">
+                <span class="skill-tag" data-skill="SvayamSevek">SvayamSevek</span>
+                <span class="skill-tag" data-skill="Carpentry">Carpentry</span>
+                <span class="skill-tag" data-skill="Teaching">Teaching</span>
+                <span class="skill-tag" data-skill="Medical">Medical</span>
+                <span class="skill-tag" data-skill="Ca">CA</span>
+                <span class="skill-tag" data-skill="Graphic Design">Graphic Design</span>
+
+                <!-- Add more predefined skills here -->
+            </div>
+
+            <div class="skill-input-container">
+                <input type="text" id="newSkillInput" class="skill-input" placeholder="Add Skill">
+                <button type="button" onclick="addSkill()">
+                  <i class="fas fa-plus-circle"></i>
+                </button>
+            </div>
+
+            <div id="selectedSkillsDisplay">
+                <!-- Display the selected skills here -->
+            </div>
+
+            <input type="hidden" id="skills" name="skills" value=""> <!-- Hidden field to store the skills -->
+
+        </div>
+
+    
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const skillTags = document.querySelectorAll('.skill-tag');
+        const newSkillInput = document.getElementById('newSkillInput');
+        const selectedSkillsDisplay = document.getElementById('selectedSkillsDisplay');
+        const skillsInput = document.getElementById('skills');
+        const submitBTN = document.getElementsByClassName('register-button');
+
+       
+        let selectedSkills = []; // Keep track of the selected skills
+
+        // Predefined Skills
+        skillTags.forEach(tag => {
+            tag.addEventListener('click', () => {
+                tag.classList.toggle('selected');
+                updateSkills();
+            });
+        });
+
+        // Function to add skill from input
+        window.addSkill = () => {
+            const newSkill = newSkillInput.value.trim();
+            if (newSkill !== "" && !selectedSkills.includes(newSkill)) {
+                selectedSkills.push(newSkill);
+                updateSkillsDisplay();
+                newSkillInput.value = ""; // Clear input field
+            }
+        };
+
+        // Update selected skill from existing element.
+        function updateSkills() {
+          selectedSkills = Array.from(skillTags)
+            .filter(tag => tag.classList.contains('selected'))
+            .map(tag => tag.dataset.skill);
+          updateSkillsDisplay();
+        }
+
+        // Update view and the hidden input.
+        function updateSkillsDisplay() {
+            selectedSkillsDisplay.innerHTML = ""; // Clear display
+
+            selectedSkills.forEach((skill, index) => {
+                const skillSpan = document.createElement('span');
+                skillSpan.textContent = skill;
+
+                const removeButton = document.createElement('button');
+                removeButton.textContent = 'x';
+                removeButton.addEventListener('click', (event) => {
+                    event.stopPropagation(); // Prevent any click on span to be propagated to parent element
+                    removeSkill(index);
+                });
+                skillSpan.appendChild(removeButton);
+                selectedSkillsDisplay.appendChild(skillSpan);
+            });
+
+            skillsInput.value = selectedSkills.join(','); // Update the hidden field
+        }
+
+        // Add remove functionality.
+        function removeSkill(index) {
+            selectedSkills.splice(index, 1); // Remove the skill from the array
+            updateSkillsDisplay();
+        }
+      });
+    </script>  
+                            <div class="form-group">
+                                <i class="fas fa-map-marker-alt icon"></i>
+                                <input type="text" id="vol-location" name="vol-location" placeholder="Your location">
+                                <button type="button" class="location-button"><i class="fas fa-location-arrow"></i> Use My Location</button>
+                            </div>
+                            <button type="submit" class="register-button"><i class="fas fa-rocket"></i> Join Sahyogam</button>
+                        </form>
+
+                        <div class="login-link">
+                            Don you have an account? <a href=" {% url 'login' %}">login here</a>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        <!-- </div> -->
+    </div>
+     <script src="{% static 'script.js' %}"></script>
+
+
+    <script>
+function getCurrentLocation(inputId, buttonElement) {
+    if (navigator.geolocation) {
+        buttonElement.innerHTML = 'Locating...';
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+
+                try {
+                    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+                    const data = await response.json();
+                    document.getElementById(inputId).value = data.display_name || `${lat}, ${lon}`;
+                    buttonElement.innerHTML = '<i class="fas fa-location-arrow"></i> Location Fetched';
+                } catch (error) {
+                    alert("Failed to fetch location. Please try again.");
+                    buttonElement.innerHTML = '<i class="fas fa-location-arrow"></i> Try Again';
+                }
+            },
+            (error) => {
+                alert("Location access denied or unavailable.");
+                buttonElement.innerHTML = '<i class="fas fa-location-arrow"></i> Try Again';
+            }
+        );
+    } else {
+        alert("Geolocation is not supported by this browser.");
+    }
+}
+
+// Attach event listeners for both buttons after DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    const orgButton = document.querySelector('#organization-register .location-button');
+    const volButton = document.querySelector('#volunteer-register .location-button');
+
+    if (orgButton) {
+        orgButton.addEventListener('click', function () {
+            getCurrentLocation('org-address', this);
+        });
+    }
+
+    if (volButton) {
+        volButton.addEventListener('click', function () {
+            getCurrentLocation('vol-location', this);
+        });
+    }
+});
+</script>
+
+</body>
+</html>
+
+{% endblock %}
