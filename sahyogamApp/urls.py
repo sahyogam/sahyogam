@@ -9,7 +9,9 @@ from django.conf.urls.static import static
 
 urlpatterns = [
 
-    path('', views.register, name='register'),
+    path('', views.login_page, name='login'),
+    
+    path('register/', views.register, name='register'),
     
     path("register_organization/",views.register_organization,name="register_organization"),
     path("register_volunteer/",views.register_volunteer,name="register_volunteer"),  
@@ -19,6 +21,9 @@ urlpatterns = [
     path('verify-otp/', views.verify_otp_view, name='verify_otp'),
     path('resend-otp/', views.resend_otp_view, name='resend_otp'),
     path('post-campaign/<str:OrgName>', views.post_campaign, name='post-campaign'),
+    
+    path('delete-campaign/<int:pk>', views.deleteCampaign, name='delete-campaign'),
+    
     path('detailCampaign/<int:pk>/<str:userType>/',views.detailCampaign,name="detailCampaign"),
     
     path('404/', views.page_404, name='404'),
@@ -30,10 +35,10 @@ urlpatterns = [
     path('organizationHome/', views.organizationHome, name='organizationHome'),
     path('login/', views.login_page, name='login'),
     path('messages/', views.messages_page, name='messages'),
-    path('signup-login/', views.signup_login, name='signup-login'),
     path('home/', views.home, name='home'), 
 
-    path("logout/<str:userID>/",views.logout,name="logout")
+    path("logout/<str:userID>/",views.logout,name="logout"),
+    
     
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

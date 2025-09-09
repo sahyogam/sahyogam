@@ -2,28 +2,265 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sahyogam | {% block title %}{% endblock %}</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    * {
-      box-sizing: border-box;
-      transition: all 0.5s ease-out;
-    }
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sahyogam | {% block title %}{% endblock %}</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    /* General Styles */
     body {
       font-family: 'Poppins', sans-serif;
       margin: 0;
       padding: 0;
+      background-color: #f4f6f8;
       color: #333;
-      overflow-x: hidden;
-      position: relative;
-      z-index: 0;
     }
 
-    /* 🔮 Live Rotating Background */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    /* Top Navbar */
+    .navbar {
+      background-color: #fff;
+      padding: 15px 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      box-sizing: border-box;
+    }
+
+    .navbar-left .logo {
+      font-size: 24px;
+      font-weight: 600;
+      color: #333;
+      text-decoration: none;
+    }
+
+    .navbar-center {
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-center a {
+      color: #555;
+      text-decoration: none;
+      margin: 0 15px;
+      transition: 0.5s;
+    }
+
+    .navbar-center a:hover {
+      color: #0015ff;
+      text-decoration: none;
+      font-size: large;
+      margin: 0 15px;
+
+    }
+
+    .navbar-center .search-bar {
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-center .search-bar input[type="text"] {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      font-size: 14px;
+      outline: none;
+      width: 250px;
+    }
+
+    /* Filter Sidebar */
+    .filter-sidebar {
+      width: 250px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .filter-sidebar h3 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+
+    .filter-sidebar .filter-group {
+      margin-bottom: 15px;
+    }
+
+    .filter-sidebar label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .filter-sidebar select,
+    .filter-sidebar input[type="text"] {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      font-size: 14px;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    .filter-sidebar .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .filter-sidebar .skill-tags span {
+      background-color: #eaf2ff;
+      color: #448aff;
+      padding: 5px 8px;
+      border-radius: 5px;
+      margin-right: 5px;
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+
+    /* Main Content - Campaign Grid */
+    .main-content {
+      display: flex;
+      margin-top: 20px;
+      gap: 20px;
+    }
+
+    .campaign-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .campaign-card {
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      padding: 20px;
+      transition: transform 0.2s;
+      cursor: pointer;
+    }
+
+    .campaign-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .campaign-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    .campaign-card h3 {
+      margin-top: 0;
+      font-size: 18px;
+    }
+
+    .campaign-card p {
+      color: #555;
+      margin-bottom: 15px;
+      line-height: 1.4;
+    }
+
+    .campaign-card .skills {
+      margin-bottom: 10px;
+    }
+
+    .campaign-card .skills span {
+      background-color: #eaf2ff;
+      color: #448aff;
+      padding: 5px 8px;
+      border-radius: 5px;
+      margin-right: 5px;
+      font-size: 14px;
+    }
+
+    .campaign-card .location {
+      color: #777;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    .campaign-card button {
+      background-color: #5DADE2;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 16px;
+      outline: none;
+      transition: background-color 0.3s;
+    }
+
+    .campaign-card button:hover {
+      background-color: #448aff;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+      .container {
+        padding: 10px;
+      }
+
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .navbar-center {
+        margin-top: 10px;
+        width: 100%;
+      }
+
+      .navbar-center .search-bar {
+        width: 100%;
+      }
+
+      .navbar-center .search-bar input[type="text"] {
+        width: 100%;
+      }
+
+      .main-content {
+        flex-direction: column;
+        margin-top: 120px;
+      }
+
+      .filter-sidebar {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .campaign-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .gradient {
       --size: 750px;
       --speed: 50s;
@@ -42,13 +279,41 @@
     }
 
     @keyframes rotate {
-      0% { transform: translate(-50%, -50%) rotate(0deg); }
-      100% { transform: translate(-50%, -50%) rotate(360deg); }
+      0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+
+      100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
     }
 
     @media (max-width: 720px) {
-      .gradient { --size: 500px; }
+      .gradient {
+        --size: 500px;
+      }
     }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) translateX(0);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 1;
+      }
+
+      90% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(-10vh) translateX(var(--randomX));
+        opacity: 0;
+      }
+    }
+
 
     /* 🌟 Floating Emoji Icons */
     .floating-icons {
@@ -73,145 +338,127 @@
         transform: translateY(100vh) translateX(0);
         opacity: 0;
       }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
+
+      10% {
+        opacity: 1;
+      }
+
+      90% {
+        opacity: 1;
+      }
+
       100% {
         transform: translateY(-10vh) translateX(var(--randomX));
         opacity: 0;
       }
     }
-
-    /* 🎯 Layout Styles */
-    .container {
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-      box-sizing: border-box;
-    }
-
-    .navbarr {
-      background-color: rgba(255, 255, 255, 0.8);
-      padding: 15px 20px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      border-radius: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 100;
-    }
-
-    .navbarr a {
-      text-decoration: none;
-      color: #555;
-      margin: 0 10px;
-      transition: 0.3s;
-    }
-
-    .navbarr a:hover {
-      color: #5DADE2;
-    }
-
-    .search-bar input {
-      padding: 8px 12px;
-      border-radius: 20px;
-      border: 1px solid #ccc;
-    }
-
-    .main-content {
-      display: flex;
-      gap: 20px;
-      margin-top: 100px;
-    }
-
-    .left-sidebar, .right-sidebar {
-      width: 250px;
-    }
-
-    .feed {
-      flex: 1;
-    }
-
-    .profile-card, .campaign-card, .right-sidebar > div {
-      background: white;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
-    }
-
-    .profile-pic {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-
-    .skill-tags span {
-      background: #eaf2ff;
-      color: #448aff;
-      padding: 5px 8px;
-      border-radius: 5px;
-      margin: 2px;
-      display: inline-block;
-    }
-
-    .campaign-card button {
-      background-color: #5DADE2;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 20px;
-      cursor: pointer;
-    }
-
-    .campaign-card button:hover {
-      background-color: #448aff;
-    }
-
-    @media (max-width: 768px) {
-      .main-content { flex-direction: column; }
-      .left-sidebar, .right-sidebar { width: 100%; }
-    }
   </style>
 </head>
+
 <body>
+
   <!-- 🔮 Rotating Background -->
   <div class="gradient"></div>
 
   <!-- 🪄 Floating Icons -->
   <div class="floating-icons"></div>
 
-  <!-- 🔗 Main UI -->
   <div class="container">
-    <!-- Navbarr -->
-    <nav class="navbarr">
-      <div><a href="#" class="logo"><strong>Sahyogam</strong></a></div>
-      <!-- <div class="search-bar">
-        <input type="text" placeholder="Search campaigns...">
-        <a href="#">Explore</a>
+    <!-- Top Navbar -->
+
+    {% if nav %}
+
+    <nav class="navbar">
+      <div class="navbar-left">
+        <a href="#" class="logo">Sahyogam</a>
+      </div>
+      <div class="navbar-center">
+        <a href="#">Home</a>
         <a href="#">Messages</a>
         <a href="#">My Applications</a>
-      </div> -->
-      <div>
-        <!-- <a href="#">Logout</a> -->
+
+        {% if logoutLink %}
+          {% if userType == "Organization" %}
+            <a href="{% url 'logout' 'org' %}">Logout</a>
+
+          {% else %}
+          <a href="{% url 'logout' 'vol' %}">Logout</a>
+          {% endif %}
+        {% endif %}
+
+        {% if search %}
+        <div class="search-bar">
+          <input type="text" placeholder="Search by campaign name, location, or skill">
+        </div>
+        {% endif %}
+
+
       </div>
     </nav>
-
-    <!-- Content -->
+    {% endif %}
+    <!-- Main Content Area -->
     <div>
-        {% block content %}
-        <!-- Default content goes here -->
-        {% endblock %}
+      {% block content %}
+      <!-- Default content goes here -->
+      {% endblock %}
     </div>
+
+  </div>
   </div>
 
-  <!-- 🧠 Floating Icons JavaScript -->
   <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const locationFilter = document.getElementById('location');
+      const skillTags = document.querySelectorAll('.skill-tags span');
+      const orgTypeCheckboxes = document.querySelectorAll('input[name="org-type"]');
+      const campaignCards = document.querySelectorAll('.campaign-card');
+
+      // Function to filter campaigns
+      function filterCampaigns() {
+        const selectedLocation = locationFilter.value;
+        const selectedSkills = Array.from(skillTags)
+          .filter(tag => tag.classList.contains('selected'))
+          .map(tag => tag.dataset.skill);
+        const selectedOrgTypes = Array.from(orgTypeCheckboxes)
+          .filter(checkbox => checkbox.checked)
+          .map(checkbox => checkbox.value);
+
+        campaignCards.forEach(card => {
+          const cardLocation = card.dataset.location;
+          const cardSkills = card.dataset.skills.split(',');
+          const cardOrgType = card.dataset.orgType;
+
+          const locationMatch = selectedLocation === 'all' || cardLocation === selectedLocation;
+          const skillMatch = selectedSkills.length === 0 || selectedSkills.some(skill => cardSkills.includes(skill));
+          const orgTypeMatch = selectedOrgTypes.length === 0 || selectedOrgTypes.includes(cardOrgType);
+
+          if (locationMatch && skillMatch && orgTypeMatch) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      }
+
+      // Add event listeners
+      locationFilter.addEventListener('change', filterCampaigns);
+
+      skillTags.forEach(tag => {
+        tag.addEventListener('click', () => {
+          tag.classList.toggle('selected');
+          filterCampaigns();
+        });
+      });
+
+      orgTypeCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', filterCampaigns);
+      });
+
+      // Initial filter
+      filterCampaigns();
+    });
+
+
     const floatingIconsContainer = document.querySelector('.floating-icons');
     const icons = ['🛠️', '💡', '❤️', '🤝', '📍'];
     const numIcons = 20;
@@ -224,6 +471,8 @@
       icon.style.setProperty('--randomX', `${(Math.random() - 0.5) * 200}px`);
       floatingIconsContainer.appendChild(icon);
     }
+
   </script>
 </body>
+
 </html>

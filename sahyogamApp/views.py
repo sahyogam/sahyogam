@@ -96,18 +96,19 @@ def login_page(request):
                 Campaigns =  Campaign.objects.all() 
                                
                 context = {
-                        "OrgName":request.session["org_name"],
+                        "OrgName":org.name,
                         "ORG_DP":request.session["org_dp"],
                         "userType":"Organization",
-                        "Campaigns":Campaigns
-            
+                        "Campaigns":Campaigns,
+                        "nav":True
                         }           
                 
-                return render(request, 'organizationHome.html',context)
+                # return render(request, 'organizationHome.html',context)
+                return redirect("organizationHome")
 
             else:
                 
-             return render(request, 'login.html',{"ErrorMSG":True})
+             return render(request, 'login.html',{"ErrorMSG":True,"nav":False})
 
 
         elif role == "volunteer":
@@ -137,10 +138,10 @@ def login_page(request):
                 # return render(request, 'volunteerHome.html',context)
                 
             else:
-             return render(request, 'login.html',{"ErrorMSG":True})
+             return render(request, 'login.html',{"ErrorMSG":True,"nav":False})
 
 
-    return render(request, 'login.html')
+    return render(request, 'login.html',{"nav":False})
 
 
 def register_volunteer(request):
@@ -426,13 +427,13 @@ def base_page(request):
     return render(request, 'base.html')
 
 def campaign_detail(request):
-    return render(request, 'campaign-detail.html')
+    return render(request, 'campaign-detail.html',{"nav":True})
 
 def certificates(request):
     return render(request, 'certificates.html')
 
 def explore(request):
-    return render(request, 'explore.html')
+    return render(request, 'explore.html',{"nav":True,"search":True})
 
 def volunteerHome(request):
     try:
@@ -450,7 +451,11 @@ def volunteerHome(request):
                     "skills":vol.skills.split(","),
                     "pk":vol.pk,
                     "userName" : vol.username,
-                    "Campaigns":Campaigns                                        
+                    "Campaigns":Campaigns,
+                    "nav":True,
+                    "search":False,
+                    "logoutLink":True
+                    
                 }
             
                 return render(request, 'volunteerHome.html',context)
@@ -474,7 +479,8 @@ def organizationHome(request):
             "OrgName":request.session["org_name"],
             "ORG_DP":request.session["org_dp"],
             "userType":"Organization",
-            "Campaigns":Campaigns
+            "Campaigns":Campaigns,
+            # "nav":True
             
         }
         return render(request, 'organizationHome.html',context)
@@ -534,8 +540,7 @@ def post_campaign(request,OrgName):
     return render(request, 'post-campaign.html')
     
 
-def signup_login(request):
-    return render(request, 'signup_login.html')
+    
 
 def verify_otp(request):
     return render(request, 'verify_otp.html')
@@ -573,7 +578,7 @@ def edit_volunteer(request, pk):
             file_path = default_storage.save(f"images/{profile_image.name}", profile_image)
 
             volunteer.profile_photo = file_path            
-        
+
 
         volunteer.save()
         # 23-08-2025 setup PK for uniqueness of each user and updation code remain
@@ -591,6 +596,7 @@ def detailCampaign(request,pk,userType):
         applyBtn = False                
     
     context = {
+        "pk":campaignData.pk,
         "title": campaignData.title,
         "short_description":campaignData.short_description,
         "full_description":campaignData.full_description,
@@ -606,7 +612,18 @@ def detailCampaign(request,pk,userType):
         "created_at":campaignData.created_at,
         "updated_at":campaignData.updated_at,
         "applyBtn":applyBtn,             
-        "userType":userType
+        "userType":userType,
+        "nav":True,
+        "logoutLink":True
+        
     }
     
     return render(request,"detailCampaign.html",context)
+
+
+def deleteCampaign(request,pk):
+    campaign = Campaign.objects.get(pk=pk)
+    campaign.delete()
+    
+    return redirect("organizationHome")
+    

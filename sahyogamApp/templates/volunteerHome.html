@@ -1,15 +1,19 @@
+{% extends "base.html" %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sahyogam - Home</title>
+    <title>{% block title %}Home{% endblock %}</title>
+    
+    {% block content %}
     <style>
         /* General Styles */
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #f9f9f9;
-    margin: 0;
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
     padding: 0;
     color: #333;
 }
@@ -23,7 +27,7 @@ body {
 }
 
 /* Top Navigation Bar */
-.navbar {
+/* .navbar {
     background-color: #fff;
     padding: 15px 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -86,7 +90,7 @@ body {
     color: #555;
     text-decoration: none;
     margin-left: 15px;
-}
+} */
 
 /* Main Content Area */
 .main-content {
@@ -252,6 +256,7 @@ body {
     cursor: pointer;
     font-size: 16px;
     outline: none;
+    text-decoration: none;
 }
 
 /* Right Sidebar */
@@ -312,46 +317,46 @@ body {
     .container {
         padding: 10px;
     }
-
+    
     .navbar {
         flex-direction: column;
         align-items: flex-start;
     }
-
+    
     .navbar-center {
         margin-top: 10px;
         flex-direction: column;
         align-items: flex-start;
     }
-
+    
     .navbar-center a {
         margin: 5px 0;
     }
-
+    
     .navbar-center .search-bar {
         width: 100%;
     }
-
+    
     .navbar-center .search-bar input[type="text"] {
         width: 100%;
     }
-
+    
     .main-content {
         flex-direction: column;
         margin-top: 120px;
     }
-
+    
     .left-sidebar,
     .right-sidebar {
         width: 100%;
         margin-bottom: 20px;
     }
-
+    
     .campaign-card {
         margin-bottom: 15px;
         padding: 15px;
     }
-
+    
     .campaign-card h3 {
         font-size: 16px;
     }
@@ -359,11 +364,11 @@ body {
     .campaign-card .description {
         font-size: 14px;
     }
-
+    
     .campaign-card .skill-tags span {
         font-size: 12px;
     }
-
+    
     .profile-card {
         padding: 15px;
     }
@@ -371,15 +376,15 @@ body {
 
 
 
+</style>
 
-    </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <!-- Top Navigation Bar -->
-        <nav class="navbar">
+        <!-- <nav class="navbar">
             <div class="navbar-left">
                 <a href="#" class="logo">Sahyogam</a>
             </div>
@@ -398,7 +403,7 @@ body {
                 
 
             </div>
-        </nav>
+        </nav> -->
 
         <!-- Main Content Area -->
         <div class="main-content">
@@ -510,24 +515,25 @@ body {
         </div>
     </div>
 
-    <script>// Example (requires knowing the user's role on page load)
-const userRole = 'volunteer'; // Or 'organization'
+//     <script>// Example (requires knowing the user's role on page load)
+// const userRole = 'volunteer'; // Or 'organization'
 
-if (userRole === 'volunteer') {
-    document.querySelector('.navbar-center').innerHTML = `
-        <a href="{% url 'explore' %}">🧭 Explore Campaigns</a>
-        <div class="search-bar">...</div>
-        <a href="{% url 'messages' %}">📨 Messages</a>
-        <a href="#">🧑‍💼 My Applications</a>
-    `;
-} else if (userRole === 'organization') {
-    document.querySelector('.navbar-center').innerHTML = `
-        <a href="{% url 'post-campaign' userType %}">➕ Post Campaign</a>
-        <a href="#">⚙️ Manage Campaigns</a>
-        <a href="{% url 'messages' %}">📨 Messages</a>
-    `;
-}
+// if (userRole === 'volunteer') {
+//     document.querySelector('.navbar-center').innerHTML = `
+//         <a href="{% url 'explore' %}">🧭 Explore Campaigns</a>
+//         <div class="search-bar">...</div>
+//         <a href="{% url 'messages' %}">📨 Messages</a>
+//         <a href="#">🧑‍💼 My Applications</a>
+//     `;
+// } else if (userRole === 'organization') {
+//     document.querySelector('.navbar-center').innerHTML = `
+//         <a href="{% url 'post-campaign' userType %}">➕ Post Campaign</a>
+//         <a href="#">⚙️ Manage Campaigns</a>
+//         <a href="{% url 'messages' %}">📨 Messages</a>
+//     `;
+// }
 
 </script>
 </body>
 </html>
+{% endblock %}

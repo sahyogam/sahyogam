@@ -1,10 +1,9 @@
-
-
 {% extends "base.html" %}
 {% load static%}
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Edit Volunteer{% endblock %}</title>
@@ -12,104 +11,109 @@
     {% block content %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
         /* Volunteer Profile Edit Page Custom Styles */
 
-/* Page background */
-body {
-    background: linear-gradient(135deg, #f0f4f8, #d9e4ec);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #333;
-}
+        /* Page background */
+        body {
+            background: linear-gradient(135deg, #f0f4f8, #d9e4ec);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
 
-/* Card styling */
-.card {
-    border: none;
-    border-radius: 15px;
-    background: #ffffff;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-    transition: transform 0.2s ease-in-out;
-}
+        /* Card styling */
+        .card {
+            border: none;
+            border-radius: 15px;
+            background: #ffffff;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s ease-in-out;
+        }
 
-.card:hover {
-    transform: translateY(-3px);
-}
+        .card:hover {
+            transform: translateY(-3px);
+        }
 
-/* Headings */
-h2 {
-    font-weight: bold;
-    color: #0d6efd;
-    letter-spacing: 1px;
-    text-shadow:1px 1px 10px rgb(255, 255, 255);
-}
+        /* Headings */
+        h2 {
+            font-weight: bold;
+            color: #0d6efd;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 10px rgb(255, 255, 255);
+        }
 
-/* Labels */
-.form-label {
-    font-weight: 600;
-    color: #555;
-}
+        /* Labels */
+        .form-label {
+            font-weight: 600;
+            color: #555;
+        }
 
-/* Inputs */
-.form-control {
-    border-radius: 10px;
-    padding: 10px 14px;
-    border: 1px solid #ccd7e0;
-    transition: all 0.2s ease;
-}
+        /* Inputs */
+        .form-control {
+            border-radius: 10px;
+            padding: 10px 14px;
+            border: 1px solid #ccd7e0;
+            transition: all 0.2s ease;
+        }
 
-.form-control:focus {
-    border-color: #0d6efd;
-    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.2);
-}
+        .form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.2);
+        }
 
-/* Profile image */
-.img-thumbnail {
-    border-radius: 50%;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    object-fit: cover;
-}
+        /* Profile image */
+        .img-thumbnail {
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            object-fit: cover;
+        }
 
-/* File upload styling */
-input[type="file"].form-control {
-    border: none;
-    background: #f8f9fa;
-    border-radius: 10px;
-    padding: 10px;
-}
+        /* File upload styling */
+        input[type="file"].form-control {
+            border: none;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 10px;
+        }
 
-/* Button */
-.btn-primary {
-    border-radius: 50px;
-    padding: 10px 25px;
-    font-size: 1rem;
-    font-weight: 600;
-    background: linear-gradient(135deg, #0d6efd, #0a58ca);
-    border: none;
-    transition: all 0.3s ease;
-}
+        /* Button */
+        .btn-primary {
+            border-radius: 50px;
+            padding: 10px 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #0d6efd, #0a58ca);
+            border: none;
+            transition: all 0.3s ease;
+        }
 
-.btn-primary:hover {
-    background: linear-gradient(135deg, #0a58ca, #073d94);
-    transform: scale(1.05);
-}
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0a58ca, #073d94);
+            transform: scale(1.05);
+        }
 
-/* Center form nicely */
-.container {
-    max-width: 600px;
-}
+        /* Center form nicely */
+        .container {
+            max-width: 600px;
+        }
 
-.profile-photo {
-    width: 20vw;        /* 30% of viewport width */
-    max-width: 150px;   /* but not bigger than 200px */
-    aspect-ratio: 1/1;  /* keeps square shape */
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #0a58ca;
-}
+        .profile-photo {
+            width: 20vw;
+            /* 30% of viewport width */
+            max-width: 150px;
+            /* but not bigger than 200px */
+            aspect-ratio: 1/1;
+            /* keeps square shape */
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #0a58ca;
+        }
 
- .skill-selection {
+        .skill-selection {
             display: flex;
             flex-wrap: wrap;
             gap: 5px;
@@ -117,7 +121,7 @@ input[type="file"].form-control {
         }
 
 
-            .skill-tag {
+        .skill-tag {
             background-color: #eaf2ff;
             color: #448aff;
             padding: 5px 8px;
@@ -125,12 +129,12 @@ input[type="file"].form-control {
             cursor: pointer;
             font-size: 0.9em;
         }
-        
+
         .skill-tag.selected {
             background-color: #448aff;
             color: #fff;
         }
-        
+
         .skill-input-container {
             display: flex;
             align-items: center;
@@ -146,7 +150,7 @@ input[type="file"].form-control {
             font-size: 1em;
             padding: 5px;
         }
-        
+
         #selectedSkillsDisplay {
             margin-top: 10px;
             display: flex;
@@ -160,190 +164,224 @@ input[type="file"].form-control {
             padding: 5px 8px;
             border-radius: 5px;
             font-size: 0.9em;
-            display: inline-flex; /* For alignment */
-            align-items: center; /* Vertically center content */
+            display: inline-flex;
+            /* For alignment */
+            align-items: center;
+            /* Vertically center content */
         }
-        
+
         #selectedSkillsDisplay span button {
             background: none;
             border: none;
-            color: #155724; /* Adjust color as needed */
+            color: #155724;
+            /* Adjust color as needed */
             cursor: pointer;
             font-size: 0.8em;
-            margin-left: 5px; /* Spacing between skill and "x" */
+            margin-left: 5px;
+            /* Spacing between skill and "x" */
             padding: 0;
             outline: none;
         }
     </style>
 
 </head>
+
 <body>
-<div class="container mt-5">
-    <h2 class="mb-4 text-center">Edit Volunteer Profile</h2>
+    <div class="container mt-5">
+        <h2 class="mb-4 text-center">Edit Volunteer Profile</h2>
 
-    <form method="post" enctype="multipart/form-data" class="card p-4 shadow-sm">
-        {% csrf_token %}
+        <form method="post" enctype="multipart/form-data" class="card p-4 shadow-sm">
+            {% csrf_token %}
 
 
-         <!-- Profile Photo -->
-          
-        <div class="mb-3 text-center">
-            {% if volunteer.profile_photo %}
+            <!-- Profile Photo -->
+
+            <div class="mb-3 text-center">
+                {% if volunteer.profile_photo %}
                 <img src="{{ volunteer.profile_photo.url }}" alt="Profile Photo" class="profile-photo">
-            {% else %}
+                {% else %}
                 <img src="{% static 'images/profile.png' %}" alt="Default Profile" class="profile-photo">
-            {% endif %}
+                {% endif %}
 
-            <input type="file" class="form-control" id="id_profile_photo" name="profile_photo">
-        </div>
+                <input type="file" class="form-control" id="id_profile_photo" name="profile_photo">
+            </div>
 
-        <!-- Name -->
-        <div class="mb-3">
-            <label for="id_name" class="form-label">Full Name</label>
-            <input type="text" class="form-control" id="id_name" name="name" 
-                   value="{{ volunteer.name }}">
-        </div>
+            <!-- Name -->
+            <div class="mb-3">
+                <label for="id_name" class="form-label">Full Name</label>
+                <input type="text" class="form-control" id="id_name" name="name" value="{{ volunteer.name }}">
+            </div>
 
-        <!-- Username -->
-        <div class="mb-3">
-            <label for="id_username" class="form-label">Username</label>
-            <input type="text" class="form-control" id="id_username" name="username" 
-                   value="{{ volunteer.username }}">
-        </div>
+            <!-- Username -->
+            <div class="mb-3">
+                <label for="id_username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="id_username" name="username"
+                    value="{{ volunteer.username }}">
+            </div>
 
-        <!-- Email -->
-        <div class="mb-3">
-            <label for="id_email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="id_email" name="email" 
-                   value="{{ volunteer.email }}" readonly>
-        </div>
+            <!-- Email -->
+            <div class="mb-3">
+                <label for="id_email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="id_email" name="email" value="{{ volunteer.email }}"
+                    readonly>
+            </div>
 
-        <!-- Phone -->
-        <div class="mb-3">
-            <label for="id_phone" class="form-label">Phone</label>
-            <input type="text" class="form-control" id="id_phone" name="phone" 
-                   value="{{ volunteer.phone }}">
-        </div>
+            <!-- Phone -->
+            <div class="mb-3">
+                <label for="id_phone" class="form-label">Phone</label>
+                <input type="text" class="form-control" id="id_phone" name="phone" value="{{ volunteer.phone }}">
+            </div>
+                <p id="vol-phone-error" style="color: red; font-size: 14px;"></p>
 
-        <!-- Skills -->
-        <!-- <div class="mb-3">
+            <!-- Skills -->
+            <!-- <div class="mb-3">
             <label for="id_skills" class="form-label">Skills (comma separated)</label>
             <input type="text" class="form-control" id="id_skills" name="skills" 
                    value="{{ volunteer.skills }}">
         </div> -->
 
 
-         <div class="form-group">
-            <label for="skills">Skills</label>
-            <div class="skill-selection">
-                <span class="skill-tag" data-skill="SvayamSevek">SvayamSevek</span>
-                <span class="skill-tag" data-skill="Carpentry">Carpentry</span>
-                <span class="skill-tag" data-skill="Teaching">Teaching</span>
-                <span class="skill-tag" data-skill="Medical">Medical</span>
-                <span class="skill-tag" data-skill="Ca">CA</span>
-                <span class="skill-tag" data-skill="Graphic Design">Graphic Design</span>
+            <div class="form-group">
+                <label for="skills">Skills</label>
+                <div class="skill-selection">
+                    <span class="skill-tag" data-skill="SvayamSevek">SvayamSevek</span>
+                    <span class="skill-tag" data-skill="Carpentry">Carpentry</span>
+                    <span class="skill-tag" data-skill="Teaching">Teaching</span>
+                    <span class="skill-tag" data-skill="Medical">Medical</span>
+                    <span class="skill-tag" data-skill="Ca">CA</span>
+                    <span class="skill-tag" data-skill="Graphic Design">Graphic Design</span>
 
-                <!-- Add more predefined skills here -->
+                    <!-- Add more predefined skills here -->
+                </div>
+
+                <div class="skill-input-container">
+                    <input type="text" id="newSkillInput" class="skill-input" placeholder="Add Skill">
+                    <button type="button" onclick="addSkill()">
+                        <i class="fas fa-plus-circle"></i>
+                    </button>
+                </div>
+
+                <div id="selectedSkillsDisplay">
+                    <span>{{ volunteer.skills }}</span>
+                    <!-- Display the selected skills here -->
+                </div>
+
+                <input type="hidden" id="skills" name="skills" value=""> <!-- Hidden field to store the skills -->
+
             </div>
 
-            <div class="skill-input-container">
-                <input type="text" id="newSkillInput" class="skill-input" placeholder="Add Skill">
-                <button type="button" onclick="addSkill()">
-                  <i class="fas fa-plus-circle"></i>
-                </button>
+
+            <!-- Location -->
+            <div class="mb-3">
+                <label for="id_location" class="form-label">Location</label>
+                <input type="text" class="form-control" id="id_location" name="location"
+                    value="{{ volunteer.location }}">
             </div>
 
-            <div id="selectedSkillsDisplay">
-                <!-- Display the selected skills here -->
+
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const skillTags = document.querySelectorAll('.skill-tag');
+                    const newSkillInput = document.getElementById('newSkillInput');
+                    const selectedSkillsDisplay = document.getElementById('selectedSkillsDisplay');
+                    const skillsInput = document.getElementById('skills');
+                    const submitBTN = document.getElementsByClassName('register-button');
+
+
+                    let selectedSkills = []; // Keep track of the selected skills
+
+                    // Predefined Skills
+                    skillTags.forEach(tag => {
+                        tag.addEventListener('click', () => {
+                            tag.classList.toggle('selected');
+                            updateSkills();
+                        });
+                    });
+
+                    // Function to add skill from input
+                    window.addSkill = () => {
+                        const newSkill = newSkillInput.value.trim();
+                        if (newSkill !== "" && !selectedSkills.includes(newSkill)) {
+                            selectedSkills.push(newSkill);
+                            updateSkillsDisplay();
+                            newSkillInput.value = ""; // Clear input field
+                        }
+                    };
+
+                    // Update selected skill from existing element.
+                    function updateSkills() {
+                        selectedSkills = Array.from(skillTags)
+                            .filter(tag => tag.classList.contains('selected'))
+                            .map(tag => tag.dataset.skill);
+                        updateSkillsDisplay();
+                    }
+
+                    // Update view and the hidden input.
+                    function updateSkillsDisplay() {
+                        selectedSkillsDisplay.innerHTML = ""; // Clear display
+
+                        selectedSkills.forEach((skill, index) => {
+                            const skillSpan = document.createElement('span');
+                            skillSpan.textContent = skill;
+
+                            const removeButton = document.createElement('button');
+                            removeButton.textContent = 'x';
+                            removeButton.addEventListener('click', (event) => {
+                                event.stopPropagation(); // Prevent any click on span to be propagated to parent element
+                                removeSkill(index);
+                            });
+                            skillSpan.appendChild(removeButton);
+                            selectedSkillsDisplay.appendChild(skillSpan);
+                        });
+
+                        skillsInput.value = selectedSkills.join(','); // Update the hidden field
+                    }
+
+                    // Add remove functionality.
+                    function removeSkill(index) {
+                        selectedSkills.splice(index, 1); // Remove the skill from the array
+                        updateSkillsDisplay();
+                    }
+                });
+            </script>
+
+
+            <!-- Submit -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary px-4">Update Profile</button>
             </div>
+        </form>
+    </div>
 
-            <input type="hidden" id="skills" name="skills" value=""> <!-- Hidden field to store the skills -->
+<script>
+        const volphone = document.getElementById("id_phone");
 
-        </div>
+        const VolPhoneErrorMsg = document.getElementById("vol-phone-error");
 
+        volphone.addEventListener("input", function () {
 
-        <!-- Location -->
-        <div class="mb-3">
-            <label for="id_location" class="form-label">Location</label>
-            <input type="text" class="form-control" id="id_location" name="location" 
-                   value="{{ volunteer.location }}">
-        </div>
+            volphone.value = volphone.value.replace(/\D/g, "");
 
-
-        <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const skillTags = document.querySelectorAll('.skill-tag');
-        const newSkillInput = document.getElementById('newSkillInput');
-        const selectedSkillsDisplay = document.getElementById('selectedSkillsDisplay');
-        const skillsInput = document.getElementById('skills');
-        const submitBTN = document.getElementsByClassName('register-button');
-
-       
-        let selectedSkills = []; // Keep track of the selected skills
-
-        // Predefined Skills
-        skillTags.forEach(tag => {
-            tag.addEventListener('click', () => {
-                tag.classList.toggle('selected');
-                updateSkills();
-            });
+            // Limit to 10 digits only
+            if (volphone.value.length > 10) {
+                volphone.value = volphone.value.slice(0, 10);
+            }
         });
 
-        // Function to add skill from input
-        window.addSkill = () => {
-            const newSkill = newSkillInput.value.trim();
-            if (newSkill !== "" && !selectedSkills.includes(newSkill)) {
-                selectedSkills.push(newSkill);
-                updateSkillsDisplay();
-                newSkillInput.value = ""; // Clear input field
+        volphone.addEventListener("blur", function () {
+            // Check if exactly 10 digits entered when user leaves the field
+            if (volphone.value.length !== 10) {
+                VolPhoneErrorMsg.textContent = "Phone number must be exactly 10 digits!";
+                volphone.value = "";
+                //   phone.focus;
+            } else {
+                VolPhoneErrorMsg.textContent = "";
             }
-        };
+        });
+</script>
 
-        // Update selected skill from existing element.
-        function updateSkills() {
-          selectedSkills = Array.from(skillTags)
-            .filter(tag => tag.classList.contains('selected'))
-            .map(tag => tag.dataset.skill);
-          updateSkillsDisplay();
-        }
-
-        // Update view and the hidden input.
-        function updateSkillsDisplay() {
-            selectedSkillsDisplay.innerHTML = ""; // Clear display
-
-            selectedSkills.forEach((skill, index) => {
-                const skillSpan = document.createElement('span');
-                skillSpan.textContent = skill;
-
-                const removeButton = document.createElement('button');
-                removeButton.textContent = 'x';
-                removeButton.addEventListener('click', (event) => {
-                    event.stopPropagation(); // Prevent any click on span to be propagated to parent element
-                    removeSkill(index);
-                });
-                skillSpan.appendChild(removeButton);
-                selectedSkillsDisplay.appendChild(skillSpan);
-            });
-
-            skillsInput.value = selectedSkills.join(','); // Update the hidden field
-        }
-
-        // Add remove functionality.
-        function removeSkill(index) {
-            selectedSkills.splice(index, 1); // Remove the skill from the array
-            updateSkillsDisplay();
-        }
-      });
-    </script>  
-       
-
-        <!-- Submit -->
-        <div class="text-center">
-            <button type="submit" class="btn btn-primary px-4">Update Profile</button>
-        </div>
-    </form>
-</div>
 </body>
+
 </html>
 
 {% endblock %}
