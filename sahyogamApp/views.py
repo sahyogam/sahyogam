@@ -445,7 +445,7 @@ def volunteerHome(request):
                 request.session["vol_dp"] = vol.profile_photo.url if vol.profile_photo else None
                 
                 context = {
-                    "VolName":request.session["vol_name"],
+                    "VolName":vol.name,
                     "VOL_DP":request.session["vol_dp"],
                     "userType":"Volunteer",
                     "skills":vol.skills.split(","),
@@ -568,10 +568,16 @@ def edit_volunteer(request, pk):
         volunteer.name = request.POST.get("name")
         volunteer.username = request.POST.get("username")
         volunteer.phone = request.POST.get("phone")
-        volunteer.skills = request.POST.get("skills")
+        
+
+        if request.POST.get("skills") == "":
+            volunteer.skills = volunteer.skills
+        else:
+            volunteer.skills = request.POST.get("skills")
+
         volunteer.location = request.POST.get("location")
         
-        profile_image = request.FILES.get["profile_photo"]
+        profile_image = request.FILES.get("profile_photo")
             
         if profile_image:
             from django.core.files.storage import default_storage
