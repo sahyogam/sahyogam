@@ -22,7 +22,10 @@ urlpatterns = [
     path('resend-otp/', views.resend_otp_view, name='resend_otp'),
     path('post-campaign/<str:OrgName>', views.post_campaign, name='post-campaign'),
     
+    path("edit-capaign/<int:pk>",views.editCampaign,name="editCampaing"),
     path('delete-campaign/<int:pk>', views.deleteCampaign, name='delete-campaign'),
+    
+    path('edit-organization',views.editOrganization,name="editOrganization"),
     
     path('detailCampaign/<int:pk>/<str:userType>/',views.detailCampaign,name="detailCampaign"),
     

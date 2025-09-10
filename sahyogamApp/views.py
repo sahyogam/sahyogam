@@ -633,3 +633,9 @@ def deleteCampaign(request,pk):
     
     return redirect("organizationHome")
     
+
+def editCampaign(request,pk):
+    return render(request,"edit_campaign.html")
+
+def editOrganization(request):
+    return render(request,"edit_organization.html",{"nav":True})

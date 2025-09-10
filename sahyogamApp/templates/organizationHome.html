@@ -411,17 +411,18 @@
 
                     <h3>{{OrgName}}</h3>
                     <p>{{userType}}</p>
-                    <a href="#" class="view-profile-button">View Profile</a>
                 </div>
 
                 <div class="quick-links">
                     <h3>Quick Links</h3>
                     <ul>
+                        
                         <li><a href="{% url 'post-campaign' OrgName %}"><i class="fas fa-plus-circle"></i> Post a
-                                Campaign</a></li>
-                        <li><a href="#"><i class="fas fa-folder-open"></i> My Applications</a></li>
-                        <li><a href="#"><i class="fas fa-compass"></i> Explore More</a></li>
-                        <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                            Campaign</a></li>
+                            <!-- <li><a href="#"><i class="fas fa-folder-open"></i> My Applications</a></li> -->
+                            <!-- <li><a href="#"><i class="fas fa-compass"></i> Explore More</a></li> -->
+                            <li><a href="{% url 'editOrganization' %}"><i class="fas fa-edit"></i> Edit Profile</a></li>
+                        <!-- <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li> -->
                     </ul>
                 </div>
             </aside>
