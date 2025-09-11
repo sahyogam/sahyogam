@@ -373,24 +373,36 @@
         <a href="#" class="logo">Sahyogam</a>
       </div>
       <div class="navbar-center">
-        <a href="#">Home</a>
+
+        
+            <a href="{% url 'volunteerHome' %}">Home</a>
+
+
         <a href="#">Messages</a>
         <a href="#">My Applications</a>
 
-        {% if logoutLink %}
-          {% if userType == "Organization" %}
-            <a href="{% url 'logout' 'org' %}">Logout</a>
-
-          {% else %}
-          <a href="{% url 'logout' 'vol' %}">Logout</a>
-          {% endif %}
+        {% if explore_button %}
+        <a href="{% url 'explore' %}" class="explore-button">
+          <i class="fas fa-compass"></i> Explore Campaigns
+        </a>
         {% endif %}
 
-        {% if search %}
+        {% if logoutLink %}
+        {% if userType == "Organization" %}
+        <a href="{% url 'logout' 'org' %}">Logout</a>
+
+        {% else %}
+        <a href="{% url 'logout' 'vol' %}">Logout</a>
+        {% endif %}
+
+        {% endif %}
+
+
+        <!-- {% if search %}
         <div class="search-bar">
           <input type="text" placeholder="Search by campaign name, location, or skill">
         </div>
-        {% endif %}
+        {% endif %} -->
 
 
       </div>

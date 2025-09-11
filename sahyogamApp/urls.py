@@ -29,7 +29,7 @@ urlpatterns = [
     
     path('detailCampaign/<int:pk>/<str:userType>/',views.detailCampaign,name="detailCampaign"),
     
-    path('404/', views.page_404, name='404'),
+    # path('404/', views.page_404, name='404'),
     path('base/', views.base_page, name='base'),
     path('campaign-detail/', views.campaign_detail, name='campaign-detail'),
     path('certificates/', views.certificates, name='certificates'),
@@ -45,5 +45,5 @@ urlpatterns = [
     
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-
-
+from django.conf.urls import handler404
+handler404 = views.page_404

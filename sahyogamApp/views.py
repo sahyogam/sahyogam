@@ -85,25 +85,14 @@ def login_page(request):
             if org and check_password(password,org.password):
                 org = Organization.objects.get(email__iexact=entered_email)
                 
-                # request.session["OrgName"] = org.name
-                # request.session["userType"] = "Organization"
+                
                 request.session["isOrgLogin"] = True
                 request.session["org_dp"] = org.profile_photo.url if org.profile_photo else None
 
                 request.session["org_name"] = org.name
                 
+                request.session["org_email"] = entered_email
                 
-                Campaigns =  Campaign.objects.all() 
-                               
-                context = {
-                        "OrgName":org.name,
-                        "ORG_DP":request.session["org_dp"],
-                        "userType":"Organization",
-                        "Campaigns":Campaigns,
-                        "nav":True
-                        }           
-                
-                # return render(request, 'organizationHome.html',context)
                 return redirect("organizationHome")
 
             else:
@@ -125,17 +114,6 @@ def login_page(request):
                 request.session["vol_email"] = vol.email
                 return redirect("volunteerHome") 
                 
-                # context = {
-                #     "VolName":vol.name,
-                #     "userType":"Volunteer",
-                #     "VOL_DP":request.session["vol_dp"],
-                #     "pk":request.session["VolPK"],
-                #     "skills":vol.skills.split(","), 
-                #     "userName" : vol.username
-                    
-                # }
-                
-                # return render(request, 'volunteerHome.html',context)
                 
             else:
              return render(request, 'login.html',{"ErrorMSG":True,"nav":False})
@@ -358,8 +336,6 @@ def verify_otp_view(request):
                     
                     otp_obj.delete()
                 
-                #go to dashboard
-                #write here return code
                     return redirect("organizationHome")
                 
                 else:
@@ -417,11 +393,8 @@ def resend_otp_view(request):
     messages.success(request, "A new OTP has been sent to your email.")
     return redirect("verify_otp")
 
-
-
-
-def page_404(request):
-    return render(request, '404.html')
+def page_404(request, exception):
+    return render(request, "404.html", status=404)
 
 def base_page(request):
     return render(request, 'base.html')
@@ -433,7 +406,30 @@ def certificates(request):
     return render(request, 'certificates.html')
 
 def explore(request):
-    return render(request, 'explore.html',{"nav":True,"search":True})
+    campaign =  Campaign.objects.all()
+    vol = Volunteer.objects.get(email__iexact=request.session["vol_email"])                          
+    
+    context = {
+        "nav":True,
+        "search":True,
+        "Campaigns":campaign,
+        "logoutLink":True,
+        "pk":vol.pk,
+        "VolName":vol.name,
+        "VOL_DP":request.session["vol_dp"],
+        "userType":"Volunteer",
+        "skills":vol.skills.split(","),
+        "pk":vol.pk,
+        "userName" : vol.username,
+        # "Campaigns":Campaigns,
+        "nav":True,
+        "search":False,
+        "logoutLink":True,
+        # "explore_button":True
+        
+    }
+    
+    return render(request, 'explore.html',context)
 
 def volunteerHome(request):
     try:
@@ -454,7 +450,8 @@ def volunteerHome(request):
                     "Campaigns":Campaigns,
                     "nav":True,
                     "search":False,
-                    "logoutLink":True
+                    "logoutLink":True,
+                    "explore_button":True
                     
                 }
             
@@ -468,24 +465,32 @@ def volunteerHome(request):
 
 
 def organizationHome(request):
-    if request.session["isOrgLogin"] == True:
+    try:
+        if request.session["isOrgLogin"] == True:
         
-        Campaigns =  Campaign.objects.all()                
-        
-        # org = Organization.objects.all()  
-        
-        
-        context = {
-            "OrgName":request.session["org_name"],
+            org = Organization.objects.get(email__iexact=request.session["org_email"])  
+            # vol = Volunteer.objects.get(email__iexact=request.session["vol_email"])                          
+            
+            
+            campaign =  Campaign.objects.filter(organizationID=org)
+                            
+            
+            context = {
+            "OrgName":org.name,
             "ORG_DP":request.session["org_dp"],
             "userType":"Organization",
-            "Campaigns":Campaigns,
-            # "nav":True
+            "Campaigns":campaign,
+            # "nav":True,
             
-        }
-        return render(request, 'organizationHome.html',context)
-    else:
+            
+            }
+            return render(request, 'organizationHome.html',context)
+            
+        else:
+            return redirect("login")
+    except Exception as e:
         return redirect("login")
+
 
 
 def messages_page(request):
@@ -512,6 +517,8 @@ def post_campaign(request,OrgName):
             from django.core.files.storage import default_storage
             file_path = default_storage.save(f"images/{bannerImage.name}", bannerImage)
         
+        org = Organization.objects.get(email__iexact=request.session["org_email"])  
+
         
         Campaign.objects.create(
             title=campaignTitle,
@@ -526,7 +533,8 @@ def post_campaign(request,OrgName):
             time_slot=timeSlot,
             banner_image=file_path,
             additional_instructions=additionalInstructions,
-            postedBy = OrgName
+            postedBy = OrgName,
+            organizationID = org
         )
         
         
@@ -550,16 +558,6 @@ def home(request):
 
 
 
-def logout(request,userID):
-    if userID == 'org' :
-        del request.session["isOrgLogin"]
-        return redirect("login")
-        
-    if userID == 'vol' :
-        del request.session["isVolLogin"]
-        return redirect("login") 
-                
-    # return redirect("login")
     
 def edit_volunteer(request, pk):
     volunteer = get_object_or_404(Volunteer, pk=pk)
@@ -639,3 +637,22 @@ def editCampaign(request,pk):
 
 def editOrganization(request):
     return render(request,"edit_organization.html",{"nav":True})
+
+
+def logout(request,userID):
+    
+    if userID == 'org' :
+        del request.session["isOrgLogin"]
+        del request.session["org_dp"]
+        del request.session["org_name"]
+        
+        return redirect("login")
+        
+    if userID == 'vol' :
+        del request.session["isVolLogin"]
+        del request.session["VolPK"]
+        del request.session["vol_dp"]
+        del request.session["vol_email"]
+        
+        return redirect("login") 
+                

@@ -2,11 +2,12 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Home{% endblock %}</title>
-    
+
     {% block content %}
     <style>
         /* General Styles */
@@ -14,20 +15,20 @@
             font-family: 'Poppins', sans-serif;
             background-color: #f9f9f9;
             margin: 0;
-    padding: 0;
-    color: #333;
-}
+            padding: 0;
+            color: #333;
+        }
 
-.container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    box-sizing: border-box;
-}
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
 
-/* Top Navigation Bar */
-/* .navbar {
+        /* Top Navigation Bar */
+        /* .navbar {
     background-color: #fff;
     padding: 15px 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -92,295 +93,307 @@
     margin-left: 15px;
 } */
 
-/* Main Content Area */
-.main-content {
-    display: flex;
-    margin-top: 80px; /* Adjust for fixed navbar */
-    gap: 20px; /* Add some space between the columns */
-}
+        /* Main Content Area */
+        .main-content {
+            display: flex;
+            margin-top: 80px;
+            /* Adjust for fixed navbar */
+            gap: 20px;
+            /* Add some space between the columns */
+        }
 
-/* Left Sidebar (Profile Summary) */
-.left-sidebar {
-    width: 250px;
-}
+        /* Left Sidebar (Profile Summary) */
+        .left-sidebar {
+            width: 250px;
+        }
 
-.profile-card {
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    padding: 20px;
-    box-sizing: border-box;
-    text-align: center;
-}
+        .profile-card {
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
 
-.profile-card .profile-pic {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 10px;
-}
+        .profile-card .profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
 
-.profile-card h3 {
-    margin: 0 0 5px;
-    font-size: 18px;
-}
+        .profile-card h3 {
+            margin: 0 0 5px;
+            font-size: 18px;
+        }
 
-.profile-card .skill-tags {
-    margin-bottom: 10px;
-}
+        .profile-card .skill-tags {
+            margin-bottom: 10px;
+        }
 
-.profile-card .skill-tags span {
-    background-color: #eaf2ff;
-    color: #448aff;
-    padding: 5px 8px;
-    border-radius: 5px;
-    margin-right: 5px;
-    font-size: 14px;
-}
+        .profile-card .skill-tags span {
+            background-color: #eaf2ff;
+            color: #448aff;
+            padding: 5px 8px;
+            border-radius: 5px;
+            margin-right: 5px;
+            font-size: 14px;
+        }
 
-.profile-card .quick-links {
-    margin-top: 20px;
-}
+        .profile-card .quick-links {
+            margin-top: 20px;
+        }
 
-.profile-card .quick-links a {
-    display: block;
-    color: #555;
-    text-decoration: none;
-    padding: 8px 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-    text-align: left;
-}
+        .profile-card .quick-links a {
+            display: block;
+            color: #555;
+            text-decoration: none;
+            padding: 8px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            text-align: left;
+        }
 
-.profile-card .quick-links a:hover {
-    background-color: #f0f0f0;
-}
+        .profile-card .quick-links a:hover {
+            background-color: #f0f0f0;
+        }
 
-.profile-card .quick-links a i {
-    margin-right: 8px;
-}
+        .profile-card .quick-links a i {
+            margin-right: 8px;
+        }
 
-/* Main Feed */
-.feed {
-    flex: 1;
-    /* Take up remaining space */
-}
+        /* Main Feed */
+        .feed {
+            flex: 1;
+            /* Take up remaining space */
+        }
 
-.feed h2 {
-    margin-bottom: 20px;
-    font-size: 20px;
-}
+        .feed h2 {
+            margin-bottom: 20px;
+            font-size: 20px;
 
-.campaign-card {
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    transition: transform 0.2s;
-}
-
-.campaign-card:hover {
-    transform: translateY(-5px);
-}
-
-.campaign-card .campaign-header {
-    margin-bottom: 10px;
-}
-
-.campaign-card h3 {
-    margin: 0;
-    font-size: 18px;
-    color: #333;
-}
-
-.campaign-card .posted-by {
-    color: #777;
-    font-size: 14px;
-}
-
-.campaign-card .description {
-    color: #555;
-    margin-bottom: 15px;
-    line-height: 1.4;
-}
-
-.campaign-card .skill-tags {
-    margin-bottom: 10px;
-}
-
-.campaign-card .skill-tags span {
-    background-color: #eaf2ff;
-    color: #448aff;
-    padding: 5px 8px;
-    border-radius: 5px;
-    margin-right: 5px;
-    font-size: 14px;
-}
-
-.campaign-card .campaign-info {
-    color: #777;
-    font-size: 14px;
-    margin-bottom: 15px;
-}
-
-.campaign-card .campaign-info i {
-    margin-right: 5px;
-}
-
-.campaign-card .progress-bar {
-    background-color: #eee;
-    border-radius: 5px;
-    height: 8px;
-    margin-bottom: 15px;
-    overflow: hidden;
-    color: #777;
-    font-size: 14px;
-}
+            font-weight: bold;
+            color: #0d6efd;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 10px rgb(255, 255, 255);
+        }
 
 
-.campaign-card .amounts {
-    display: flex;
-    justify-content: space-between;
-    color: #777;
-    margin-bottom: 10px;
-}
+        .campaign-card {
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.2s;
+        }
 
-.campaign-card .apply-button {
-    background-color: #5DADE2;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 16px;
-    outline: none;
-    text-decoration: none;
-}
+        .campaign-card:hover {
+            transform: translateY(-5px);
+        }
 
-/* Right Sidebar */
-.right-sidebar {
-    width: 250px;
-}
+        .campaign-card .campaign-header {
+            margin-bottom: 10px;
+        }
 
-.right-sidebar > div { /* Target direct children only */
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    padding: 20px;
-    box-sizing: border-box;
-    margin-bottom: 20px; /* Add margin between the widgets */
-}
+        .campaign-card h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+        }
 
-.trending-skills h3,
-.location-filter h3,
-.top-volunteers h3 {
-    font-size: 16px;
-    margin-bottom: 15px;
-}
+        .campaign-card .posted-by {
+            color: #777;
+            font-size: 14px;
+        }
 
-.trending-skills ul {
-    list-style: none;
-    padding: 0;
-}
+        .campaign-card .description {
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
 
-.trending-skills li {
-    margin-bottom: 8px;
-    color: #555;
-}
+        .campaign-card .skill-tags {
+            margin-bottom: 10px;
+        }
 
-.location-filter select {
-    width: 100%;
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    border-radius: 20px;
-    font-size: 14px;
-    outline: none;
-}
+        .campaign-card .skill-tags span {
+            background-color: #eaf2ff;
+            color: #448aff;
+            padding: 5px 8px;
+            border-radius: 5px;
+            margin-right: 5px;
+            font-size: 14px;
+        }
 
-.top-volunteers .volunteer-card {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    padding: 10px; /* Reduce padding for volunteer cards */
-}
+        .campaign-card .campaign-info {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
 
-.top-volunteers .profile-pic.small {
-    width: 40px;
-    height: 40px;
-    margin-right: 10px; /* Adjust margin for better spacing */
-}
+        .campaign-card .campaign-info i {
+            margin-right: 5px;
+        }
 
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-    .container {
-        padding: 10px;
-    }
-    
-    .navbar {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .navbar-center {
-        margin-top: 10px;
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .navbar-center a {
-        margin: 5px 0;
-    }
-    
-    .navbar-center .search-bar {
-        width: 100%;
-    }
-    
-    .navbar-center .search-bar input[type="text"] {
-        width: 100%;
-    }
-    
-    .main-content {
-        flex-direction: column;
-        margin-top: 120px;
-    }
-    
-    .left-sidebar,
-    .right-sidebar {
-        width: 100%;
-        margin-bottom: 20px;
-    }
-    
-    .campaign-card {
-        margin-bottom: 15px;
-        padding: 15px;
-    }
-    
-    .campaign-card h3 {
-        font-size: 16px;
-    }
-
-    .campaign-card .description {
-        font-size: 14px;
-    }
-    
-    .campaign-card .skill-tags span {
-        font-size: 12px;
-    }
-    
-    .profile-card {
-        padding: 15px;
-    }
-}
+        .campaign-card .progress-bar {
+            background-color: #eee;
+            border-radius: 5px;
+            height: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            color: #777;
+            font-size: 14px;
+        }
 
 
+        .campaign-card .amounts {
+            display: flex;
+            justify-content: space-between;
+            color: #777;
+            margin-bottom: 10px;
+        }
 
-</style>
+        .campaign-card .apply-button {
+            background-color: #5DADE2;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            outline: none;
+            text-decoration: none;
+        }
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        /* Right Sidebar */
+        .right-sidebar {
+            width: 250px;
+        }
+
+        .right-sidebar>div {
+            /* Target direct children only */
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            /* Add margin between the widgets */
+        }
+
+        .trending-skills h3,
+        .location-filter h3,
+        .top-volunteers h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .trending-skills ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .trending-skills li {
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .location-filter select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .top-volunteers .volunteer-card {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            /* Reduce padding for volunteer cards */
+        }
+
+        .top-volunteers .profile-pic.small {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            /* Adjust margin for better spacing */
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar-center {
+                margin-top: 10px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar-center a {
+                margin: 5px 0;
+            }
+
+            .navbar-center .search-bar {
+                width: 100%;
+            }
+
+            .navbar-center .search-bar input[type="text"] {
+                width: 100%;
+            }
+
+            .main-content {
+                flex-direction: column;
+                margin-top: 120px;
+            }
+
+            .left-sidebar,
+            .right-sidebar {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .campaign-card {
+                margin-bottom: 15px;
+                padding: 15px;
+            }
+
+            .campaign-card h3 {
+                font-size: 16px;
+            }
+
+            .campaign-card .description {
+                font-size: 14px;
+            }
+
+            .campaign-card .skill-tags span {
+                font-size: 12px;
+            }
+
+            .profile-card {
+                padding: 15px;
+            }
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <div class="container">
         <!-- Top Navigation Bar -->
@@ -411,16 +424,16 @@
             <aside class="left-sidebar">
                 <div class="profile-card">
                     <img src="{{VOL_DP}}" alt="Profile Picture" class="profile-pic">
-                  
+
                     <h3>{{VolName}}<br></h3>
-                    
+
                     <p>{{userType}}</p>
-                    
+
                     <div class="skill-tags">
 
                         {% for skill in skills %}
 
-                        
+
                         <span>{{skill}}</span>
                         <!-- <span>Coding</span>
                         <span>Teaching</span> -->
@@ -439,15 +452,17 @@
 
             <!-- Main Feed -->
             <main class="feed">
-                <h2>Campaigns Near You</h2>
-                
+                <h2>Campaigns in which You have appliyed</h2>
+
                 {% for Campaign in Campaigns %}
-                <div class="campaign-card">
+                <div class="campaign-card" data-location="{{campaign.location}}"
+                    data-skills="{{campaign.skills_required}}" data-org-type="{{campaign.organizationID.org_type}}">
+
                     <div class="campaign-header">
                         <h3>{{Campaign.title}} <span class="posted-by">Posted by: {{Campaign.postedBy}} </span></h3>
                     </div>
                     <p class="description">
-                      {{Campaign.short_description}}
+                        {{Campaign.short_description}}
                     </p>
 
                     <div class="skill-tags">
@@ -461,7 +476,7 @@
                         <i class="far fa-calendar-alt"></i> {{Campaign.start_date}}
                     </div>
 
-                     <div class="progress-bar">
+                    <div class="progress-bar">
                         <div class="progress" style="width: 40%;"></div>
                     </div>
 
@@ -475,66 +490,62 @@
                     <a href="{% url 'detailCampaign' Campaign.pk userType %}" class="apply-button">View Detail</a>
 
                 </div>
-                
+
 
                 {% endfor %}
                 <!-- More Campaign Cards -->
             </main>
 
+
             <!-- Right Sidebar -->
             <aside class="right-sidebar">
-                <div class="trending-skills">
+                <!-- <div class="trending-skills">
                     <h3>🔥 Trending Skills</h3>
                     <ul>
-                        <li>Web Development</li>
-                        <li>Data Analysis</li>
-                        <li>Graphic Design</li>
-                    </ul>
-                </div>
+                        {% for Campaign in Campaigns %}
 
-                <div class="location-filter">
+                        <li>{{Campaign.skills_required}}</li>
+
+                        {% endfor %}
+                    </ul>
+                </div> -->
+
+                <!-- <div class="location-filter">
                     <h3>📍 Location Filter</h3>
                     <select>
                         <option value="all">All Locations</option>
-                        <option value="online">Online</option>
-                        <option value="india">India</option>
+                        {% for Campaign in Campaigns %}
+                        <option value="{{Campaign.location}}">{{Campaign.location}}</option>
+                        {% endfor %}
                     </select>
-                </div>
+                </div> -->
 
-                <div class="top-volunteers">
-                    <h3>🏅 Top Rated Volunteers</h3>
-                    <div class="volunteer-card">
-                        <img src="default-avatar.png" alt="Volunteer" class="profile-pic small">
-                        <span>John Doe</span>
-                    </div>
-                    <div class="volunteer-card">
-                        <img src="default-avatar.png" alt="Volunteer" class="profile-pic small">
-                        <span>Jane Smith</span>
-                    </div>
-                </div>
+
             </aside>
         </div>
     </div>
 
-//     <script>// Example (requires knowing the user's role on page load)
-// const userRole = 'volunteer'; // Or 'organization'
+    //
+    <script>// Example (requires knowing the user's role on page load)
+        // const userRole = 'volunteer'; // Or 'organization'
 
-// if (userRole === 'volunteer') {
-//     document.querySelector('.navbar-center').innerHTML = `
-//         <a href="{% url 'explore' %}">🧭 Explore Campaigns</a>
-//         <div class="search-bar">...</div>
-//         <a href="{% url 'messages' %}">📨 Messages</a>
-//         <a href="#">🧑‍💼 My Applications</a>
-//     `;
-// } else if (userRole === 'organization') {
-//     document.querySelector('.navbar-center').innerHTML = `
-//         <a href="{% url 'post-campaign' userType %}">➕ Post Campaign</a>
-//         <a href="#">⚙️ Manage Campaigns</a>
-//         <a href="{% url 'messages' %}">📨 Messages</a>
-//     `;
-// }
+        // if (userRole === 'volunteer') {
+        //     document.querySelector('.navbar-center').innerHTML = `
+        //         <a href="{% url 'explore' %}">🧭 Explore Campaigns</a>
+        //         <div class="search-bar">...</div>
+        //         <a href="{% url 'messages' %}">📨 Messages</a>
+        //         <a href="#">🧑‍💼 My Applications</a>
+        //     `;
+        // } else if (userRole === 'organization') {
+        //     document.querySelector('.navbar-center').innerHTML = `
+        //         <a href="{% url 'post-campaign' userType %}">➕ Post Campaign</a>
+        //         <a href="#">⚙️ Manage Campaigns</a>
+        //         <a href="{% url 'messages' %}">📨 Messages</a>
+        //     `;
+        // }
 
-</script>
+    </script>
 </body>
+
 </html>
 {% endblock %}

@@ -197,27 +197,27 @@
       font-size: 16px;
     }
 
-    .popup .yes-btn {
+    .popup .no-btn {
       background: #5dade246;
       color: rgb(0, 0, 0);
       border: 1px solid black;
       transition: 0.5s;
     }
 
-    .popup .yes-btn:hover {
+    .popup .no-btn:hover {
       background: #5dade2;
       color: rgb(255, 255, 255);
       border: 1px solid black;
     }
 
-    .popup .no-btn {
+    .popup .yes-btn {
       background: white;
       color: #d44e44;
       border: 1px solid black;
       transition: 0.5s;
 
     }
-    .popup .no-btn:hover {
+    .popup .yes-btn:hover {
       background: #d44e44;
       color: white;
     }
@@ -242,8 +242,8 @@
   <div class="popup-overlay" id="popupOverlay">
     <div class="popup">
       <h3>Are you sure want to delete?</h3>
-      <button class="yes-btn" id="yesBtn">Yes</button>
       <button class="no-btn" id="noBtn">No</button>
+      <button class="yes-btn" id="yesBtn">Yes</button>
     </div>
   </div>
 
@@ -306,7 +306,7 @@
       </div>
 
       <div class="footer">
-        <span>Created: {{ created_at }}</span>
+        <span>Created: {{ created_at | date:"Y-m-d"}}</span>
         <span>Updated: {{ updated_at }}</span>
       </div>
       <br>

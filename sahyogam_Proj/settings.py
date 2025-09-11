@@ -23,9 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-46^r9mgy+49b8%azf@zok&0r@ull+re+viui*cge$z+q_g0if-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
 
-ALLOWED_HOSTS = []
+DEBUG = True
+# ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
+# ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -110,6 +113,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
 
 
 # Static files (CSS, JavaScript, Images)

@@ -15,6 +15,10 @@
         integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <!-- <link rel="stylesheet" href="{% static 'style.css' %}"> -->
+
+
+
     <style>
         /* Volunteer Profile Edit Page Custom Styles */
 
@@ -182,7 +186,48 @@
             padding: 0;
             outline: none;
         }
+
+
+
+        .profile-header {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .profile-image-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+        }
+
+        #profile-image-preview {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid #325b99;
+            display: block;
+        }
+
+        .profile-image-upload-button {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            padding: 5px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .profile-image-upload-button:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
     </style>
+
+    <!-- <script src="{% static 'script.js' %}"></script> -->
 
 </head>
 
@@ -198,12 +243,40 @@
 
             <div class="mb-3 text-center">
                 {% if volunteer.profile_photo %}
-                <img src="{{ volunteer.profile_photo.url }}" alt="Profile Photo" class="profile-photo">
+                <!-- <img src="{{ volunteer.profile_photo.url }}" alt="Profile Photo" class="profile-photo">-->
+
+                <div class="profile-image-container">
+                    <img id="profile-image-preview" src="{{ volunteer.profile_photo.url }}" alt="Profile Preview"
+                        required>
+
+                    <label for="profile-image-upload" class="profile-image-upload-button">
+                        <i class="fas fa-camera"></i>
+                    </label>
+                    <input type="file" id="profile-image-upload" name="profile_photo" accept="image/*"
+                        style="display:none;" required>
+                </div>
+
                 {% else %}
-                <img src="{% static 'images/profile.png' %}" alt="Default Profile" class="profile-photo">
+                <!-- <img src="{% static 'images/profile.png' %}" alt="Default Profile" class="profile-photo"> -->
+
+                <div class="profile-image-container">
+                    <img id="profile-image-preview" src="{% static 'images/profile.png' %}" alt="Profile Preview"
+                        required>
+
+                    <label for="profile-image-upload" class="profile-image-upload-button">
+                        <i class="fas fa-camera"></i>
+                    </label>
+                    <input type="file" id="profile-image-upload" name="profile_photo" accept="image/*"
+                        style="display:none;" required>
+                </div>
+
                 {% endif %}
 
-                <input type="file" class="form-control" id="id_profile_photo" name="profile_photo" accept="image/*">
+                <!-- <input type="file" class="form-control" id="id_profile_photo" name="profile_photo" accept="image/*"> -->
+
+
+
+
             </div>
 
             <!-- Name -->
@@ -223,15 +296,16 @@
             <div class="mb-3">
                 <label for="id_email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="id_email" name="email" value="{{ volunteer.email }}"
-                    readonly >
+                    readonly>
             </div>
 
             <!-- Phone -->
             <div class="mb-3">
                 <label for="id_phone" class="form-label">Phone</label>
-                <input type="text" class="form-control" id="id_phone" name="phone" value="{{ volunteer.phone }}" required>
+                <input type="text" class="form-control" id="id_phone" name="phone" value="{{ volunteer.phone }}"
+                    required>
             </div>
-                <p id="vol-phone-error" style="color: red; font-size: 14px;"></p>
+            <p id="vol-phone-error" style="color: red; font-size: 14px;"></p>
 
             <!-- Skills -->
             <!-- <div class="mb-3">
@@ -266,7 +340,8 @@
                     <!-- Display the selected skills here -->
                 </div>
 
-                <input type="hidden" id="skills" name="skills" value="{{ volunteer.skills }}"> <!-- Hidden field to store the skills -->
+                <input type="hidden" id="skills" name="skills" value="{{ volunteer.skills }}">
+                <!-- Hidden field to store the skills -->
 
             </div>
 
@@ -353,7 +428,7 @@
         </form>
     </div>
 
-<script>
+    <script>
         const volphone = document.getElementById("id_phone");
 
         const VolPhoneErrorMsg = document.getElementById("vol-phone-error");
@@ -378,7 +453,18 @@
                 VolPhoneErrorMsg.textContent = "";
             }
         });
-</script>
+
+
+        document.getElementById('profile-image-upload').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const preview = document.getElementById('profile-image-preview');
+                preview.src = URL.createObjectURL(file);
+            }
+        });
+
+
+    </script>
 
 </body>
 

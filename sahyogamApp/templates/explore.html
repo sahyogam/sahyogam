@@ -2,96 +2,251 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
+    
+    <head>
+        <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Explore Campaigns{% endblock %}</title>
     
+    {% block content %}
+
+<style>
+     .top-volunteers .volunteer-card {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            /* Reduce padding for volunteer cards */
+        }
+
+        .top-volunteers .profile-pic.small {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            /* Adjust margin for better spacing */
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar-center {
+                margin-top: 10px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar-center a {
+                margin: 5px 0;
+            }
+
+            
+
+            .main-content {
+                flex-direction: column;
+                margin-top: 120px;
+            }
+
+            .left-sidebar,
+            .right-sidebar {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .campaign-card {
+                margin-bottom: 15px;
+                padding: 15px;
+            }
+
+            .campaign-card h3 {
+                font-size: 16px;
+            }
+
+            .campaign-card .description {
+                font-size: 14px;
+            }
+
+            .campaign-card .skill-tags span {
+                font-size: 12px;
+            }
+
+            .profile-card {
+                padding: 15px;
+                
+            }
+        }
+
+ .profile-card {
+            background-color: #fff;
+            /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+            border-radius: 10px;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            
+        }
+
+        .profile-card .profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .profile-card h3 {
+            margin: 0 0 5px;
+            font-size: 18px;
+        }
+
+        .profile-card .skill-tags {
+            margin-bottom: 10px;
+        }
+
+        .profile-card .skill-tags span {
+            background-color: #eaf2ff;
+            color: #448aff;
+            padding: 5px 8px;
+            border-radius: 5px;
+            margin-right: 5px;
+            font-size: 14px;
+        }
+
+        .profile-card .quick-links {
+            margin-top: 20px;
+        }
+
+        .profile-card .quick-links a {
+            display: block;
+            color: #555;
+            text-decoration: none;
+            padding: 10px 1px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            text-align: left;
+        }
+
+        .profile-card .quick-links a:hover {
+            background-color: #f0f0f0;
+        }
+
+        .profile-card .quick-links a i {
+            margin-right: 8px;
+        }
+
+         .campaign-card .apply-button {
+            background-color: #5DADE2;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            outline: none;
+            text-decoration: none;
+        }
+
+
+</style>
+    
+
 </head>
+
 <body>
-        {% block content %}
-        <!-- Main Content Area -->
-        <div class="main-content">
-            <!-- Filter Sidebar -->
-            <aside class="filter-sidebar">
-                <h3>Filter Campaigns</h3>
+    <!-- Main Content Area -->
+    <div class="main-content">
 
-                <div class="filter-group">
-                    <label for="location">Location</label>
-                    <select id="location">
-                        <option value="all">All Locations</option>
-                        <option value="online">Online</option>
-                        <option value="india">India</option>
-                        <option value="usa">USA</option>
-                    </select>
-                </div>
 
-                <div class="filter-group">
-                    <label for="skills">Skills</label>
-                    <div class="skill-tags">
-                        <span data-skill="carpentry">Carpentry</span>
-                        <span data-skill="teaching">Teaching</span>
-                        <span data-skill="webdev">Web Development</span>
-                        <span data-skill="medical">Medical</span>
-                    </div>
-                </div>
+        <!-- Volunteer Profile -->
+        <aside class="filter-sidebar">
 
-                <div class="filter-group">
-                    <label>Organization Type</label>
-                    <label><input type="checkbox" name="org-type" value="ngo"> NGO</label>
-                    <label><input type="checkbox" name="org-type" value="school"> School</label>
-                    <label><input type="checkbox" name="org-type" value="temple"> Temple</label>
-                </div>
+        <div class="profile-card">  
+            <img src="{{VOL_DP}}" alt="Profile Picture" class="profile-pic">
 
-                <div class="filter-group">
-                    <label for="date">Availability</label>
-                    <input type="text" id="date" placeholder="Start Date">
-                    <input type="text" id="date" placeholder="End Date">
-                </div>
-            </aside>
+            <h3>{{VolName}}<br></h3>
 
-            <!-- Main Content - Campaign Grid -->
-            <main class="campaign-grid">
-                <div class="campaign-card" data-location="india" data-skills="carpentry,construction"
-                    data-org-type="ngo">
-                    <img src="campaign-banner.jpg" alt="Campaign Banner">
-                    <h3>School Building Project</h3>
-                    <p>Help build a school for underprivileged children in rural India.</p>
-                    <div class="skills">
-                        <span>Carpentry</span>
-                        <span>Construction</span>
-                    </div>
-                    <p class="location">Location: Rural India</p>
-                    <button>Apply</button>
-                </div>
+            <p>{{userType}}</p>
 
-                <div class="campaign-card" data-location="online" data-skills="teaching,coding" data-org-type="school">
-                    <img src="campaign-banner.jpg" alt="Campaign Banner">
-                    <h3>Coding Workshop for Kids</h3>
-                    <p>Teach basic coding to children in our community. Online Volunteers are welcome.</p>
-                    <div class="skills">
-                        <span>Teaching</span>
-                        <span>Coding</span>
-                    </div>
-                    <p class="location">Location: Online</p>
-                    <button>Apply</button>
-                </div>
+            <div class="skill-tags">
 
-                <div class="campaign-card" data-location="usa" data-skills="medical" data-org-type="charity">
-                    <img src="campaign-banner.jpg" alt="Campaign Banner">
-                    <h3>Medical Camp in Rural USA</h3>
-                    <p>Volunteers needed for free medical camp.</p>
-                    <div class="skills">
-                        <span>Medical</span>
-                        <span>Nursing</span>
-                    </div>
-                    <p class="location">Location: Rural USA</p>
-                    <button>Apply</button>
-                </div>
-                <!-- More Campaign Cards -->
-            </main>
+                {% for skill in skills %}
+
+
+                <span>{{skill}}</span>
+                <!-- <span>Coding</span>
+                        <span>Teaching</span> -->
+
+                {% endfor %}
+            </div>
+            <!-- <p>Next Available: July 31, 2025</p> -->
+            <div class="quick-links">
+                <a href="{% url 'edit_volunteer' pk %}"><i class="fas fa-edit"></i> Edit Profile</a>
+                <a href="#"><i class="fas fa-certificate"></i> Certificates</a>
+                <a href="#"><i class="fas fa-star"></i> Feedback/Rating</a>
+            </div>
         </div>
+        <br>
+
+        <!-- Filter Sidebar -->
+            <h3>Filter Campaigns</h3>
+
+            <div class="filter-group">
+                <label for="location">Location</label>
+
+                <select id="location">
+                    <option value="all">All Locations</option>
+                    {% for campaign in Campaigns %}
+                    <option value="{{campaign.location}}">{{campaign.location}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="skills">Skills</label>
+                <div class="skill-tags">
+                    {% for campaign in Campaigns %}
+                    <span data-skill="{{campaign.skills_required}}">{{campaign.skills_required}}</span>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label>Organization Type</label>
+                <label><input type="checkbox" name="org-type" value="ngo"> NGO</label>
+                <label><input type="checkbox" name="org-type" value="school"> School</label>
+                <label><input type="checkbox" name="org-type" value="temple"> Temple</label>
+            </div>
+
+        </aside>
+
+        <!-- Main Content - Campaign Grid -->
+        <main class="campaign-grid">
+
+            {% for campaign in Campaigns %}
+            <div class="campaign-card" data-location="{{campaign.location}}" data-skills="{{campaign.skills_required}}"
+                data-org-type="{{campaign.organizationID.org_type}}">
+                <img src="{{campaign.banner_image.url}}" alt="Campaign Banner" class="campaign-banner">
+                <h3>{{campaign.title}}</h3>
+                <p> {{campaign.short_description}}</p>
+                <div class="skills">
+                    <span>{{campaign.skills_required}}</span>
+                </div>
+                <p class="location">{{campaign.location}}</p>
+                <!-- <button>Apply</button> -->
+                <a href="{% url 'detailCampaign' campaign.pk userType %}" class="apply-button">View Detail</a>
+
+            </div>
+            {% endfor %}
+
+        </main>
+    </div>
     </div>
 
     <script>

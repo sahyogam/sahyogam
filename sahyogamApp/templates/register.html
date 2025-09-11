@@ -475,6 +475,8 @@
 
             if (!strongPassword.test(orgPassword.value)) {
                 errorMsg.textContent = "Password must be 8+ chars with uppercase, lowercase, number, and special character.";
+                orgConfirmPassword.value = "";
+                orgPassword.value = "";
             } else {
                 
                 if (orgConfirmPassword.value != orgPassword.value) {
@@ -501,6 +503,8 @@
 
             if (!strongPassword.test(volPassword.value)) {
                 volErrorMsg.textContent = "Password must be 8+ chars with uppercase, lowercase, number, and special character.";
+                volConfirmPassword.value = "";
+                volPassword.value = "";
             } else {
                 
                 if (volConfirmPassword.value != volPassword.value) {

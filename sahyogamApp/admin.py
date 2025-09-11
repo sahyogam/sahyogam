@@ -14,7 +14,7 @@ class VolunteerAdmin(admin.ModelAdmin):
 
 @admin.register(Campaign)
 class CampaignAdmin(admin.ModelAdmin):
-    list_display = ('title','skills_required','location','total_volunteers_needed')
+    list_display = ('title','postedBy','skills_required','location','total_volunteers_needed')
     search_fields = ('title','short_description','skills_required')
     
     
