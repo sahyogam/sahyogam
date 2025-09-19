@@ -1,12 +1,15 @@
 {% extends "base.html" %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> {% block title %} Verify OTP {% endblock %}</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     {% block content %}
     <style>
         /* General Styles */
@@ -144,44 +147,44 @@
             }
         }
 
-        #mail{
-            color:#448aff;
+        #mail {
+            color: #448aff;
             font-weight: bold;
         }
-
     </style>
 </head>
+
 <body>
     <div class="container">
         <p style="color: red;">
-           {{ErrMsg}}
+            {{ErrMsg}}
         </p>
 
         <a href="{% url 'register' %}" class="back-link"><i class="fas fa-arrow-left"></i> Back</a>
         <h1>Verify OTP</h1>
-        <p>OTP sent to <span id="mail">{{email}}</span></p>    
+        <p>OTP sent to <span id="mail">{{email}}</span></p>
 
         <form method="post">
-        {% csrf_token %}
+            {% csrf_token %}
 
-        <div class="otp-input-container">
-            <input type="text" class="otp-input" maxlength="1" data-index="0" name="otp_digit" required>
-            <input type="text" class="otp-input" maxlength="1" data-index="1" name="otp_digit" required>
-            <input type="text" class="otp-input" maxlength="1" data-index="2" name="otp_digit" required>
-            <input type="text" class="otp-input" maxlength="1" data-index="3" name="otp_digit" required>
-            <input type="text" class="otp-input" maxlength="1" data-index="4" name="otp_digit" required>
-            <input type="text" class="otp-input" maxlength="1" data-index="5" name="otp_digit" required>
-        </div>
+            <div class="otp-input-container">
+                <input type="text" class="otp-input" maxlength="1" data-index="0" name="otp_digit" required>
+                <input type="text" class="otp-input" maxlength="1" data-index="1" name="otp_digit" required>
+                <input type="text" class="otp-input" maxlength="1" data-index="2" name="otp_digit" required>
+                <input type="text" class="otp-input" maxlength="1" data-index="3" name="otp_digit" required>
+                <input type="text" class="otp-input" maxlength="1" data-index="4" name="otp_digit" required>
+                <input type="text" class="otp-input" maxlength="1" data-index="5" name="otp_digit" required>
+            </div>
 
-        <div id="timer"><span id="timer"></span></div>
-        <a href="{% url 'resend_otp' %}" class="resend-link" id="resend">Resend OTP</a>
-        
+            <div id="timer"><span id="timer"></span></div>
+            <a href="{% url 'resend_otp' %}" class="resend-link" id="resend">Resend OTP</a>
+
     </div>
-    
-<input type="hidden" name="otp" id="final-otp">
 
-<button class="verify-button" type="submit" id="verify-button" disabled>Verify</button>
-    
+    <input type="hidden" name="otp" id="final-otp">
+
+    <button class="verify-button" type="submit" id="verify-button" disabled>Verify</button>
+
     <script>
         const otpInputs = document.querySelectorAll('.otp-input');
         const verifyButton = document.getElementById('verify-button');
@@ -190,14 +193,14 @@
         const resendLink = document.getElementById('resend');
 
         const hiddenOtp = document.getElementById("final-otp");
-        
+
         let timeLeft = 30;
         let timerInterval;
 
         function startTimer() {
             timerInterval = setInterval(() => {
                 timeLeft--;
-                timerSpan.textContent = " Resend OTP in "+ timeLeft +" seconds ";
+                timerSpan.textContent = " Resend OTP in " + timeLeft + " seconds ";
 
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
@@ -205,7 +208,7 @@
                     resendLink.style.display = 'block';
                     timerTextTime.style.display = 'none';
                 }
-                else{
+                else {
                     resendLink.style.display = 'none';
                 }
             }, 1000);
@@ -255,32 +258,28 @@
         // });
 
 
-    resendLink.addEventListener('click', (event) => {
-    event.preventDefault();
+        resendLink.addEventListener('click', (event) => {
+            event.preventDefault();
 
-    fetch("{% url 'resend_otp' %}")
-        .then(response => {
-            if (response.redirected) {
-                window.location.href = response.url; // in case of redirect
-            }
+            fetch("{% url 'resend_otp' %}")
+                .then(response => {
+                    if (response.redirected) {
+                        window.location.href = response.url; // in case of redirect
+                    }
+                });
+
+            timeLeft = 30;
+            timerSpan.textContent = " Resend OTP in " + timeLeft + " seconds ";
+            timerSpan.style.display = 'block';
+            resendLink.style.display = 'none';
+            startTimer();
         });
-
-    timeLeft = 30;
-    timerSpan.textContent = " Resend OTP in " + timeLeft + " seconds ";
-    timerSpan.style.display = 'block';
-    resendLink.style.display = 'none';
-    startTimer();
-});
-
-
-
         startTimer();
+    </script>
 
-        
-        </script>
-
-</form>
+    </form>
 
     {% endblock %}
 </body>
+
 </html>

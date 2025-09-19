@@ -40,7 +40,7 @@ class Volunteer(models.Model):
 
 
     def __str__(self):
-        return self.username or self.email
+        return self.name or self.email
 
 
 # OTP Verification Model
@@ -78,3 +78,25 @@ class Campaign(models.Model):
 
     def __str__(self):
         return self.title
+
+    
+        
+
+class AppliedCampaign(models.Model):
+    
+    volunteer = models.ForeignKey(Volunteer, on_delete=models.CASCADE)
+    
+    campaign =  models.ForeignKey(Campaign, on_delete=models.CASCADE)
+        
+    applied_at = models.DateTimeField(auto_now_add=True)  
+    status = models.CharField(max_length=50, choices=[
+        ('pending', 'Pending'),
+        ('accepted', 'Accepted'),
+        ('rejected', 'Rejected')
+    ], default='pending')  # optional: track status of application
+
+    certificate_approved = models.BooleanField(default=False)
+
+    
+    def __str__(self):
+        return f"{self.volunteer.name} applied for {self.campaign.title}"

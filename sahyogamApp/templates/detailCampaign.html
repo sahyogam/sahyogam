@@ -161,6 +161,19 @@
       text-decoration: none;
     }
 
+
+    .delete-button {
+      background-color: #e25d5d;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 16px;
+      outline: none;
+      text-decoration: none;
+    }
+
     .popup-overlay {
       position: fixed;
       top: 0;
@@ -217,6 +230,7 @@
       transition: 0.5s;
 
     }
+
     .popup .yes-btn:hover {
       background: #d44e44;
       color: white;
@@ -233,7 +247,12 @@
         opacity: 1;
       }
     }
+
+    #postedBY {
+      color: #5555556c
+    }
   </style>
+
 </head>
 
 <body>
@@ -251,83 +270,119 @@
 
     <div class="containerr">
 
-
       {% if userType == "Organization" %}
       <a href="{% url 'organizationHome' %}" class="back-link"><i class="fas fa-arrow-left"></i> Back</a>
       {% else %}
       <a href="{% url 'volunteerHome' %}" class="back-link"><i class="fas fa-arrow-left"></i> Back</a>
       {% endif %}
 
-      {% if banner_image %}
-      <div class="banner">
-        <img src="{{ banner_image }}" alt="Campaign Banner">
-      </div>
-      {% endif %}
+      <!-- Form -->
+      <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
 
-      <div class="content">
-        <h1>{{ title }}</h1>
-        <p class="short-description">{{ short_description }}</p>
-        <div class="full-description">{{ full_description }}</div>
 
-        <div class="grid">
-          <div class="card">
-            <div class="label">Skills Required</div>
-            <div class="value">{{ skills_required }}</div>
-          </div>
-          <div class="card">
-            <div class="label">Location</div>
-            <div class="value">{{ location }}</div>
-          </div>
-          <div class="card">
-            <div class="label">Volunteers Needed</div>
-            <div class="value">{{ total_volunteers_needed }}</div>
-          </div>
-          <div class="card">
-            <div class="label">Applied</div>
-            <div class="value">{{ applied }}</div>
-          </div>
-          <div class="card">
-            <div class="label">Start Date</div>
-            <div class="value">{{ start_date }}</div>
-          </div>
-          <div class="card">
-            <div class="label">End Date</div>
-            <div class="value">{{ end_date }}</div>
-          </div>
-          <div class="card">
-            <div class="label">Time Slot</div>
-            <div class="value">{{ time_slot }}</div>
-          </div>
-          <div class="card">
-            <div class="label">Additional Instructions</div>
-            <div class="value">{{ additional_instructions }}</div>
+        {% if banner_image %}
+        <div class="banner">
+          <img src="{{ banner_image }}" alt="Campaign Banner">
+
+          <input type="hidden" value="{{ banner_image }}" name="bannerImage">
+
+        </div>
+        {% endif %}
+
+        <div class="content">
+          <!-- <h1>{{ title }}</h1> -->
+          <h3>{{title}} <span id="postedBY"> | PostedBy : {{postedBy}}</span> </h3>
+
+          <input type="hidden" value="{{ title }}" name="title">
+          <input type="hidden" value="{{ postedBy }}" name="postedBy">
+
+
+          <p class="short-description">{{ short_description }}</p>
+
+          <input type="hidden" value="{{ short_description }}" name="short_description">
+
+
+          <div class="full-description">{{ full_description }}</div>
+          <input type="hidden" value="{{ full_description }}" name="full_description">
+
+
+          <div class="grid">
+            <div class="card">
+              <div class="label">Skills Required</div>
+              <div class="value">{{ skills_required }}</div>
+              <input type="hidden" value="{{ skills_required }}" name="skills_required">
+
+            </div>
+            <div class="card">
+              <div class="label">Location</div>
+              <div class="value">{{ location }}</div>
+              <input type="hidden" value="{{ location }}" name="location">
+
+            </div>
+            <div class="card">
+              <div class="label">Volunteers Needed</div>
+              <div class="value">{{ total_volunteers_needed }}</div>
+
+            </div>
+            <div class="card">
+              <div class="label">Applied</div>
+              <div class="value">{{ applied }}</div>
+            </div>
+            <div class="card">
+              <div class="label">Start Date</div>
+              <div class="value">{{ start_date }}</div>
+
+            </div>
+            <div class="card">
+              <div class="label">End Date</div>
+              <div class="value">{{ end_date }}</div>
+            </div>
+
+            <div class="card">
+              <div class="label">Time Slot</div>
+              <div class="value">{{ time_slot }}</div>
+            </div>
+
+            <div class="card">
+              <div class="label">Additional Instructions</div>
+              <div class="value">{{ additional_instructions }}</div>
+            </div>
+
+            <!-- <div class="card">
+            <div class="label">Posted By</div>
+            <div>{{postedBy}}</div>
+          </div> -->
+
           </div>
         </div>
-      </div>
 
-      <div class="footer">
-        <span>Created: {{ created_at | date:"Y-m-d"}}</span>
-        <span>Updated: {{ updated_at }}</span>
-      </div>
-      <br>
-      <div class="actions">
-        {% if applyBtn %}
-        <!-- <button class="btn btn-primary" type="button">Apply Now</button>  -->
-        <a href="" class="apply-button">Apply</a>
-        {% endif %}
+        <div class="footer">
+          <span>Created: {{ created_at | date:"Y-m-d"}}</span>
+          <span>Updated: {{ updated_at }}</span>
+        </div>
+        <br>
+        <div class="actions">
+          {% if applyBtn %}
+          <!-- <button class="btn btn-primary" type="button">Apply Now</button>  -->
+          <!-- <a href="" class="apply-button">Apply</a> -->
+          <button class="apply-button" type="submit">Apply</button>
+          {% endif %}
 
-        {% if userType == "Organization" %}
-        <a href="{% url 'editCampaing' pk %}" class="apply-button" >Edit Campaign</a>
-        <a href="{% url 'delete-campaign' pk %}" class="apply-button" id="deleteID">delete Campaign</a>
+          {% if userType == "Organization" %}
+          <a href="{% url 'editCampaing' pk %}" class="apply-button">Edit Campaign</a>
+          <a href="{% url 'delete-campaign' pk %}" class="delete-button" id="deleteID">delete Campaign</a>
 
-        {% endif %}
+          {% endif %}
 
-      </div>
-      <br>
+        </div>
+        <br>
 
 
     </div>
   </div>
+
+  </form>
   <script>
     const myLink = document.getElementById("deleteID");
     const popupOverlay = document.getElementById("popupOverlay");

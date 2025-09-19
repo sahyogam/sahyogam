@@ -10,7 +10,7 @@ from datetime import datetime
 from django.contrib.auth.hashers import make_password
 from django.utils import timezone
 from datetime import timedelta
-from .models import Organization, Volunteer,EmailOTP,Campaign
+from .models import Organization, Volunteer,EmailOTP,Campaign,AppliedCampaign
 from .utils import send_otp_email
 from django.contrib.auth.hashers import check_password
 
@@ -126,10 +126,7 @@ def register_volunteer(request):
       
     if request.method == "POST":
         
-        # register_as = request.POST.get("register-as")
-        
         request.session["register_as"] = "volunteer"
-        
                                  
         name = request.POST.get("vol-name")
         username = request.POST.get("vol-username")
@@ -141,8 +138,6 @@ def register_volunteer(request):
         location = request.POST.get("vol-location")
         profile_image = request.FILES.get("vol_profile_image_upload")
         
-        # profile_image = request.FILES.get("vol_profile_image_upload")
-            
         if profile_image:
             from django.core.files.storage import default_storage
             file_path = default_storage.save(f"images/{profile_image.name}", profile_image)
@@ -427,6 +422,7 @@ def explore(request):
         "logoutLink":True,
         # "explore_button":True
         
+        
     }
     
     return render(request, 'explore.html',context)
@@ -435,10 +431,21 @@ def volunteerHome(request):
     try:
         if request.session["isVolLogin"] == True:
             
-                Campaigns =  Campaign.objects.all()           
-                vol = Volunteer.objects.get(email__iexact=request.session["vol_email"])                          
+                vol = Volunteer.objects.get(email__iexact=request.session["vol_email"])
+
+        # filter campaigns where an Application exists for this volunteer
+                Campaigns = Campaign.objects.filter(appliedcampaign__volunteer=vol.pk)
+                applied_entries = AppliedCampaign.objects.select_related('volunteer','campaign').filter(volunteer_id=vol.pk)
+
+            
+                # Campaigns =  Campaign.objects.all()    
+                       
+                # vol = Volunteer.objects.get(email__iexact=request.session["vol_email"])                          
                 
                 request.session["vol_dp"] = vol.profile_photo.url if vol.profile_photo else None
+                
+                
+            
                 
                 context = {
                     "VolName":vol.name,
@@ -447,11 +454,12 @@ def volunteerHome(request):
                     "skills":vol.skills.split(","),
                     "pk":vol.pk,
                     "userName" : vol.username,
-                    "Campaigns":Campaigns,
+                    "Campaigns":applied_entries,
                     "nav":True,
                     "search":False,
                     "logoutLink":True,
-                    "explore_button":True
+                    "explore_button":True,
+                    # "entries":applied_entries
                     
                 }
             
@@ -459,9 +467,11 @@ def volunteerHome(request):
         else:
             return redirect("register")
     except Exception as e:
+        
             # Catch all other unexpected email errors
                 # messages.error(request, f"Error sending email: {e}")
-            return redirect("login")
+        print(e)
+        return redirect("login")
 
 
 def organizationHome(request):
@@ -473,7 +483,8 @@ def organizationHome(request):
             
             
             campaign =  Campaign.objects.filter(organizationID=org)
-                            
+                     
+            
             
             context = {
             "OrgName":org.name,
@@ -481,6 +492,8 @@ def organizationHome(request):
             "userType":"Organization",
             "Campaigns":campaign,
             # "nav":True,
+            "PK":org.pk,
+            "ORG":org
             
             
             }
@@ -585,14 +598,42 @@ def edit_volunteer(request, pk):
 
 
         volunteer.save()
+        
         # 23-08-2025 setup PK for uniqueness of each user and updation code remain
-        return redirect("volunteerHome")
+        return redirect("explore")
 
     return render(request, "edit_volunteer.html", {"volunteer": volunteer})
 
 
-def detailCampaign(request,pk,userType):
-    campaignData = Campaign.objects.get(pk=pk)
+def detailCampaign(request,pk,userType,Upk):
+    campaignData = get_object_or_404(Campaign, pk=pk)
+    
+    if request.method == "POST" and userType != "Organization":
+        
+        volunteerData = get_object_or_404(Volunteer, pk=Upk)
+        
+        already_applied = AppliedCampaign.objects.filter(
+            volunteer=volunteerData,
+            campaign=campaignData
+        ).exists()
+        
+            
+        if already_applied:
+            messages.warning(request, "You've already applied!")
+        else:
+            AppliedCampaign.objects.create(
+                volunteer=volunteerData,
+                campaign=campaignData
+            )
+            # increment the applied count
+            campaignData.applied += 1
+            campaignData.save()
+            messages.success(request, "You have successfully applied for this campaign.")
+
+        return redirect("volunteerHome")
+
+    
+    
         
     applyBtn = True
         
@@ -600,7 +641,9 @@ def detailCampaign(request,pk,userType):
         applyBtn = False                
     
     context = {
+        
         "pk":campaignData.pk,
+        "volPk":Upk,
         "title": campaignData.title,
         "short_description":campaignData.short_description,
         "full_description":campaignData.full_description,
@@ -618,7 +661,8 @@ def detailCampaign(request,pk,userType):
         "applyBtn":applyBtn,             
         "userType":userType,
         "nav":True,
-        "logoutLink":True
+        "logoutLink":True,
+        "postedBy":campaignData.postedBy
         
     }
     
@@ -635,8 +679,42 @@ def deleteCampaign(request,pk):
 def editCampaign(request,pk):
     return render(request,"edit_campaign.html")
 
-def editOrganization(request):
-    return render(request,"edit_organization.html",{"nav":True})
+def editOrganization(request,PK):
+    
+    org = get_object_or_404(Organization, pk=PK)
+    
+    if request.method == "POST":
+        org.name = request.POST.get("name")
+        org.username = request.POST.get("username")
+        org.org_type = request.POST.get("org-type")
+        org.phone = request.POST.get("phone")
+        
+        
+        org.address = request.POST.get("address")
+        
+        profile_image = request.FILES.get("profile_photo")
+            
+        if profile_image:
+            from django.core.files.storage import default_storage
+            file_path = default_storage.save(f"images/{profile_image.name}", profile_image)
+
+            org.profile_photo = file_path            
+
+
+        org.save()
+        return redirect("organizationHome")
+    
+    # campaign =  Campaign.objects.filter(organizationID=org)
+    
+    context = {
+            # "OrgName":org.name,
+            "ORG_DP":request.session["org_dp"],
+            "userType":"Organization",
+            # "Campaigns":campaign,
+            "nav":False,
+            "OrgData":org
+            }
+    return render(request,"edit_organization.html",context)
 
 
 def logout(request,userID):
@@ -656,3 +734,120 @@ def logout(request,userID):
         
         return redirect("login") 
                 
+
+def totalVolunteerApplied(request):
+    
+    if request.method == "POST":
+        CampaignPk = request.POST.get("CampaignPk")
+        VolunteerPk = request.POST.get("VolunteerPk")
+        status = request.POST.get("status")
+        approveCerti = request.POST.get("approveCerti")
+        
+        applied_entry = AppliedCampaign.objects.get(
+            volunteer_id=VolunteerPk,
+            campaign_id=CampaignPk,
+            
+        )
+        applied_entry.certificate_approved = approveCerti
+        applied_entry.status = status  
+        applied_entry.save()
+
+
+        
+
+    org = Organization.objects.get(email__iexact=request.session["org_email"])  
+    
+    applied_entries = AppliedCampaign.objects.select_related('volunteer', 'campaign').filter(campaign__organizationID_id=org.pk)
+
+    context = {
+        "applied_entries":applied_entries
+    }
+    return render(request,"totalVolunteerApplied.html",context)
+
+
+
+from django.http import HttpResponse
+from reportlab.pdfgen import canvas
+
+# def certificate_pdf(request,volunteer_id,campaign_id):
+#     response = HttpResponse(content_type='application/pdf')
+#     response['Content-Disposition'] = 'attachment; filename="certificate.pdf"'
+#     p = canvas.Canvas(response)
+#     p.setFont("Helvetica-Bold", 20)
+#     p.drawString(100, 750, "Certificate of Participation")
+#     p.drawString(100, 700, f"Name: {request.user.first_name}")
+#     p.showPage()
+#     p.save()
+#     return response
+
+from django.http import HttpResponse
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.colors import HexColor
+from .models import AppliedCampaign  # adjust path to your models
+
+
+def certificate_pdf(request, volunteer_id, campaign_id):
+    # Fetch the AppliedCampaign record
+    applied = AppliedCampaign.objects.select_related("volunteer", "campaign__organizationID").get(
+        volunteer_id=volunteer_id,
+        campaign_id=campaign_id,
+        certificate_approved=True   # optional: only if approved
+    )
+
+    volunteer = applied.volunteer
+    campaign = applied.campaign
+    organization = campaign.organizationID
+
+    # Prepare response
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"] = f'attachment; filename="certificate_{volunteer.name}.pdf"'
+
+    # Set up canvas
+    c = canvas.Canvas(response, pagesize=A4)
+    width, height = A4
+
+    # Background / border (optional)
+    c.setStrokeColor(HexColor("#0D47A1"))
+    c.setLineWidth(4)
+    c.rect(30, 30, width - 60, height - 60)
+
+    # Title
+    c.setFont("Helvetica-Bold", 28)
+    c.setFillColor(HexColor("#0D47A1"))
+    c.drawCentredString(width / 2, height - 120, "CERTIFICATE")
+
+    # Body text
+    c.setFont("Helvetica", 14)
+    c.setFillColor(HexColor("#000000"))
+
+    text = (
+        f"This is to certify that {volunteer.name}, "
+        f"for donating their valuable skill(s): {volunteer.skills}, "
+        f"has successfully participated in the campaign "
+        f"\"{campaign.title}\" organized by {organization.name}."
+    )
+
+    # Wrap long text
+    from reportlab.platypus import Paragraph
+    from reportlab.lib.styles import getSampleStyleSheet
+    from reportlab.platypus import Frame
+
+    styles = getSampleStyleSheet()
+    style = styles["Normal"]
+    style.fontSize = 14
+    style.leading = 20
+
+    p = Paragraph(text, style)
+    frame = Frame(80, height/2 - 60, width - 160, 120, showBoundary=0)
+    frame.addFromList([p], c)
+
+    # Footer / greetings
+    c.setFont("Helvetica-Bold", 16)
+    c.drawCentredString(width / 2, 120, f"With warm regards,")
+    c.setFont("Helvetica-Bold", 18)
+    c.drawCentredString(width / 2, 90, organization.name)
+
+    c.showPage()
+    c.save()
+    return response

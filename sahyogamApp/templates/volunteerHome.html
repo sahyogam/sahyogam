@@ -256,17 +256,6 @@
             margin-bottom: 10px;
         }
 
-        .campaign-card .apply-button {
-            background-color: #5DADE2;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 16px;
-            outline: none;
-            text-decoration: none;
-        }
 
         /* Right Sidebar */
         .right-sidebar {
@@ -386,6 +375,88 @@
                 padding: 15px;
             }
         }
+
+
+
+        /* Range */
+
+        input[type="range"] {
+            /* For browsers that support accent-color */
+            accent-color: blue;
+
+            /* Fallback for WebKit (Chrome, Safari, Edge) */
+            -webkit-appearance: none;
+            width: 200px;
+            height: 6px;
+            background: #cce0ff;
+            /* unfilled track */
+            border-radius: 3px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: blue;
+            /* thumb color */
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            /* background: blue; */
+            /* Firefox thumb */
+            border: none;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+        }
+
+        input[type="range"]::-moz-range-track {
+            background: #cce0ff;
+            /* Firefox track */
+        }
+
+
+        #statusAndViewBtn {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+
+        .status {
+
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #fff;
+            margin-top: 5px;
+        }
+
+        .campaign-card .apply-button {
+            background-color: #5DADE2;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            outline: none;
+            text-decoration: none;
+        }
+
+        .status.pending {
+            background-color: #ff9800;
+        }
+
+        .status.accepted {
+            background-color: #4CAF50;
+        }
+
+        .status.rejected {
+            background-color: #f44336;
+        }
     </style>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -395,6 +466,17 @@
 </head>
 
 <body>
+
+
+    {% if messages %}
+    {% for message in messages %}
+    <script>
+        alert("{{ message|escapejs }}");
+    </script>
+    {% endfor %}
+    {% endif %}
+
+
     <div class="container">
         <!-- Top Navigation Bar -->
         <!-- <nav class="navbar">
@@ -459,40 +541,70 @@
                     data-skills="{{campaign.skills_required}}" data-org-type="{{campaign.organizationID.org_type}}">
 
                     <div class="campaign-header">
-                        <h3>{{Campaign.title}} <span class="posted-by">Posted by: {{Campaign.postedBy}} </span></h3>
+                        <h3>{{Campaign.campaign.title}} <span class="posted-by">Posted by:
+                                {{Campaign.campaign.postedBy}} </span></h3>
                     </div>
                     <p class="description">
-                        {{Campaign.short_description}}
+                        {{Campaign.campaign.short_description}}
                     </p>
 
                     <div class="skill-tags">
-                        <span> {{Campaign.skills_required}}</span>
+                        <span> {{Campaign.campaign.skills_required}}</span>
                         <!-- <span>Carpentry</span>
                         <span>Construction</span> -->
                     </div>
 
                     <div class="campaign-info">
-                        <i class="fas fa-map-marker-alt"></i> {{Campaign.location}}
-                        <i class="far fa-calendar-alt"></i> {{Campaign.start_date}}
+                        <i class="fas fa-map-marker-alt"></i> {{Campaign.campaign.location}}
+                        <i class="far fa-calendar-alt"></i> {{Campaign.campaign.start_date}}
                     </div>
 
-                    <div class="progress-bar">
-                        <div class="progress" style="width: 40%;"></div>
+                    <!-- <div class="progress-bar"> -->
+                    <!-- <div class="progress" style="width: 40%;"></div>
+                          -->
+
+                    <div>
+                        <input type="range" id="volume" style="width: 100%" name="volume" min="0"
+                            max="{{Campaign.total_volunteers_needed}}" value="{{Campaign.campaign.applied}}" disabled>
                     </div>
+                    <!-- </div> -->
 
                     <div class="amounts">
                         <!-- <span>Location: <b>{{Campaign.location}}</b></span> -->
-                        <span>Total needs of volunteer: <b>{{Campaign.total_volunteers_needed}}</b></span>
-                        <span>Total Applied:<b>{{Campaign.applied}}</b></span>
+                        <span>Total needs of volunteer: <b>{{Campaign.campaign.total_volunteers_needed}}</b></span>
+                        <span>Total Applied:<b>{{Campaign.campaign.applied}}</b></span>
                     </div>
 
                     <!-- <button class="apply-button">Apply Now</button> -->
-                    <a href="{% url 'detailCampaign' Campaign.pk userType %}" class="apply-button">View Detail</a>
+                    <div id="statusAndViewBtn">
+                        <span>
+
+                            <a href="{% url 'detailCampaign' Campaign.campaign.pk userType pk %}"
+                                class="apply-button">View
+                                Detail</a>
+                        </span>
+                        <!-- <a href="{% url 'detailCampaign' Campaign.pk userType pk %}" class="apply-button">Cancle Application</a> -->
+
+                        <!-- <span class="status {{ entry.status }}">{{ entry.status }}</span> -->
+
+                        <span>
+
+                            <span class="status {{ Campaign.status }}">{{ Campaign.status }}</span>
+                            {% if Campaign.certificate_approved %}
+                            <a href="{% url 'download_certificate' pk Campaign.campaign.pk %}" class="apply-button"><i class="fas fa-download"></i> Certificate</a>
+                            {% endif %}
+                        </span>
+
+                    </div>
+
+
 
                 </div>
-
-
                 {% endfor %}
+
+
+
+
                 <!-- More Campaign Cards -->
             </main>
 
@@ -525,7 +637,7 @@
         </div>
     </div>
 
-    //
+
     <script>// Example (requires knowing the user's role on page load)
         // const userRole = 'volunteer'; // Or 'organization'
 

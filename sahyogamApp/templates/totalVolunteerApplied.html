@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteers Applied</title>
+    <style>
+        /* Reset some default styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f8;
+            padding: 20px;
+        }
+
+        h1,
+        h2 {
+            margin: 5px 0;
+        }
+
+        /* Grid container for all volunteers */
+        .volunteer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        /* Individual volunteer card */
+        .volunteer-card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .volunteer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .volunteer-card img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid #4CAF50;
+        }
+
+        .volunteer-card h1 {
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .volunteer-card h2 {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 7px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #fff;
+            margin-top: 5px;
+        }
+
+        .status.pending {
+            background-color: #ff9800;
+        }
+
+        .status.accepted {
+            background-color: #4CAF50;
+        }
+
+        .status.rejected {
+            background-color: #f44336;
+        }
+
+        #homeBtn:hover {
+            display: inline-block;
+            padding: 10px 10px;
+            border-radius: 20px;
+            font-size: 1rem;
+            color: #ffffff;
+            margin: 1rem;
+            text-decoration: none;
+            font-weight: bold;
+            background-color: #5dade2;
+        }
+
+        #homeBtn {
+            transition: 0.5s;
+            display: inline-block;
+            padding: 10px 10px;
+            border-radius: 20px;
+            font-size: 1rem;
+            color: #5dade2;
+            margin: 1rem;
+            text-decoration: none;
+            font-weight: bold;
+            background-color: #ffffff;
+            border: 1px solid #5dade2;
+        }
+
+        #ChangeBtn {
+            font-size: 1rem;
+            margin: 1rem;
+            padding: 5px 5px;
+            border-radius: 5px;
+            border:1px solid black;
+        }
+
+        #statusList {
+            font-size: 1rem;
+            margin: 1rem;
+            padding: 5px 5px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="container">
+
+
+
+        <div id="main">
+
+            <h1 style="text-align:center; margin-bottom: 30px;">Volunteers Applied</h1>
+
+            <div class="volunteer-grid">
+                {% for entry in applied_entries %}
+                <div class="volunteer-card">
+                    {% if entry.volunteer.profile_photo %}
+                    <img src="{{ entry.volunteer.profile_photo.url }}" alt="{{ entry.volunteer.name }}">
+
+                    {% endif %}
+                    <h1>Volunteer Name:{{ entry.volunteer.name }}</h1>
+                    <h2>Campaign Title:{{ entry.campaign.title }}</h2>
+
+                    <span class="status {{ entry.status }}">{{ entry.status }}</span>
+                    <br><br>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="CampaignPk" value="{{entry.campaign.pk}}">
+                        <input type="hidden" name="VolunteerPk" value="{{entry.volunteer.pk}}">
+
+                        Status:
+                        <select name="status" id="statusList">
+                            <option value="{{entry.status}}" selected>{{entry.status}}</option>
+                            <option value="pending">Pending</option>
+                            <option value="accepted">Accepted</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                        <br>
+
+                        Approve For Certificate?
+                        <select name="approveCerti">
+                            <option value="False">NOT</option>
+                            <option value="True">YES</option>
+                        </select>
+                        <br>
+
+                        <button type="submit" id="ChangeBtn">Action</button>
+
+                    </form>
+
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <a href="{% url 'organizationHome' %}" id="homeBtn">Home</a>
+
+    </div>
+</body>
+
+</html>

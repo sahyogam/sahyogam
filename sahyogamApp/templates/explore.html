@@ -2,16 +2,16 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    
-    <head>
-        <meta charset="UTF-8">
+
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Explore Campaigns{% endblock %}</title>
-    
+
     {% block content %}
 
-<style>
-     .top-volunteers .volunteer-card {
+    <style>
+        .top-volunteers .volunteer-card {
             display: flex;
             align-items: center;
             margin-bottom: 10px;
@@ -47,7 +47,7 @@
                 margin: 5px 0;
             }
 
-            
+
 
             .main-content {
                 flex-direction: column;
@@ -79,18 +79,18 @@
 
             .profile-card {
                 padding: 15px;
-                
+
             }
         }
 
- .profile-card {
+        .profile-card {
             background-color: #fff;
             /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
             border-radius: 10px;
             padding: 20px;
             box-sizing: border-box;
             text-align: center;
-            
+
         }
 
         .profile-card .profile-pic {
@@ -141,7 +141,7 @@
             margin-right: 8px;
         }
 
-         .campaign-card .apply-button {
+        .campaign-card .apply-button {
             background-color: #5DADE2;
             border: none;
             color: white;
@@ -153,9 +153,61 @@
             text-decoration: none;
         }
 
+        #postedBY {
+            color: #5555556c
+        }
 
-</style>
-    
+        .amounts {
+            display: flex;
+            justify-content: space-between;
+            color: #777;
+            margin-bottom: 10px;
+        }
+
+
+        
+        /* Range */
+
+        input[type="range"] {
+            /* For browsers that support accent-color */
+            accent-color: blue;
+
+            /* Fallback for WebKit (Chrome, Safari, Edge) */
+            -webkit-appearance: none;
+            width: 200px;
+            height: 6px;
+            background: #cce0ff;
+            /* unfilled track */
+            border-radius: 3px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: blue;
+            /* thumb color */
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            /* background: blue; */
+            /* Firefox thumb */
+            border: none;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+        }
+
+        input[type="range"]::-moz-range-track {
+            background: #cce0ff;
+            /* Firefox track */
+        }
+
+
+    </style>
+
 
 </head>
 
@@ -167,34 +219,29 @@
         <!-- Volunteer Profile -->
         <aside class="filter-sidebar">
 
-        <div class="profile-card">  
-            <img src="{{VOL_DP}}" alt="Profile Picture" class="profile-pic">
+            <div class="profile-card">
+                <img src="{{VOL_DP}}" alt="Profile Picture" class="profile-pic">
 
-            <h3>{{VolName}}<br></h3>
+                <h3>{{VolName}}<br></h3>
 
-            <p>{{userType}}</p>
+                <p>{{userType}}</p>
 
-            <div class="skill-tags">
+                <div class="skill-tags">
 
-                {% for skill in skills %}
-
-
-                <span>{{skill}}</span>
-                <!-- <span>Coding</span>
-                        <span>Teaching</span> -->
-
-                {% endfor %}
+                    {% for skill in skills %}
+                    <span>{{skill}}</span>
+                    {% endfor %}
+                </div>
+                <!-- <p>Next Available: July 31, 2025</p> -->
+                <div class="quick-links">
+                    <a href="{% url 'edit_volunteer' pk %}"><i class="fas fa-edit"></i> Edit Profile</a>
+                    <a href="#"><i class="fas fa-certificate"></i> Certificates</a>
+                    <a href="#"><i class="fas fa-star"></i> Feedback/Rating</a>
+                </div>
             </div>
-            <!-- <p>Next Available: July 31, 2025</p> -->
-            <div class="quick-links">
-                <a href="{% url 'edit_volunteer' pk %}"><i class="fas fa-edit"></i> Edit Profile</a>
-                <a href="#"><i class="fas fa-certificate"></i> Certificates</a>
-                <a href="#"><i class="fas fa-star"></i> Feedback/Rating</a>
-            </div>
-        </div>
-        <br>
+            <br>
 
-        <!-- Filter Sidebar -->
+            <!-- Filter Sidebar -->
             <h3>Filter Campaigns</h3>
 
             <div class="filter-group">
@@ -233,14 +280,27 @@
             <div class="campaign-card" data-location="{{campaign.location}}" data-skills="{{campaign.skills_required}}"
                 data-org-type="{{campaign.organizationID.org_type}}">
                 <img src="{{campaign.banner_image.url}}" alt="Campaign Banner" class="campaign-banner">
-                <h3>{{campaign.title}}</h3>
+                <h3>{{campaign.title}} <span id="postedBY"> | PostedBy : {{campaign.postedBy}}</span> </h3>
+
                 <p> {{campaign.short_description}}</p>
                 <div class="skills">
                     <span>{{campaign.skills_required}}</span>
                 </div>
                 <p class="location">{{campaign.location}}</p>
                 <!-- <button>Apply</button> -->
-                <a href="{% url 'detailCampaign' campaign.pk userType %}" class="apply-button">View Detail</a>
+
+                <div>
+                    <input type="range" id="volume" style="width: 100%" name="volume" min="0"
+                        max="{{campaign.total_volunteers_needed}}" value="{{campaign.applied}}" disabled>
+                </div>
+                <div class="amounts">
+                    <!-- <span>Location: <b>{{Campaign.location}}</b></span> -->
+                    <span>Total needs of volunteer: <b>{{campaign.total_volunteers_needed}}</b></span>
+                    <span>Total Applied:<b>{{campaign.applied}}</b></span>
+                </div>
+                <br>
+
+                <a href="{% url 'detailCampaign' campaign.pk userType pk %}" class="apply-button">View Detail</a>
 
             </div>
             {% endfor %}

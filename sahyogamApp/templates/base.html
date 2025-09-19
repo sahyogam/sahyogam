@@ -231,12 +231,14 @@
       .navbar {
         flex-direction: column;
         align-items: flex-start;
+        
       }
 
       .navbar-center {
         margin-top: 10px;
         width: 100%;
       }
+
 
       .navbar-center .search-bar {
         width: 100%;
@@ -374,12 +376,15 @@
       </div>
       <div class="navbar-center">
 
-        
-            <a href="{% url 'volunteerHome' %}">Home</a>
 
+        {% if userType == "Organization" %}
+        <a href="{% url 'organizationHome' %}">Home</a>
+        {% else %}
+        <a href="{% url 'volunteerHome' %}">Home</a>
+        {% endif %}
 
-        <a href="#">Messages</a>
-        <a href="#">My Applications</a>
+        <!-- <a href="#">Messages</a>
+        <a href="#">My Applications</a> -->
 
         {% if explore_button %}
         <a href="{% url 'explore' %}" class="explore-button">

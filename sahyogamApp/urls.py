@@ -25,9 +25,9 @@ urlpatterns = [
     path("edit-capaign/<int:pk>",views.editCampaign,name="editCampaing"),
     path('delete-campaign/<int:pk>', views.deleteCampaign, name='delete-campaign'),
     
-    path('edit-organization',views.editOrganization,name="editOrganization"),
+    path('edit-organization/<int:PK>/',views.editOrganization,name="editOrganization"),
     
-    path('detailCampaign/<int:pk>/<str:userType>/',views.detailCampaign,name="detailCampaign"),
+    path('detailCampaign/<int:pk>/<str:userType>/<int:Upk>/',views.detailCampaign,name="detailCampaign"),
     
     # path('404/', views.page_404, name='404'),
     path('base/', views.base_page, name='base'),
@@ -42,6 +42,13 @@ urlpatterns = [
 
     path("logout/<str:userID>/",views.logout,name="logout"),
     
+    path('totalVolunteerApplied/', views.totalVolunteerApplied, name='totalVolunteerApplied'),
+    
+     path(
+        'certificate_pdf/<int:volunteer_id>/<int:campaign_id>/',
+        views.certificate_pdf,
+        name='download_certificate'
+    ),
     
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
