@@ -1,30 +1,43 @@
+from django.http import HttpResponse
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.colors import HexColor
+from .models import AppliedCampaign  
+from django.core.mail import EmailMessage
+from django.conf import settings
+from django.shortcuts import render
+from django.contrib import messages
+from io import BytesIO
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.colors import HexColor
+from reportlab.platypus import Paragraph, Frame
+from reportlab.lib.styles import getSampleStyleSheet
+from .models import Organization, AppliedCampaign
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib import messages
 import random
-
 from datetime import datetime
-
-
 from django.contrib.auth.hashers import make_password
 from django.utils import timezone
 from datetime import timedelta
 from .models import Organization, Volunteer,EmailOTP,Campaign,AppliedCampaign
 from .utils import send_otp_email
 from django.contrib.auth.hashers import check_password
-
 from django.core.mail import send_mail, BadHeaderError
 from django.contrib import messages
 import socket
+from django.core.mail import EmailMultiAlternatives
+from django.conf import settings
+from reportlab.platypus import Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import Frame
+
 
 def generate_otp():
     return str(random.randint(100000, 999999))
-
-
-from django.core.mail import EmailMultiAlternatives
-from django.conf import settings
-
 def send_otp_email(email, otp):
     
     subject = "Your Sahyogam Registration OTP"
@@ -42,13 +55,13 @@ def send_otp_email(email, otp):
             <img src="https://lh3.googleusercontent.com/a-/ALV-UjXRqxHxsCB_ZfSeBy0DxjgZntFdrwjx3t_Igr2guK05gH5thZs=s100-p-k-rw-no" alt="Sahyogam Logo" style="
   
   
-  --size: 140px;width: var(--size);
-  height: var(--size);
-  aspect-ratio: 1 / 1;     
-  border-radius: 50%;      
-  border: 1px solid #033761; 
-  object-fit: cover;       
-  display: inline-block;">
+            --size: 140px;width: var(--size);
+            height: var(--size);
+            aspect-ratio: 1 / 1;     
+            border-radius: 50%;      
+            border: 1px solid #033761; 
+            object-fit: cover;       
+            display: inline-block;">
             
             <h2 style="color: #4CAF50;">Sahyogam OTP Verification</h2>
             <p style="font-size: 16px;">Your One-Time Password is:</p>
@@ -433,19 +446,9 @@ def volunteerHome(request):
             
                 vol = Volunteer.objects.get(email__iexact=request.session["vol_email"])
 
-        # filter campaigns where an Application exists for this volunteer
-                Campaigns = Campaign.objects.filter(appliedcampaign__volunteer=vol.pk)
                 applied_entries = AppliedCampaign.objects.select_related('volunteer','campaign').filter(volunteer_id=vol.pk)
-
-            
-                # Campaigns =  Campaign.objects.all()    
-                       
-                # vol = Volunteer.objects.get(email__iexact=request.session["vol_email"])                          
                 
                 request.session["vol_dp"] = vol.profile_photo.url if vol.profile_photo else None
-                
-                
-            
                 
                 context = {
                     "VolName":vol.name,
@@ -481,10 +484,7 @@ def organizationHome(request):
             org = Organization.objects.get(email__iexact=request.session["org_email"])  
             # vol = Volunteer.objects.get(email__iexact=request.session["vol_email"])                          
             
-            
             campaign =  Campaign.objects.filter(organizationID=org)
-                     
-            
             
             context = {
             "OrgName":org.name,
@@ -522,7 +522,25 @@ def post_campaign(request,OrgName):
         totalVolunteers = request.POST.get("totalVolunteers")
         startDate = request.POST.get("startDate")
         endDate = request.POST.get("endDate")
-        timeSlot = request.POST.get("timeSlot")
+        
+        start_time_str = request.POST.get("start_time")
+        end_time_str = request.POST.get("end_time")
+        
+        
+        if start_time_str:
+            time_12 = datetime.strptime(start_time_str, "%H:%M").strftime("%I:%M %p")  
+        else:
+            time_12 = None
+
+        starting_time = time_12
+        
+        if end_time_str:
+            time_12 = datetime.strptime(end_time_str, "%H:%M").strftime("%I:%M %p")  
+        else:
+            time_12 = None
+
+        ending_time = time_12
+        
         additionalInstructions = request.POST.get("additionalInstructions")
                 
         bannerImage = request.FILES.get("bannerImage")
@@ -543,7 +561,8 @@ def post_campaign(request,OrgName):
             applied = 0,
             start_date=startDate,
             end_date=endDate,
-            time_slot=timeSlot,
+            start_time=starting_time,
+            end_time = ending_time,
             banner_image=file_path,
             additional_instructions=additionalInstructions,
             postedBy = OrgName,
@@ -561,15 +580,11 @@ def post_campaign(request,OrgName):
     return render(request, 'post-campaign.html')
     
 
-    
-
 def verify_otp(request):
     return render(request, 'verify_otp.html')
 
 def home(request):
     return render(request, 'home.html')
-
-
 
     
 def edit_volunteer(request, pk):
@@ -605,79 +620,230 @@ def edit_volunteer(request, pk):
     return render(request, "edit_volunteer.html", {"volunteer": volunteer})
 
 
-def detailCampaign(request,pk,userType,Upk):
+def detailCampaign(request, pk, userType, Upk):
     campaignData = get_object_or_404(Campaign, pk=pk)
-    
-    if request.method == "POST" and userType != "Organization":
-        
-        volunteerData = get_object_or_404(Volunteer, pk=Upk)
-        
-        already_applied = AppliedCampaign.objects.filter(
-            volunteer=volunteerData,
-            campaign=campaignData
-        ).exists()
-        
-            
-        if already_applied:
-            messages.warning(request, "You've already applied!")
-        else:
-            AppliedCampaign.objects.create(
-                volunteer=volunteerData,
-                campaign=campaignData
-            )
-            # increment the applied count
-            campaignData.applied += 1
-            campaignData.save()
-            messages.success(request, "You have successfully applied for this campaign.")
 
+    if request.method == "POST" and userType != "Organization":
+        volunteerData = get_object_or_404(Volunteer, pk=Upk)
+
+        # check if already applied to this campaign
+        if AppliedCampaign.objects.filter(volunteer=volunteerData, campaign=campaignData).exists():
+            messages.warning(request, "You've already applied!")
+            return redirect("volunteerHome")
+
+        # get all campaigns volunteer has applied to
+        applied_entries = AppliedCampaign.objects.select_related('campaign').filter(volunteer=volunteerData)
+
+        new_start = campaignData.start_date
+        new_end = campaignData.end_date
+
+        # convert time strings (e.g. "10:00 AM") to time objects
+        def parse_time(time_str):
+            try:
+                return datetime.strptime(time_str.strip(), "%I:%M %p").time() if time_str else None
+            except Exception:
+                return None
+
+        new_start_time = parse_time(getattr(campaignData, "start_time", None))
+        new_end_time = parse_time(getattr(campaignData, "end_time", None))
+
+        # flag for overlap
+        overlap_found = False
+
+        for applied in applied_entries:
+            old_campaign = applied.campaign
+            old_start = old_campaign.start_date
+            old_end = old_campaign.end_date
+            old_start_time = parse_time(getattr(old_campaign, "start_time", None))
+            old_end_time = parse_time(getattr(old_campaign, "end_time", None))
+
+            # Check if date ranges overlap
+            dates_overlap = not (new_end < old_start or new_start > old_end)
+
+            # Check if time ranges overlap
+            times_overlap = False
+            if new_start_time and new_end_time and old_start_time and old_end_time:
+                times_overlap = not (new_end_time <= old_start_time or new_start_time >= old_end_time)
+
+            # If both overlap, block
+            if dates_overlap and times_overlap:
+                overlap_found = True
+                messages.warning(
+                    request,
+                    f"You've already applied in another campaign ({old_campaign.title}) "
+                    f"between {old_start}–{old_end} at similar time slot."
+                )
+                break
+
+        if overlap_found:
+            return redirect("volunteerHome")
+
+        # Otherwise, apply new campaign
+        AppliedCampaign.objects.create(
+            volunteer=volunteerData,
+            campaign=campaignData,
+            applied_at=datetime.now().strftime("%I:%M %p"),
+        )
+        campaignData.applied += 1
+        campaignData.save()
+        messages.success(request, "You have successfully applied for this campaign.")
         return redirect("volunteerHome")
 
-    
-    
-        
-    applyBtn = True
-        
-    if userType == "Organization":
-        applyBtn = False                
-    
-    context = {
-        
-        "pk":campaignData.pk,
-        "volPk":Upk,
-        "title": campaignData.title,
-        "short_description":campaignData.short_description,
-        "full_description":campaignData.full_description,
-        "skills_required":campaignData.skills_required,
-        "location":campaignData.location,
-        "total_volunteers_needed":campaignData.total_volunteers_needed,
-        "applied":campaignData.applied,
-        "start_date":campaignData.start_date,
-        "end_date":campaignData.end_date,
-        "time_slot":campaignData.time_slot,
-        "banner_image":campaignData.banner_image.url if campaignData.banner_image else None ,
-        "additional_instructions":campaignData.additional_instructions,
-        "created_at":campaignData.created_at,
-        "updated_at":campaignData.updated_at,
-        "applyBtn":applyBtn,             
-        "userType":userType,
-        "nav":True,
-        "logoutLink":True,
-        "postedBy":campaignData.postedBy
-        
-    }
-    
-    return render(request,"detailCampaign.html",context)
+    # if GET request
+    applyBtn = userType != "Organization"
 
+    context = {
+        "pk": campaignData.pk,
+        "volPk": Upk,
+        "title": campaignData.title,
+        "short_description": campaignData.short_description,
+        "full_description": campaignData.full_description,
+        "skills_required": campaignData.skills_required,
+        "location": campaignData.location,
+        "total_volunteers_needed": campaignData.total_volunteers_needed,
+        "applied": campaignData.applied,
+        "start_date": campaignData.start_date,
+        "end_date": campaignData.end_date,
+        "start_time": campaignData.start_time,
+        "end_time": campaignData.end_time,
+        "banner_image": campaignData.banner_image.url if campaignData.banner_image else None,
+        "additional_instructions": campaignData.additional_instructions,
+        "applyBtn": applyBtn,
+        "userType": userType,
+        "nav": True,
+        "logoutLink": True,
+        "postedBy": campaignData.postedBy,
+    }
+
+    return render(request, "detailCampaign.html", context)
 
 def deleteCampaign(request,pk):
+    
     campaign = Campaign.objects.get(pk=pk)
     campaign.delete()
     
     return redirect("organizationHome")
     
 
-def editCampaign(request,pk):
-    return render(request,"edit_campaign.html")
+def editCampaign(request,userType,pk):
+    
+    campaign = Campaign.objects.get(pk=pk)
+    
+    if request.method == "POST":
+        campaignTitle = request.POST.get("campaignTitle")
+        shortDescription = request.POST.get("shortDescription")
+        fullDescription = request.POST.get("fullDescription")
+        skills = request.POST.get("skills")
+                
+        
+        location = request.POST.get("location")
+        totalVolunteers = request.POST.get("totalVolunteers")
+        startDate = request.POST.get("startDate")
+        endDate = request.POST.get("endDate")
+        additionalInstructions = request.POST.get("additionalInstructions")
+                
+        bannerImage = request.FILES.get("profile_photo")
+        
+        if bannerImage:
+            from django.core.files.storage import default_storage
+            file_path = default_storage.save(f"images/{bannerImage.name}", bannerImage)
+            campaign.banner_image = file_path
+        
+        campaign.title = campaignTitle
+        campaign.short_description = shortDescription
+        campaign.full_description = fullDescription
+        campaign.skills_required = skills
+        campaign.location = location
+        campaign.total_volunteers_needed = totalVolunteers
+        campaign.applied = 0
+        campaign.start_date = startDate
+        campaign.end_date = endDate
+        
+        start_time_str = request.POST.get("start_time")
+        
+        # Starting time
+        if start_time_str:
+            time_12 = datetime.strptime(start_time_str, "%H:%M").strftime("%I:%M %p")  
+        else:
+            time_12 = None
+
+        starting_time = time_12
+        campaign.start_time = starting_time
+        
+        # Ending time
+        end_time_str = request.POST.get("end_time")
+        if end_time_str:
+            time_12 = datetime.strptime(end_time_str, "%H:%M").strftime("%I:%M %p")  
+        else:
+            time_12 = None
+
+        ending_time = time_12
+        campaign.end_time = ending_time
+
+        
+        campaign.additional_instructions = additionalInstructions
+        campaign.save()
+        
+        AppliedCampaign.objects.filter(campaign_id=pk).delete()
+
+    
+        # path('detailCampaign/<int:pk>/<str:userType>/<int:Upk>/',views.detailCampaign,name="detailCampaign"),
+        
+        context = {
+              
+        "pk":pk,
+        "volPk":0,
+        "title": campaignTitle,
+        "short_description":shortDescription,
+        "full_description":fullDescription,
+        "skills_required":skills,
+        "location":location,
+        "total_volunteers_needed":totalVolunteers,
+        "applied":0,
+        "start_date":startDate,
+        "end_date":endDate,
+        "start_time":starting_time,
+        "end_time":ending_time,
+        "banner_image":campaign.banner_image.url if campaign.banner_image else None ,
+        "additional_instructions":additionalInstructions,
+        "created_at":campaign.created_at,
+        "updated_at":campaign.updated_at,
+        "applyBtn":False,             
+        "userType":userType,
+        "nav":True,
+        "logoutLink":True,
+        "postedBy":campaign.postedBy
+        }
+        
+        
+        return render(request,"detailCampaign.html",context)
+
+    
+    
+    time_str = campaign.end_time  # e.g., "10:00 AM"
+    try:
+        formatted_end_time = datetime.strptime(time_str, "%I:%M %p").strftime("%H:%M")
+    except ValueError:
+        formatted_end_time = ""
+    
+    time_str = campaign.start_time  # e.g., "10:00 AM"
+    try:
+        formatted_start_time = datetime.strptime(time_str, "%I:%M %p").strftime("%H:%M")
+    except ValueError:
+        formatted_start_time = ""
+    
+    
+    context = {
+        "nav":True,
+        "userType":userType,
+        "campaign": campaign,
+        "start_time":formatted_start_time,
+        "end_time":formatted_end_time
+        
+        }
+
+
+    return render(request,"edit_campaign.html",context)
 
 def editOrganization(request,PK):
     
@@ -733,7 +899,8 @@ def logout(request,userID):
         del request.session["vol_email"]
         
         return redirect("login") 
-                
+ 
+
 
 def totalVolunteerApplied(request):
     
@@ -742,57 +909,127 @@ def totalVolunteerApplied(request):
         VolunteerPk = request.POST.get("VolunteerPk")
         status = request.POST.get("status")
         approveCerti = request.POST.get("approveCerti")
-        
-        applied_entry = AppliedCampaign.objects.get(
+
+        applied_entry = AppliedCampaign.objects.select_related('volunteer', 'campaign').get(
             volunteer_id=VolunteerPk,
             campaign_id=CampaignPk,
-            
         )
+
+        applied_entry.status = status
         applied_entry.certificate_approved = approveCerti
-        applied_entry.status = status  
         applied_entry.save()
 
+        volunteer = applied_entry.volunteer
+        campaign = applied_entry.campaign
+        org = campaign.organizationID
 
+        subject = f"Update on your Application for '{campaign.title}'"
+        message = f"""
         
+        Dear {volunteer.name},
 
-    org = Organization.objects.get(email__iexact=request.session["org_email"])  
-    
-    applied_entries = AppliedCampaign.objects.select_related('volunteer', 'campaign').filter(campaign__organizationID_id=org.pk)
+        We wanted to update you about your application for the campaign: "{campaign.title}".
 
-    context = {
-        "applied_entries":applied_entries
-    }
-    return render(request,"totalVolunteerApplied.html",context)
+        🗓️ Campaign Duration: {campaign.start_date} to {campaign.end_date}
+        ⏰ Time Slot: {campaign.start_time} - {campaign.end_time}
 
+        Your current application status is: **{status.upper()}**
+        """
 
+        # Approve For Certificate? is YES then certificate generate:
+        pdf_buffer = None
+        if approveCerti == "True" and status.lower() == "accepted":
+            message += "\n✅ Congratulations! You have been approved for a certificate. The certificate is attached to this email."
 
-from django.http import HttpResponse
-from reportlab.pdfgen import canvas
+            # Generate certificate in-memory (BytesIO)
+            pdf_buffer = BytesIO()
+            c = canvas.Canvas(pdf_buffer, pagesize=A4)
+            width, height = A4
 
-# def certificate_pdf(request,volunteer_id,campaign_id):
-#     response = HttpResponse(content_type='application/pdf')
-#     response['Content-Disposition'] = 'attachment; filename="certificate.pdf"'
-#     p = canvas.Canvas(response)
-#     p.setFont("Helvetica-Bold", 20)
-#     p.drawString(100, 750, "Certificate of Participation")
-#     p.drawString(100, 700, f"Name: {request.user.first_name}")
-#     p.showPage()
-#     p.save()
-#     return response
+            # Border
+            c.setStrokeColor(HexColor("#0D47A1"))
+            c.setLineWidth(4)
+            c.rect(30, 30, width - 60, height - 60)
 
-from django.http import HttpResponse
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import A4
-from reportlab.lib.colors import HexColor
-from .models import AppliedCampaign  # adjust path to your models
+            # Title
+            c.setFont("Helvetica-Bold", 28)
+            c.setFillColor(HexColor("#0D47A1"))
+            c.drawCentredString(width / 2, height - 120, "CERTIFICATE")
+
+            # Body
+            c.setFont("Helvetica", 14)
+            c.setFillColor(HexColor("#000000"))
+
+            text = (
+                f"This is to certify that {volunteer.name}, "
+                f"for donating their valuable skill(s): {volunteer.skills}, "
+                f"has successfully participated in the campaign "
+                f"\"{campaign.title}\" organized by {org.name}."
+            )
+
+            styles = getSampleStyleSheet()
+            style = styles["Normal"]
+            style.fontSize = 14
+            style.leading = 20
+
+            p = Paragraph(text, style)
+            frame = Frame(80, height / 2 - 60, width - 160, 120, showBoundary=0)
+            frame.addFromList([p], c)
+
+            # Footer
+            c.setFont("Helvetica-Bold", 16)
+            c.drawCentredString(width / 2, 120, f"With warm regards,")
+            c.setFont("Helvetica-Bold", 18)
+            c.drawCentredString(width / 2, 90, org.name)
+
+            c.showPage()
+            c.save()
+            pdf_buffer.seek(0)
+
+        elif status.lower() == "rejected":
+            message += "\nWe appreciate your interest, but unfortunately, you were not selected for this campaign."
+
+        else:
+            message += "\nYour application is currently pending review."
+
+        message += f"\n\nBest regards,\n{org.name} Team"
+
+        try:
+            # Prepare email
+            email = EmailMessage(
+                subject=subject,
+                body=message,
+                from_email=settings.EMAIL_HOST_USER,
+                to=[volunteer.email],
+            )
+
+            # Attach certificate if available
+            if pdf_buffer:
+                email.attach(f"certificate_{volunteer.name}.pdf", pdf_buffer.getvalue(), "application/pdf")
+
+            email.send()
+            messages.success(request, f"Email sent to {volunteer.name} ({status}) successfully.")
+
+        except Exception as e:
+            messages.error(request, f"Status updated, but failed to send email: {e}")
+
+    # Show all applied volunteers
+    org = Organization.objects.get(email__iexact=request.session["org_email"])
+    applied_entries = AppliedCampaign.objects.select_related('volunteer', 'campaign').filter(
+        campaign__organizationID_id=org.pk
+    )
+
+    context = {"applied_entries": applied_entries}
+    return render(request, "totalVolunteerApplied.html", context)
+
 
 
 def certificate_pdf(request, volunteer_id, campaign_id):
-    # Fetch the AppliedCampaign record
+
     applied = AppliedCampaign.objects.select_related("volunteer", "campaign__organizationID").get(
         volunteer_id=volunteer_id,
         campaign_id=campaign_id,
-        certificate_approved=True   # optional: only if approved
+        certificate_approved=True   
     )
 
     volunteer = applied.volunteer
@@ -829,9 +1066,6 @@ def certificate_pdf(request, volunteer_id, campaign_id):
     )
 
     # Wrap long text
-    from reportlab.platypus import Paragraph
-    from reportlab.lib.styles import getSampleStyleSheet
-    from reportlab.platypus import Frame
 
     styles = getSampleStyleSheet()
     style = styles["Normal"]

@@ -322,6 +322,7 @@
                 const selectedSkills = Array.from(skillTags)
                     .filter(tag => tag.classList.contains('selected'))
                     .map(tag => tag.dataset.skill);
+                    
                 const selectedOrgTypes = Array.from(orgTypeCheckboxes)
                     .filter(checkbox => checkbox.checked)
                     .map(checkbox => checkbox.value);

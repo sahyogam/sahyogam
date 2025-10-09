@@ -341,7 +341,7 @@
 
             <div class="card">
               <div class="label">Time Slot</div>
-              <div class="value">{{ time_slot }}</div>
+              <div class="value">{{ start_time}} To {{ end_time}}</div>
             </div>
 
             <div class="card">
@@ -370,7 +370,7 @@
           {% endif %}
 
           {% if userType == "Organization" %}
-          <a href="{% url 'editCampaing' pk %}" class="apply-button">Edit Campaign</a>
+          <a href="{% url 'EditCampaign' userType pk %}" class="apply-button">Edit Campaign</a>
           <a href="{% url 'delete-campaign' pk %}" class="delete-button" id="deleteID">delete Campaign</a>
 
           {% endif %}

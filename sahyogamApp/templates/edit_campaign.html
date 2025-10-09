@@ -8,11 +8,430 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Edit Campaign{% endblock %}</title>
     {% block content %}
+
+
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e3f2fd, #ffffff);
+            color: #333;
+        }
+
+        .containerr {
+            width: 100%;
+            max-width: 100vh;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        /* Page Title */
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title h1 {
+            font-size: 2.5em;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .page-title p {
+            font-size: 1.1em;
+            color: #555;
+            margin-top: 8px;
+        }
+
+        /* Form */
+        .post-campaign-form {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+
+            gap: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 6px rgba(52, 152, 219, 0.3);
+            outline: none;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-group input[type="file"] {
+            border: none;
+            font-size: 0.95em;
+
+        }
+
+
+        /* Submit Section */
+        .submit-section {
+            grid-column: 1 / span 2;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .submit-section button {
+            background: linear-gradient(135deg, #3498db, #5dade2);
+            border: none;
+            color: white;
+            font-size: 1.1em;
+            font-weight: 500;
+            padding: 14px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .submit-section button:hover {
+            background: linear-gradient(135deg, #2980b9, #3498db);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .post-campaign-form {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        .skill-selection {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .skill-tag {
+            background-color: #eaf2ff;
+            color: #448aff;
+            padding: 5px 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .skill-tag.selected {
+            background-color: #448aff;
+            color: #fff;
+        }
+
+        .skill-input-container {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            padding: 5px 10px;
+        }
+
+        .skill-input {
+            border: none;
+            outline: none;
+            flex: 1;
+            font-size: 1em;
+            padding: 5px;
+        }
+
+        #selectedSkillsDisplay {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        #selectedSkillsDisplay span {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 5px 8px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            display: inline-flex;
+            /* For alignment */
+            align-items: center;
+            /* Vertically center content */
+        }
+
+        #selectedSkillsDisplay span button {
+            background: none;
+            border: none;
+            color: #155724;
+            /* Adjust color as needed */
+            cursor: pointer;
+            font-size: 0.8em;
+            margin-left: 5px;
+            /* Spacing between skill and "x" */
+            padding: 0;
+            outline: none;
+        }
+
+        /* Back Link */
+        .back-link {
+            display: block;
+            text-align: left;
+            margin-bottom: 20px;
+            color: #5DADE2;
+            text-decoration: none;
+            font-size: 1em;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+
 </head>
 
 <body>
     <div class="containerr">
-        <h3>Edit Campaign </h3>
+
+
+        <!-- Page Title -->
+        <div class="page-title">
+            <h1
+                style="font-weight: bold;color: #0d6efd;letter-spacing: 1px;text-shadow:1px 1px 10px rgb(255, 255, 255);">
+                <i class="fa-solid fa-edit"></i> Edit Campaign </h1>
+        </div>
+
+        <!-- Post Campaign Form -->
+        <form class="post-campaign-form" method="post" enctype="multipart/form-data">
+
+
+            
+        <!-- <div class="profile-image-container"> -->
+            
+            <img id="profile-image-preview" src="{{ campaign.banner_image.url }}" alt="Profile Preview" required>
+            <div class="form-group">
+
+            <label for="profile-image-upload" class="profile-image-upload-button">Upload Banner Image
+                <i class="fas fa-camera"></i>
+                <input type="file" id="profile-image-upload" name="profile_photo" accept="image/*" style="display:inline;">
+            </label>
+        </div>
+
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="campaignTitle">Campaign Title</label>
+                <input type="text" id="campaignTitle" value="{{campaign.title}}" name="campaignTitle"
+                    placeholder="Enter campaign title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="shortDescription">Short Description</label>
+                <input type="text" id="shortDescription" value="{{campaign.short_description}}" name="shortDescription"
+                    placeholder="1-2 line summary" required>
+            </div>
+
+            <div class="form-group" style="grid-column: 1 / span 2;">
+                <label for="fullDescription">Full Description</label>
+                <textarea id="fullDescription" name="fullDescription" rows="5"
+                    placeholder="Detailed campaign description" required>{{campaign.full_description}} </textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="skills">Skills</label>
+                <div class="skill-selection">
+                    <span class="skill-tag" data-skill="SvayamSevek">SvayamSevek</span>
+                    <span class="skill-tag" data-skill="Carpentry">Carpentry</span>
+                    <span class="skill-tag" data-skill="Teaching">Teaching</span>
+                    <span class="skill-tag" data-skill="Medical">Medical</span>
+                    <span class="skill-tag" data-skill="Ca">CA</span>
+                    <span class="skill-tag" data-skill="Graphic Design">Graphic Design</span>
+
+                    <!-- Add more predefined skills here -->
+                </div>
+
+                <div class="skill-input-container">
+                    <input type="text" id="newSkillInput" class="skill-input" placeholder="Add Skill">
+                    <button type="button" onclick="addSkill()">
+                        <i class="fas fa-plus-circle"></i>
+                    </button>
+                </div>
+
+                <div id="selectedSkillsDisplay">
+                    <span>{{campaign.skills_required}}</span>
+
+                    <!-- Display the selected skills here -->
+                </div>
+
+                <input type="hidden" id="skills" name="skills" value="{{campaign.skills_required}}"> <!-- Hidden field to store the skills -->
+
+            </div>
+
+
+            <script>
+
+ document.getElementById('profile-image-upload').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const preview = document.getElementById('profile-image-preview');
+                preview.src = URL.createObjectURL(file);
+            }
+        });
+
+                document.addEventListener('DOMContentLoaded', () => {
+                    const skillTags = document.querySelectorAll('.skill-tag');
+                    const newSkillInput = document.getElementById('newSkillInput');
+                    const selectedSkillsDisplay = document.getElementById('selectedSkillsDisplay');
+                    const skillsInput = document.getElementById('skills');
+                    const submitBTN = document.getElementsByClassName('register-button');
+
+
+                    let selectedSkills = []; // Keep track of the selected skills
+
+                    // Predefined Skills
+                    skillTags.forEach(tag => {
+                        tag.addEventListener('click', () => {
+                            tag.classList.toggle('selected');
+                            updateSkills();
+                        });
+                    });
+
+                    // Function to add skill from input
+                    window.addSkill = () => {
+                        const newSkill = newSkillInput.value.trim();
+                        if (newSkill !== "" && !selectedSkills.includes(newSkill)) {
+                            selectedSkills.push(newSkill);
+                            updateSkillsDisplay();
+                            newSkillInput.value = ""; // Clear input field
+                        }
+                    };
+
+                    // Update selected skill from existing element.
+                    function updateSkills() {
+                        selectedSkills = Array.from(skillTags)
+                            .filter(tag => tag.classList.contains('selected'))
+                            .map(tag => tag.dataset.skill);
+                        updateSkillsDisplay();
+                    }
+
+                    // Update view and the hidden input.
+                    function updateSkillsDisplay() {
+                        selectedSkillsDisplay.innerHTML = ""; // Clear display
+
+                        selectedSkills.forEach((skill, index) => {
+                            const skillSpan = document.createElement('span');
+                            skillSpan.textContent = skill;
+
+                            const removeButton = document.createElement('button');
+                            removeButton.textContent = 'x';
+                            removeButton.addEventListener('click', (event) => {
+                                event.stopPropagation(); // Prevent any click on span to be propagated to parent element
+                                removeSkill(index);
+                            });
+                            skillSpan.appendChild(removeButton);
+                            selectedSkillsDisplay.appendChild(skillSpan);
+                        });
+
+                        skillsInput.value = selectedSkills.join(','); // Update the hidden field
+                    }
+
+                    // Add remove functionality.
+                    function removeSkill(index) {
+                        selectedSkills.splice(index, 1); // Remove the skill from the array
+                        updateSkillsDisplay();
+                    }
+                });
+            </script>
+
+
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" id="location" value="{{campaign.location}}" name="location"
+                    placeholder="Enter location" required>
+            </div>
+
+            <div class="form-group">
+                <label for="totalVolunteers">Total Volunteers Needed</label>
+                <input type="number" id="totalVolunteers" value="{{campaign.total_volunteers_needed}}"
+                    name="totalVolunteers" placeholder="Number of volunteers" required>
+            </div>
+
+            <div class="form-group">
+                <label for="startDate">Start Date</label>
+                <input type="date" id="startDate" value="{{campaign.start_date|date:'Y-m-d'}}" name="startDate"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="endDate">End Date</label>
+                <input type="date" id="endDate" value="{{campaign.end_date|date:'Y-m-d'}}" name="endDate" required>
+            </div>
+
+            <div class="form-group">
+                <label for="timeSlot">Starting Time</label>
+                <input type="time" id="timeSlot" value="{{start_time}}" name="start_time" required>
+            </div>
+
+            <div class="form-group">
+                <label for="timeSlot">Ending Time</label>
+                <input type="time" id="timeSlot" value="{{end_time}}" name="end_time" required>
+            </div>
+            
+            <div class="form-group" style="grid-column: 1 / span 2;">
+                <label for="additionalInstructions">Additional Instructions</label>
+                <textarea id="additionalInstructions" name="additionalInstructions" rows="3"
+                    placeholder="Any specific instructions">{{campaignadditional_instructions}}</textarea>
+            </div>
+
+            <!-- Submit -->
+            <div class="submit-section">
+                <button type="submit"><i class="fa-solid fa-paper-plane"></i> Update Campaign</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+
+        const today = new Date().toISOString().split("T")[0];
+
+        document.getElementById("startDate").setAttribute("min", today);
+
+        // Ensure end date is always after start date
+        document.getElementById("startDate").addEventListener("change", function () {
+            document.getElementById("endDate").value = null;
+            document.getElementById("endDate").setAttribute("min", this.value);
+        });
+    </script>
+
     </div>
 </body>
 

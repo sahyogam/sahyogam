@@ -68,7 +68,8 @@ class Campaign(models.Model):
     applied = models.PositiveIntegerField() 
     start_date = models.DateField()  
     end_date = models.DateField()  
-    time_slot = models.CharField(max_length=100, blank=True, null=True)  
+    start_time = models.CharField(max_length=100, blank=True, null=True)  
+    end_time = models.CharField(max_length=100, blank=True, null=True)  
     banner_image = models.ImageField(upload_to="static/campaign_banners/", blank=True, null=True)  
     additional_instructions = models.TextField(blank=True, null=True)  
     created_at = models.DateTimeField(auto_now_add=True) 
@@ -85,10 +86,8 @@ class Campaign(models.Model):
 class AppliedCampaign(models.Model):
     
     volunteer = models.ForeignKey(Volunteer, on_delete=models.CASCADE)
-    
     campaign =  models.ForeignKey(Campaign, on_delete=models.CASCADE)
-        
-    applied_at = models.DateTimeField(auto_now_add=True)  
+    applied_at = models.CharField(max_length=100, blank=True, null=True)  
     status = models.CharField(max_length=50, choices=[
         ('pending', 'Pending'),
         ('accepted', 'Accepted'),
@@ -99,4 +98,4 @@ class AppliedCampaign(models.Model):
 
     
     def __str__(self):
-        return f"{self.volunteer.name} applied for {self.campaign.title}"
+        return f"{self.applied_at}"

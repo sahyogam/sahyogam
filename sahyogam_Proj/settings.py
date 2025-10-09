@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'sahyogamApp'
+    'sahyogamApp',
+    'django_apscheduler',
+
 ]
 
 MIDDLEWARE = [
@@ -140,8 +142,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'sahyogam.project@gmail.com'
-EMAIL_HOST_PASSWORD = 'rwkmeihbnsnrhblk'  # Use App Password for Gmail
-
+EMAIL_HOST_PASSWORD = 'rwkmeihbnsnrhblk' 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 

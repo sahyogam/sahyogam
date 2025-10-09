@@ -148,15 +148,16 @@
                     {% endif %}
                     <h1>Volunteer Name:{{ entry.volunteer.name }}</h1>
                     <h2>Campaign Title:{{ entry.campaign.title }}</h2>
+                    <h2>Applied At: {{entry.applied_at}}</h2>
 
-                    <span class="status {{ entry.status }}">{{ entry.status }}</span>
+                    Current Status: <span class="status {{ entry.status }}">{{ entry.status }}</span>
                     <br><br>
                     <form method="POST">
                         {% csrf_token %}
                         <input type="hidden" name="CampaignPk" value="{{entry.campaign.pk}}">
                         <input type="hidden" name="VolunteerPk" value="{{entry.volunteer.pk}}">
 
-                        Status:
+                       Change Status:
                         <select name="status" id="statusList">
                             <option value="{{entry.status}}" selected>{{entry.status}}</option>
                             <option value="pending">Pending</option>
@@ -164,6 +165,8 @@
                             <option value="rejected">Rejected</option>
                         </select>
                         <br>
+
+                        
 
                         Approve For Certificate?
                         <select name="approveCerti">

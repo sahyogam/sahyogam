@@ -365,13 +365,18 @@
             </div>
 
             <div class="form-group">
-                <label for="timeSlot">Time Slot / Duration (Optional)</label>
-                <input type="text" id="timeSlot" name="timeSlot" placeholder="e.g., 10am to 1pm">
+                <label for="timeSlot">Starting Time</label>
+                <input type="time" id="timeSlot" name="start_time" required>
             </div>
 
             <div class="form-group">
-                <label for="bannerImage">Upload Banner Image (Optional)</label>
-                <input type="file" id="bannerImage" name="bannerImage" accept="image/*">
+                <label for="timeSlot">Ending Time</label>
+                <input type="time" id="timeSlot" name="end_time" required>
+            </div>
+
+            <div class="form-group">
+                <label for="bannerImage">Upload Banner Image </label>
+                <input type="file" id="bannerImage" name="bannerImage" accept="image/*" required>
             </div>
 
             <div class="form-group" style="grid-column: 1 / span 2;">
@@ -387,8 +392,14 @@
     </div>
 
     <script>
+
+        const today = new Date().toISOString().split("T")[0];
+
+        document.getElementById("startDate").setAttribute("min",today);
+
         // Ensure end date is always after start date
         document.getElementById("startDate").addEventListener("change", function () {
+            document.getElementById("endDate").value = null;
             document.getElementById("endDate").setAttribute("min", this.value);
         });
     </script>
