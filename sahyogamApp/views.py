@@ -671,7 +671,7 @@ def detailCampaign(request, pk, userType, Upk):
                 messages.warning(
                     request,
                     f"You've already applied in another campaign ({old_campaign.title}) "
-                    f"between {old_start}–{old_end} at similar time slot."
+                    f"between {old_start.day}-{old_start.month}-{old_start.year} TO {old_end.day}-{old_end.month}-{old_end.year} at similar time slot."
                 )
                 break
 
@@ -1008,10 +1008,11 @@ def totalVolunteerApplied(request):
                 email.attach(f"certificate_{volunteer.name}.pdf", pdf_buffer.getvalue(), "application/pdf")
 
             email.send()
-            messages.success(request, f"Email sent to {volunteer.name} ({status}) successfully.")
+            # messages.success(request, f"Email sent to {volunteer.name} ({status}) successfully.")
 
         except Exception as e:
-            messages.error(request, f"Status updated, but failed to send email: {e}")
+            print(e)
+            # messages.error(request, f"Status updated, but failed to send email: {e}")
 
     # Show all applied volunteers
     org = Organization.objects.get(email__iexact=request.session["org_email"])
