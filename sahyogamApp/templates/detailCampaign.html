@@ -251,6 +251,12 @@
     #postedBY {
       color: #5555556c
     }
+
+    #actions{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+    }
   </style>
 
 </head>
@@ -358,8 +364,8 @@
         </div>
 
         <div class="footer">
-          <span>Created: {{ created_at | date:"Y-m-d"}}</span>
-          <span>Updated: {{ updated_at }}</span>
+          <!-- <span>Created: {{ created_at | date:"d-m-Y"}}</span> -->
+          <!-- <span>Updated: {{ updated_at | date:"d-m-Y" }}</span> -->
         </div>
         <br>
         <div class="actions">
@@ -370,8 +376,15 @@
           {% endif %}
 
           {% if userType == "Organization" %}
-          <a href="{% url 'EditCampaign' userType pk %}" class="apply-button">Edit Campaign</a>
-          <a href="{% url 'delete-campaign' pk %}" class="delete-button" id="deleteID">delete Campaign</a>
+          <div id="actions">
+            <div>
+              <a href="{% url 'EditCampaign' userType pk %}" class="apply-button">Edit Campaign</a>
+            </div>
+
+            <div>
+              <a href="{% url 'delete-campaign' pk %}" class="delete-button" id="deleteID">delete Campaign</a>
+            </div>
+          </div>
 
           {% endif %}
 

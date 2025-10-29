@@ -411,6 +411,14 @@
             background: #cce0ff;
             /* Firefox track */
         }
+
+        #logout{
+            color:black;
+            transition: 0.5s;
+        }
+        #logout:hover{
+            color:#46A2D1 ;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
@@ -434,18 +442,17 @@
                 <!-- <a href="{% url 'explore' %}" class="explore-button">
                     <i class="fas fa-compass"></i> Explore Campaigns
                 </a> -->
-                <a href="#" class="notification-icon">
-                    <i class="fas fa-bell"></i>
-                </a>
+                <!-- <a href="#" class="notification-icon"> -->
+                    <!-- <i class="fas fa-bell"></i> -->
+                <!-- </a> -->
 
+                <a href="{% url 'logout' 'org' %}" id="logout">Logout</a>
                 <div class="user-dropdown">
-                    <button class="dropdown-button">
-                        <i class="fas fa-user-circle"></i> <!-- Example User Icon -->
-                    </button>
-                    <div class="dropdown-content">
-                        <a href="#">Profile</a>
-                        <a href="{% url 'logout' 'org' %}">Logout</a>
-                    </div>
+                    <!-- <button class="dropdown-button"> -->
+                        <!-- <i class="fas fa-user-circle"></i> Example User Icon -->
+                    <!-- </button> -->
+                    <!-- <div class="dropdown-content"> -->
+                    <!-- </div> -->
                 </div>
 
             </div>

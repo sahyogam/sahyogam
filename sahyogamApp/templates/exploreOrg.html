@@ -157,17 +157,22 @@
             width: 100%;
         }
     }
+
     .feed h2 {
-            margin-bottom: 20px;
-            font-size: 20px;
+        margin-bottom: 20px;
+        font-size: 20px;
+        font-weight: bold;
+        color: #0d6efd;
+        letter-spacing: 1px;
+        text-shadow: 1px 1px 10px rgb(255, 255, 255);
+    }
 
-            font-weight: bold;
-            color: #0d6efd;
-            letter-spacing: 1px;
-            text-shadow: 1px 1px 10px rgb(255, 255, 255);
-        }
+    #campCard {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-;
+    }
 </style>
-
 
 <div class="main-content">
 
@@ -190,12 +195,11 @@
                 <a href="{% url 'edit_volunteer' pk %}"><i class="fas fa-edit"></i> Edit Profile</a>
                 <a href="{% url 'volunteer_certificates' pk %}"><i class="fas fa-certificate"></i> Certificates</a>
                 <a href="{% url 'invitationsList' pk %}"><i class="fas fa-inbox"></i> Your Invitations</a>
-
             </div>
         </div>
 
         <!-- Filter Section -->
-        <h3>Filter Campaigns</h3>
+        <h3>Filter Organizations</h3>
 
         <div class="filter-group">
             <label for="location">Location</label>
@@ -216,77 +220,64 @@
         </div>
 
     </aside>
-    <main class="feed">
 
-        <h2>List of Organization</h2>
-        <!-- Campaigns -->
-        <main class="campaign-grid">
+    <!-- Organizations List -->
+    <main class="feed">
+        <h2>List of Organizations</h2>
+
+        <div class="campaign-grid">
             {% for organization in Organizations %}
             <div class="campaign-card" data-location="{{ organization.address }}"
                 data-org-type="{{ organization.org_type }}">
 
-                <img src="{{ organization.profile_photo.url }}" alt="Campaign Banner">
-                <h3>{{ organization.name }}</h3>
+                <div>
+                    <img src="{{ organization.profile_photo.url }}" alt="Organization Logo">
+                    <h3>{{ organization.name }}</h3>
+                    <p><span style="color: black;font-weight: bold;">About :</span> {{ organization.about }}</p>
+                    <p><span style="color: black;font-weight: bold;">Address :</span> {{ organization.address }}</p>
+                    <p><span style="color: black;font-weight: bold;">Type :</span> {{ organization.org_type }}</p>
+                    <p><span style="color: black;font-weight: bold;">Phone :</span> {{ organization.phone }}</p>
+                </div>
 
-                <p><span style="color: black;font-weight: bold;">About :</span>{{ organization.about }}</p>
-
-                <p><span style="color: black;font-weight: bold;">Address :</span> {{ organization.address }}</p>
-
-                <p><span style="color: black;font-weight: bold;">Type :</span> {{ organization.org_type }}</p>
-
-                <p><span style="color: black;font-weight: bold;">Phone :</span> {{ organization.phone }}</p>
-
-                <a href="{% url 'request_for_campaing' organization.pk pk  %}" class="apply-button">Request for
-                    Campaign</a>
-
-
+                <div>
+                    <a href="{% url 'request_for_campaing' organization.pk pk %}" class="apply-button">
+                        Request for Campaign
+                    </a>
+                </div>
             </div>
             {% endfor %}
+        </div>
     </main>
 </div>
 
-
+<!-- ✅ Fixed Filter Script -->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const locationFilter = document.getElementById('location');
-        const skillTags = document.querySelectorAll('.filter-skill-tags span');
         const orgTypeCheckboxes = document.querySelectorAll('input[name="org-type"]');
         const campaignCards = document.querySelectorAll('.campaign-card');
 
         function filterCampaigns() {
-            const selectedLocation = locationFilter.value;
-            const selectedSkills = Array.from(skillTags)
-                .filter(tag => tag.classList.contains('selected'))
-                .map(tag => tag.dataset.skill.trim());
+            const selectedLocation = locationFilter.value.trim();
             const selectedOrgTypes = Array.from(orgTypeCheckboxes)
                 .filter(cb => cb.checked)
                 .map(cb => cb.value.trim());
 
             campaignCards.forEach(card => {
                 const cardLocation = card.dataset.location.trim();
-                const cardSkills = card.dataset.skills.split(',').map(s => s.trim());
                 const cardOrgType = card.dataset.orgType.trim();
 
-                const locationMatch = selectedLocation === 'all' || cardLocation === selectedLocation;
-                const skillMatch = selectedSkills.length === 0 || selectedSkills.some(skill => cardSkills.includes(skill));
-                const orgTypeMatch = selectedOrgTypes.length === 0 || selectedOrgTypes.includes(cardOrgType);
+                const locationMatch = (selectedLocation === 'all' || cardLocation === selectedLocation);
+                const orgTypeMatch = (selectedOrgTypes.length === 0 || selectedOrgTypes.includes(cardOrgType));
 
-                card.style.display = (locationMatch && skillMatch && orgTypeMatch) ? 'block' : 'none';
+                card.style.display = (locationMatch && orgTypeMatch) ? 'block' : 'none';
             });
         }
 
-        // Event listeners
         locationFilter.addEventListener('change', filterCampaigns);
-        skillTags.forEach(tag => {
-            tag.addEventListener('click', () => {
-                tag.classList.toggle('selected');
-                filterCampaigns();
-            });
-        });
         orgTypeCheckboxes.forEach(cb => cb.addEventListener('change', filterCampaigns));
 
-        // Initial filter
-        filterCampaigns();
+        filterCampaigns(); // Initial call
     });
 </script>
 

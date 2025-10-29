@@ -381,7 +381,7 @@
 
             <div class="form-group">
                 <label for="totalVolunteers">Total Volunteers Needed</label>
-                <input type="number" id="totalVolunteers" value="{{campaign.total_volunteers_needed}}"
+                <input type="number" id="totalVolunteers" min="1" value="{{campaign.total_volunteers_needed}}"
                     name="totalVolunteers" placeholder="Number of volunteers" required>
             </div>
 
@@ -409,7 +409,7 @@
             <div class="form-group" style="grid-column: 1 / span 2;">
                 <label for="additionalInstructions">Additional Instructions</label>
                 <textarea id="additionalInstructions" name="additionalInstructions" rows="3"
-                    placeholder="Any specific instructions">{{campaignadditional_instructions}}</textarea>
+                    placeholder="Any specific instructions">{{campaign.additional_instructions}}</textarea>
             </div>
 
             <!-- Submit -->
