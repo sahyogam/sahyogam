@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invitations Sent</title>
+  <style>
+    /* ===== Base Reset ===== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Poppins", "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #e3f2fd, #f5f7fa);
+      min-height: 100vh;
+      padding: 30px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 40px;
+      color: #1a5276;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    /* ===== Grid Layout ===== */
+    .volunteer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 25px;
+      justify-items: center;
+    }
+
+    /* ===== Card Design ===== */
+    .volunteer-card {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+      padding: 25px;
+      width: 100%;
+      max-width: 420px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #d6eaf8;
+    }
+
+    .volunteer-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(93, 173, 226, 0.3);
+    }
+
+    .volunteer-card h1 {
+      font-size: 1.3rem;
+      color: #2e86c1;
+      margin-bottom: 10px;
+    }
+
+    .volunteer-card h2 {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    /* ===== Buttons ===== */
+    .button-group {
+      margin-top: 15px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .cancel-btn {
+      background: #f44336;
+      color: #fff;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .cancel-btn:hover {
+      background: #d32f2f;
+      transform: translateY(-2px);
+    }
+
+    #homeBtn {
+      display: inline-block;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      text-decoration: none;
+      background: linear-gradient(90deg, #5dade2, #3498db);
+      box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+      transition: all 0.3s ease;
+      margin-top: 40px;
+    }
+
+    #homeBtn:hover {
+      transform: translateY(-3px);
+      background: linear-gradient(90deg, #3498db, #2e86c1);
+      box-shadow: 0 6px 15px rgba(52, 152, 219, 0.5);
+    }
+
+    .btn-container {
+      text-align: center;
+    }
+
+    /* ===== Popup Overlay ===== */
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .popup-box {
+      background: #fff;
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+      max-width: 350px;
+      width: 90%;
+      animation: popupFade 0.3s ease;
+    }
+
+    @keyframes popupFade {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .popup-box h3 {
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+
+    .popup-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .popup-btn {
+      padding: 8px 18px;
+      border-radius: 6px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .yes-btn {
+      background-color: #e74c3c;
+      color: #fff;
+    }
+
+    .yes-btn:hover {
+      background-color: #c0392b;
+    }
+
+    .no-btn {
+      background-color: #95a5a6;
+      color: #fff;
+    }
+
+    .no-btn:hover {
+      background-color: #7f8c8d;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 600px) {
+      .volunteer-card {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 1.6rem;
+      }
+    }
+
+    .status {
+
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      color: #fff;
+      margin-top: 5px;
+    }
+
+    .status.pending {
+      background-color: #ff9800;
+    }
+
+    .status.accepted {
+      background-color: #4CAF50;
+    }
+
+    .status.rejected {
+      background-color: #f44336;
+    }
+
+    .apply-button {
+      background-color: #5DADE2;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 16px;
+      outline: none;
+      text-decoration: none;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <h1>Invitations You Have Sent</h1>
+
+  <div class="volunteer-grid">
+    {% for invites in TotalInvites %}
+    <div class="volunteer-card" data-id="{{ invites.id }}">
+      <h1>{{ invites.title }}</h1>
+      <h2><strong>Organization Name:</strong> {{ invites.OrganizationID.name }}</h2>
+      <h2><strong>Short Description:</strong> {{ invites.short_description }}</h2>
+      <h2><strong>Full Description:</strong> {{ invites.full_description }}</h2>
+      <!-- <h2><strong>Location:</strong> {{ invites.location }}</h2> -->
+
+      <div class="button-group">
+        <button class="cancel-btn" onclick="openPopup('{{ invites.id }}')">Cancel</button>
+
+        <span>
+
+          <span class="status {{ invites.status }}">{{ invites.status }}</span>
+          {% if invites.certificate_approved %}
+          <a href="{% url 'download_invited_certificate' invites.VolunteerID.pk invites.pk %}" class="apply-button"><i
+              class="fas fa-download"></i>Certificate</a>
+          {% endif %}
+
+
+
+        </span>
+
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="btn-container">
+    <a href="{% url 'volunteerHome' %}" id="homeBtn">🏠 Back to Home</a>
+  </div>
+
+  <!-- ===== Popup ===== -->
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup-box">
+      <h3>Are you sure you want to cancel this invitation?</h3>
+      <div class="popup-buttons">
+        <button class="popup-btn yes-btn" onclick="confirmCancel()">YES</button>
+        <button class="popup-btn no-btn" onclick="closePopup()">NO</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let selectedInviteId = null;
+
+    function openPopup(inviteId) {
+      selectedInviteId = inviteId;
+      document.getElementById('popupOverlay').style.display = 'flex';
+    }
+
+    function closePopup() {
+      selectedInviteId = null;
+      document.getElementById('popupOverlay').style.display = 'none';
+    }
+
+    function confirmCancel() {
+      // Example action: redirect to Django view or make AJAX request
+      let volpk = {{ VolPk }};
+
+    window.location.href = `/cancel_invite/${selectedInviteId}/${volpk}/`;
+    }
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,293 @@
+{% extends "base.html" %}
+{% block title %}Explore Campaigns{% endblock %}
+{% block content %}
+
+<style>
+    /* ------------ Sidebar and Cards -------------- */
+    .main-content {
+        display: flex;
+        gap: 20px;
+        margin: 20px;
+    }
+
+    .filter-sidebar {
+        width: 25%;
+    }
+
+    .campaign-grid {
+        width: 75%;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .campaign-card {
+        background: #fff;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .campaign-card img {
+        width: 100%;
+        height: 150px;
+        border-radius: 10px;
+        object-fit: cover;
+        margin-bottom: 10px;
+    }
+
+    .apply-button {
+        background-color: #5DADE2;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 16px;
+        outline: none;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    #postedBY {
+        color: #5555556c;
+        font-size: 14px;
+    }
+
+    .amounts {
+        display: flex;
+        justify-content: space-between;
+        color: #777;
+        margin-bottom: 10px;
+    }
+
+    /* ------------ Profile Card -------------- */
+    .profile-card {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .profile-card .profile-pic {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 10px;
+    }
+
+    .profile-card h3 {
+        margin: 0 0 5px;
+        font-size: 18px;
+    }
+
+    .profile-card .skill-tags span {
+        background-color: #eaf2ff;
+        color: #448aff;
+        padding: 5px 8px;
+        border-radius: 5px;
+        margin: 3px;
+        display: inline-block;
+        font-size: 13px;
+    }
+
+    .profile-card .quick-links a {
+        display: block;
+        color: #555;
+        text-decoration: none;
+        padding: 8px 0;
+        border-radius: 5px;
+        text-align: left;
+    }
+
+    .profile-card .quick-links a:hover {
+        background-color: #f0f0f0;
+    }
+
+    /* ------------ Filters -------------- */
+    .filter-group {
+        margin-bottom: 20px;
+    }
+
+    .filter-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .filter-group select {
+        width: 100%;
+        padding: 6px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .filter-skill-tags span {
+        background-color: #f0f0f0;
+        color: #333;
+        padding: 5px 8px;
+        border-radius: 5px;
+        margin: 3px;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 13px;
+    }
+
+    .filter-skill-tags span.selected {
+        background-color: #448aff;
+        color: #fff;
+    }
+
+    /* Range bar */
+    input[type="range"] {
+        accent-color: blue;
+        width: 100%;
+    }
+
+    /* ------------ Responsive -------------- */
+    @media (max-width: 768px) {
+        .main-content {
+            flex-direction: column;
+        }
+
+        .filter-sidebar,
+        .campaign-grid {
+            width: 100%;
+        }
+    }
+    .feed h2 {
+            margin-bottom: 20px;
+            font-size: 20px;
+
+            font-weight: bold;
+            color: #0d6efd;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 10px rgb(255, 255, 255);
+        }
+</style>
+
+
+<div class="main-content">
+
+    <!-- Sidebar -->
+    <aside class="filter-sidebar">
+
+        <!-- Profile Card -->
+        <div class="profile-card">
+            <img src="{{ VOL_DP }}" alt="Profile Picture" class="profile-pic">
+            <h3>{{ VolName }}</h3>
+            <p>{{ userType }}</p>
+
+            <div class="skill-tags">
+                {% for skill in skills %}
+                <span>{{ skill }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="quick-links">
+                <a href="{% url 'edit_volunteer' pk %}"><i class="fas fa-edit"></i> Edit Profile</a>
+                <a href="{% url 'volunteer_certificates' pk %}"><i class="fas fa-certificate"></i> Certificates</a>
+                <a href="{% url 'invitationsList' pk %}"><i class="fas fa-inbox"></i> Your Invitations</a>
+
+            </div>
+        </div>
+
+        <!-- Filter Section -->
+        <h3>Filter Campaigns</h3>
+
+        <div class="filter-group">
+            <label for="location">Location</label>
+            <select id="location">
+                <option value="all">All Locations</option>
+                {% for organization in Organizations %}
+                <option value="{{ organization.address }}">{{ organization.address }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Organization Type</label>
+            <label><input type="checkbox" name="org-type" value="NGO"> NGO</label>
+            <label><input type="checkbox" name="org-type" value="Research Group"> Research Group</label>
+            <label><input type="checkbox" name="org-type" value="Education Institute"> Education Institute</label>
+            <label><input type="checkbox" name="org-type" value="Charity"> Charity</label>
+        </div>
+
+    </aside>
+    <main class="feed">
+
+        <h2>List of Organization</h2>
+        <!-- Campaigns -->
+        <main class="campaign-grid">
+            {% for organization in Organizations %}
+            <div class="campaign-card" data-location="{{ organization.address }}"
+                data-org-type="{{ organization.org_type }}">
+
+                <img src="{{ organization.profile_photo.url }}" alt="Campaign Banner">
+                <h3>{{ organization.name }}</h3>
+
+                <p><span style="color: black;font-weight: bold;">About :</span>{{ organization.about }}</p>
+
+                <p><span style="color: black;font-weight: bold;">Address :</span> {{ organization.address }}</p>
+
+                <p><span style="color: black;font-weight: bold;">Type :</span> {{ organization.org_type }}</p>
+
+                <p><span style="color: black;font-weight: bold;">Phone :</span> {{ organization.phone }}</p>
+
+                <a href="{% url 'request_for_campaing' organization.pk pk  %}" class="apply-button">Request for
+                    Campaign</a>
+
+
+            </div>
+            {% endfor %}
+    </main>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const locationFilter = document.getElementById('location');
+        const skillTags = document.querySelectorAll('.filter-skill-tags span');
+        const orgTypeCheckboxes = document.querySelectorAll('input[name="org-type"]');
+        const campaignCards = document.querySelectorAll('.campaign-card');
+
+        function filterCampaigns() {
+            const selectedLocation = locationFilter.value;
+            const selectedSkills = Array.from(skillTags)
+                .filter(tag => tag.classList.contains('selected'))
+                .map(tag => tag.dataset.skill.trim());
+            const selectedOrgTypes = Array.from(orgTypeCheckboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value.trim());
+
+            campaignCards.forEach(card => {
+                const cardLocation = card.dataset.location.trim();
+                const cardSkills = card.dataset.skills.split(',').map(s => s.trim());
+                const cardOrgType = card.dataset.orgType.trim();
+
+                const locationMatch = selectedLocation === 'all' || cardLocation === selectedLocation;
+                const skillMatch = selectedSkills.length === 0 || selectedSkills.some(skill => cardSkills.includes(skill));
+                const orgTypeMatch = selectedOrgTypes.length === 0 || selectedOrgTypes.includes(cardOrgType);
+
+                card.style.display = (locationMatch && skillMatch && orgTypeMatch) ? 'block' : 'none';
+            });
+        }
+
+        // Event listeners
+        locationFilter.addEventListener('change', filterCampaigns);
+        skillTags.forEach(tag => {
+            tag.addEventListener('click', () => {
+                tag.classList.toggle('selected');
+                filterCampaigns();
+            });
+        });
+        orgTypeCheckboxes.forEach(cb => cb.addEventListener('change', filterCampaigns));
+
+        // Initial filter
+        filterCampaigns();
+    });
+</script>
+
+{% endblock %}

@@ -235,8 +235,10 @@
                 <!-- <p>Next Available: July 31, 2025</p> -->
                 <div class="quick-links">
                     <a href="{% url 'edit_volunteer' pk %}"><i class="fas fa-edit"></i> Edit Profile</a>
-                    <a href="#"><i class="fas fa-certificate"></i> Certificates</a>
-                    <a href="#"><i class="fas fa-star"></i> Feedback/Rating</a>
+                    <a href="{% url 'volunteer_certificates' pk %}"><i class="fas fa-certificate"></i> Certificates</a>
+
+                    <a href="{% url 'invitationsList' pk %}"><i class="fas fa-inbox"></i> Your Invitations</a>
+
                 </div>
             </div>
             <br>
@@ -266,16 +268,16 @@
 
             <div class="filter-group">
                 <label>Organization Type</label>
-                <label><input type="checkbox" name="org-type" value="ngo"> NGO</label>
-                <label><input type="checkbox" name="org-type" value="school"> School</label>
-                <label><input type="checkbox" name="org-type" value="temple"> Temple</label>
+                <label><input type="checkbox" name="org-type" value="NGO"> NGO</label>
+                <label><input type="checkbox" name="org-type" value="Research Group"> Research Group</label>
+                <label><input type="checkbox" name="org-type" value="Education Institute"> Education Institute</label>
+                <label><input type="checkbox" name="org-type" value="Charity">Charity</label>
             </div>
 
         </aside>
 
         <!-- Main Content - Campaign Grid -->
         <main class="campaign-grid">
-
             {% for campaign in Campaigns %}
             <div class="campaign-card" data-location="{{campaign.location}}" data-skills="{{campaign.skills_required}}"
                 data-org-type="{{campaign.organizationID.org_type}}">

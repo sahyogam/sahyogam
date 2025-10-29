@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.colors import HexColor
-from .models import AppliedCampaign  
+from .models import AppliedCampaign,InviteCampaing,Certificate
 from django.core.mail import EmailMessage
 from django.conf import settings
 from django.shortcuts import render
@@ -410,8 +410,12 @@ def base_page(request):
 def campaign_detail(request):
     return render(request, 'campaign-detail.html',{"nav":True})
 
-def certificates(request):
-    return render(request, 'certificates.html')
+
+def volunteer_certificates(request, volunteer_id):
+    volunteer = Volunteer.objects.get(pk=volunteer_id)
+    certificates = Certificate.objects.filter(volunteer=volunteer)
+    return render(request, "volunteer_certificates.html", {"certificates": certificates,"nav":True,})
+    
 
 def explore(request):
     campaign =  Campaign.objects.all()
@@ -435,10 +439,35 @@ def explore(request):
         "logoutLink":True,
         # "explore_button":True
         
-        
     }
     
     return render(request, 'explore.html',context)
+
+def exploreOrg(request):
+    org = Organization.objects.all()
+    vol = Volunteer.objects.get(email__iexact=request.session["vol_email"])  
+    
+    context = {
+        "nav":True,
+        "search":True,
+        "logoutLink":True,
+        "Organizations":org,
+        "pk":vol.pk,
+        "VolName":vol.name,
+        "VOL_DP":request.session["vol_dp"],
+        "userType":"Volunteer",
+        "skills":vol.skills.split(","),
+        "pk":vol.pk,
+        "userName" : vol.username,
+        # "Campaigns":Campaigns,
+        "nav":True,
+        "search":False,
+        "logoutLink":True,
+        # "explore_button":True
+        
+    }                        
+    return render(request,"exploreOrg.html",context)
+    
 
 def volunteerHome(request):
     try:
@@ -470,9 +499,6 @@ def volunteerHome(request):
         else:
             return redirect("register")
     except Exception as e:
-        
-            # Catch all other unexpected email errors
-                # messages.error(request, f"Error sending email: {e}")
         print(e)
         return redirect("login")
 
@@ -682,16 +708,20 @@ def detailCampaign(request, pk, userType, Upk):
         AppliedCampaign.objects.create(
             volunteer=volunteerData,
             campaign=campaignData,
-            applied_at=datetime.now().strftime("%I:%M %p"),
+        applied_at=datetime.now().strftime("%I:%M %p"),
         )
         campaignData.applied += 1
         campaignData.save()
         messages.success(request, "You have successfully applied for this campaign.")
         return redirect("volunteerHome")
 
-    # if GET request
+    
     applyBtn = userType != "Organization"
-
+    
+    if campaignData.total_volunteers_needed == campaignData.applied:
+        applyBtn = False
+        
+    
     context = {
         "pk": campaignData.pk,
         "volPk": Upk,
@@ -854,6 +884,7 @@ def editOrganization(request,PK):
         org.username = request.POST.get("username")
         org.org_type = request.POST.get("org-type")
         org.phone = request.POST.get("phone")
+        org.about = request.POST.get("about")
         
         
         org.address = request.POST.get("address")
@@ -884,23 +915,220 @@ def editOrganization(request,PK):
 
 
 def logout(request,userID):
-    
-    if userID == 'org' :
-        del request.session["isOrgLogin"]
-        del request.session["org_dp"]
-        del request.session["org_name"]
+    try:
+        if userID == 'org' :
+            del request.session["isOrgLogin"]
+            del request.session["org_dp"]
+            del request.session["org_name"]
         
+            return redirect("login")
+        
+        if userID == 'vol' :
+            del request.session["isVolLogin"]
+            del request.session["VolPK"]
+            del request.session["vol_dp"]
+            del request.session["vol_email"]
+        
+            return redirect("login") 
+    except Exception as e:
         return redirect("login")
-        
-    if userID == 'vol' :
-        del request.session["isVolLogin"]
-        del request.session["VolPK"]
-        del request.session["vol_dp"]
-        del request.session["vol_email"]
-        
-        return redirect("login") 
- 
 
+def request_for_campaing(request,OrgPk,VolPk):
+    if request.method == "POST":
+        
+        org = Organization.objects.get(pk=OrgPk)  
+        vol = Volunteer.objects.get(pk=VolPk)
+        
+        InviteCampaing.objects.create(
+        title = request.POST.get("campaignTitle"),
+        short_description = request.POST.get("shortDescription"),
+        full_description = request.POST.get("fullDescription"),
+        skills_required  = request.POST.get("skills"),
+        message = request.POST.get("VolunteerMessage"),
+        start_date = request.POST.get("startDate"),
+        end_date = request.POST.get("endDate"),
+        start_time = request.POST.get("start_time"),
+        end_time = request.POST.get("end_time"),        
+        OrganizationID = org,
+        VolunteerID = vol
+        )
+        return render(request,"RequestForCamp.html",{"msg":True,"VolPk":VolPk})
+        
+        
+        
+    return render(request,"RequestForCamp.html")
+
+def invitationsList(request,VolPk):
+    
+    invitations = InviteCampaing.objects.filter(VolunteerID=VolPk)
+
+    context = {
+        "TotalInvites":invitations,
+        "VolPk":VolPk
+    }
+    return render(request,"invitationsList.html",context)
+
+
+def cancel_invite(request,pk,VolPk):
+    invitaion = InviteCampaing.objects.get(pk=pk)
+    invitaion.delete()
+   
+    invitations = InviteCampaing.objects.filter(VolunteerID=VolPk)
+
+    context = {
+        "TotalInvites":invitations,
+        "VolPk":VolPk
+    }
+    return render(request,"invitationsList.html",context)
+
+   
+def totalInvitationsGot(request,OrgPk):
+    
+    if request.method == "POST":
+        CampaignPk = request.POST.get("CampaignPk")
+        VolunteerPk = request.POST.get("VolunteerPk")
+        status = request.POST.get("status")
+        approveCerti = request.POST.get("approveCerti")
+        
+        invitedCMP = InviteCampaing.objects.get(
+        pk = CampaignPk,
+        VolunteerID = VolunteerPk,
+        )
+        
+        
+        invitedCMP.status = status
+        invitedCMP.certificate_approved = approveCerti
+        invitedCMP.save()
+
+        volunteer = invitedCMP.VolunteerID
+        campaign = invitedCMP
+        org = invitedCMP.OrganizationID
+
+        subject = f"Update on your Application for '{campaign.title}'"
+        message = f"""
+        
+        Dear {volunteer.name},
+
+        We wanted to update you about your application for the campaign: "{campaign.title}".
+
+        🗓️ Campaign Duration: {campaign.start_date} to {campaign.end_date}
+        ⏰ Time Slot: {campaign.start_time} - {campaign.end_time}
+
+        Your current application status is: **{status.upper()}**
+        """
+
+        # Approve For Certificate? is YES then certificate generate:
+        pdf_buffer = None
+        if approveCerti == "True" and status.lower() == "accepted":
+            message += "\n✅ Congratulations! You have been approved for a certificate. The certificate is attached to this email."
+
+            # Generate certificate in-memory (BytesIO)
+            pdf_buffer = BytesIO()
+            c = canvas.Canvas(pdf_buffer, pagesize=A4)
+            width, height = A4
+
+            # Border
+            c.setStrokeColor(HexColor("#0D47A1"))
+            c.setLineWidth(4)
+            c.rect(30, 30, width - 60, height - 60)
+
+            # Title
+            c.setFont("Helvetica-Bold", 28)
+            c.setFillColor(HexColor("#0D47A1"))
+            c.drawCentredString(width / 2, height - 120, "CERTIFICATE")
+
+            # Body
+            c.setFont("Helvetica", 14)
+            c.setFillColor(HexColor("#000000"))
+
+            text = (
+                f"This is to certify that {volunteer.name}, "
+                f"for donating their valuable skill(s): {volunteer.skills}, "
+                f"has successfully participated in the campaign "
+                f"\"{campaign.title}\" organized by {org.name}."
+            )
+
+            styles = getSampleStyleSheet()
+            style = styles["Normal"]
+            style.fontSize = 14
+            style.leading = 20
+
+            p = Paragraph(text, style)
+            frame = Frame(80, height / 2 - 60, width - 160, 120, showBoundary=0)
+            frame.addFromList([p], c)
+
+            # Footer
+            c.setFont("Helvetica-Bold", 16)
+            c.drawCentredString(width / 2, 120, f"With warm regards,")
+            c.setFont("Helvetica-Bold", 18)
+            c.drawCentredString(width / 2, 90, org.name)
+
+            c.showPage()
+            c.save()
+            
+            # kk
+            
+        
+            invite = get_object_or_404(InviteCampaing, id=campaign.pk)
+            org = invite.OrganizationID
+            invite.certificate_approved = True
+            invite.save()
+            certificate = Certificate.objects.create(
+            volunteer=volunteer,
+            organization=org,
+            invite_campaign=invite
+                )
+            certificate.generate_pdf()
+
+            
+            pdf_buffer.seek(0)
+
+        elif status.lower() == "rejected":
+            message += "\nWe appreciate your interest, but unfortunately, you were not selected for this campaign."
+
+        else:
+            message += "\nYour application is currently pending review."
+
+        message += f"\n\nBest regards,\n{org.name} Team"
+
+        try:
+            # Prepare email
+            email = EmailMessage(
+                subject=subject,
+                body=message,
+                from_email=settings.EMAIL_HOST_USER,
+                to=[volunteer.email],
+            )
+
+            # Attach certificate if available
+            if pdf_buffer:
+                email.attach(f"certificate_{volunteer.name}.pdf", pdf_buffer.getvalue(), "application/pdf")
+
+
+            email.send()
+            approve_certificate(request, invitedCMP.pk, invitedCMP.VolunteerID.pk,"invited")
+            # messages.success(request, f"Email sent to {volunteer.name} ({status}) successfully.")
+
+        except Exception as e:
+            print(e)
+            # messages.error(request, f"Status updated, but failed to send email: {e}")
+
+    # # Show all applied volunteers
+    # org = Organization.objects.get(email__iexact=request.session["org_email"])
+    # applied_entries = AppliedCampaign.objects.select_related('volunteer', 'campaign').filter(
+    #     campaign__organizationID_id=org.pk
+    # )
+
+    # context = {"applied_entries": applied_entries}
+    # return render(request, "totalVolunteerApplied.html", context)
+    
+    invitaions = InviteCampaing.objects.filter(OrganizationID=OrgPk)
+    
+    context = {
+        "Invitations":invitaions
+    }
+    
+    return render(request,"totalInvitationsGot.html",context)
 
 def totalVolunteerApplied(request):
     
@@ -984,6 +1212,21 @@ def totalVolunteerApplied(request):
 
             c.showPage()
             c.save()
+            
+            camp = get_object_or_404(Campaign, id=campaign.pk)
+            org = campaign.organizationID
+            # a.certificate_approved = True
+            applied_entry.certificate_approved = True
+            camp.save()
+        
+            certificate = Certificate.objects.create(
+            volunteer=volunteer,
+            organization=org,
+            campaign=camp
+            )
+            certificate.generate_pdf()
+    
+            
             pdf_buffer.seek(0)
 
         elif status.lower() == "rejected":
@@ -1007,7 +1250,9 @@ def totalVolunteerApplied(request):
             if pdf_buffer:
                 email.attach(f"certificate_{volunteer.name}.pdf", pdf_buffer.getvalue(), "application/pdf")
 
+            
             email.send()
+            approve_certificate(request, CampaignPk,VolunteerPk,"posted")
             # messages.success(request, f"Email sent to {volunteer.name} ({status}) successfully.")
 
         except Exception as e:
@@ -1085,4 +1330,125 @@ def certificate_pdf(request, volunteer_id, campaign_id):
 
     c.showPage()
     c.save()
+    # approve_certificate(request, campaign_id, volunteer_id,"posted")
+    
     return response
+
+def invited_certificate_pdf(request, volunteer_id, invited_campaign_id):
+
+    # applied = InviteCampaing.objects.select_related("volunteer", "campaign__organizationID").get(
+    #     volunteer_id=volunteer_id,
+    #     campaign_id=invited_campaign_id,
+    #     certificate_approved=True   
+    # )
+    
+    invitedCMP = InviteCampaing.objects.get(
+        pk = invited_campaign_id,
+        VolunteerID = volunteer_id,
+        certificate_approved= True
+    )
+    
+    volunteer = invitedCMP.VolunteerID
+    campaign = invitedCMP
+    organization = invitedCMP.OrganizationID
+
+    # Prepare response
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"] = f'attachment; filename="certificate_{volunteer.name}.pdf"'
+
+    # Set up canvas
+    c = canvas.Canvas(response, pagesize=A4)
+    width, height = A4
+
+    # Background / border (optional)
+    c.setStrokeColor(HexColor("#0D47A1"))
+    c.setLineWidth(4)
+    c.rect(30, 30, width - 60, height - 60)
+
+    # Title
+    c.setFont("Helvetica-Bold", 28)
+    c.setFillColor(HexColor("#0D47A1"))
+    c.drawCentredString(width / 2, height - 120, "CERTIFICATE")
+
+    # Body text
+    c.setFont("Helvetica", 14)
+    c.setFillColor(HexColor("#000000"))
+
+    text = (
+        f"This is to certify that {volunteer.name}, "
+        f"for donating their valuable skill(s): {volunteer.skills}, "
+        f"has successfully participated in the campaign "
+        f"\"{campaign.title}\" organized by {organization.name}."
+    )
+
+    # Wrap long text
+
+    styles = getSampleStyleSheet()
+    style = styles["Normal"]
+    style.fontSize = 14
+    style.leading = 20
+
+    p = Paragraph(text, style)
+    frame = Frame(80, height/2 - 60, width - 160, 120, showBoundary=0)
+    frame.addFromList([p], c)
+
+    # Footer / greetings
+    c.setFont("Helvetica-Bold", 16)
+    c.drawCentredString(width / 2, 120, f"With warm regards,")
+    c.setFont("Helvetica-Bold", 18)
+    c.drawCentredString(width / 2, 90, organization.name)
+
+    c.showPage()
+    c.save()
+    
+    # # approve_certificate(request, invited_campaign_id, volunteer_id,"invited")
+    # invite = get_object_or_404(InviteCampaing, id=invited_campaign_id)
+    # org = invite.OrganizationID
+    # invite.certificate_approved = True
+    # invite.save()
+    # certificate = Certificate.objects.create(
+    #         volunteer=volunteer,
+    #         organization=org,
+    #         invite_campaign=invite
+    #     )
+    # certificate.generate_pdf()
+    return response
+
+
+
+
+
+def approve_certificate(request, campaign_id, volunteer_id, type):
+    
+    print("========------=>Approve Called<-------==---=")
+    
+    # volunteer = get_object_or_404(Volunteer, id=volunteer_id)
+    # org = None
+
+    # if type == "posted":
+    #     campaign = get_object_or_404(Campaign, id=campaign_id)
+    #     org = campaign.organizationID
+    #     campaign.certificate_approved = True
+    #     campaign.save()
+        
+    #     certificate = Certificate.objects.create(
+    #         volunteer=volunteer,
+    #         organization=org,
+    #         campaign=campaign
+    #     )
+    #     certificate.generate_pdf()
+
+    # elif type == "invited":
+    #     invite = get_object_or_404(InviteCampaing, id=campaign_id)
+    #     org = invite.OrganizationID
+    #     invite.certificate_approved = True
+    #     invite.save()
+    #     certificate = Certificate.objects.create(
+    #         volunteer=volunteer,
+    #         organization=org,
+    #         invite_campaign=invite
+    #     )
+    #     certificate.generate_pdf()
+
+
+    # return redirect("volunteer_certificates")

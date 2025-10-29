@@ -494,6 +494,30 @@
 
 
 
+
+        orgPassword.addEventListener("blur", function () {
+
+            if (!strongPassword.test(orgPassword.value)) {
+                errorMsg.textContent = "Password must be 8+ chars with uppercase, lowercase, number, and special character.";
+                orgConfirmPassword.value = "";
+                orgPassword.value = "";
+            } else {
+                
+                if (orgConfirmPassword.value != orgPassword.value) {
+                    orgConfirmPassword.value = "";
+                    // errorMsg.textContent = "";
+                }
+                else {
+                    errorMsg.textContent = "";
+
+                }
+
+            }
+
+        })
+
+
+
         // volunteer password validation
         const volPassword = document.getElementById("vol-password");
         const volConfirmPassword = document.getElementById("vol-confirm-password");
@@ -510,6 +534,30 @@
                 if (volConfirmPassword.value != volPassword.value) {
                     volConfirmPassword.value = "";
                     volErrorMsg.textContent = "Password not match";
+                }
+                else {
+                    volErrorMsg.textContent = "";
+
+                }
+
+            }
+
+        })
+
+
+
+
+        volPassword.addEventListener("blur", function () {
+
+            if (!strongPassword.test(volPassword.value)) {
+                volErrorMsg.textContent = "Password must be 8+ chars with uppercase, lowercase, number, and special character.";
+                volConfirmPassword.value = "";
+                volPassword.value = "";
+            } else {
+                
+                if (volConfirmPassword.value != volPassword.value) {
+                    volConfirmPassword.value = "";
+                    // volErrorMsg.textContent = "Password not match";
                 }
                 else {
                     volErrorMsg.textContent = "";

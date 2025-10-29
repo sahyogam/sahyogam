@@ -388,8 +388,9 @@
 
         {% if explore_button %}
         <a href="{% url 'explore' %}" class="explore-button">
-          <i class="fas fa-compass"></i> Explore Campaigns
+           Explore Campaigns
         </a>
+        <a href="{% url 'exploreOrg' %}">Explore Organizations</a>  
         {% endif %}
 
         {% if logoutLink %}

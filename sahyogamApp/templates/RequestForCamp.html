@@ -1,0 +1,423 @@
+{% extends "base.html" %}
+{% load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Post Campaign {% endblock %}</title>
+    {% block content %}
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e3f2fd, #ffffff);
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 100vh;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        /* Page Title */
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title h1 {
+            font-size: 2.5em;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .page-title p {
+            font-size: 1.1em;
+            color: #555;
+            margin-top: 8px;
+        }
+
+        /* Form */
+        .post-campaign-form {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+
+            gap: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 6px rgba(52, 152, 219, 0.3);
+            outline: none;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-group input[type="file"] {
+            border: none;
+            font-size: 0.95em;
+
+        }
+
+
+        /* Submit Section */
+        .submit-section {
+            grid-column: 1 / span 2;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .submit-section button {
+            background: linear-gradient(135deg, #3498db, #5dade2);
+            border: none;
+            color: white;
+            font-size: 1.1em;
+            font-weight: 500;
+            padding: 14px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .submit-section button:hover {
+            background: linear-gradient(135deg, #2980b9, #3498db);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .post-campaign-form {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        .skill-selection {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .skill-tag {
+            background-color: #eaf2ff;
+            color: #448aff;
+            padding: 5px 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .skill-tag.selected {
+            background-color: #448aff;
+            color: #fff;
+        }
+
+        .skill-input-container {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            padding: 5px 10px;
+        }
+
+        .skill-input {
+            border: none;
+            outline: none;
+            flex: 1;
+            font-size: 1em;
+            padding: 5px;
+        }
+
+        #selectedSkillsDisplay {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        #selectedSkillsDisplay span {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 5px 8px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            display: inline-flex;
+            /* For alignment */
+            align-items: center;
+            /* Vertically center content */
+        }
+
+        #selectedSkillsDisplay span button {
+            background: none;
+            border: none;
+            color: #155724;
+            /* Adjust color as needed */
+            cursor: pointer;
+            font-size: 0.8em;
+            margin-left: 5px;
+            /* Spacing between skill and "x" */
+            padding: 0;
+            outline: none;
+        }
+
+        /* Back Link */
+        .back-link {
+            display: block;
+            text-align: left;
+            margin-bottom: 20px;
+            color: #5DADE2;
+            text-decoration: none;
+            font-size: 1em;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="container">
+
+
+        <!-- Page Title -->
+        <div class="page-title">
+            <h1
+                style="font-weight: bold;color: #0d6efd;letter-spacing: 1px;text-shadow:1px 1px 10px rgb(255, 255, 255);">
+                Request For Campaign </h1>
+        </div>
+
+        <!-- Post Campaign Form -->
+        <form class="post-campaign-form" method="post" enctype="multipart/form-data">
+
+            <a href="{% url 'volunteerHome' %}" class="back-link"><i class="fas fa-arrow-left"></i> Back</a>
+
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="campaignTitle">Campaign Title</label>
+                <input type="text" id="campaignTitle" name="campaignTitle" placeholder="e.g Chess" required>
+            </div>
+
+            <div class="form-group">
+                <label for="shortDescription">Short Description</label>
+                <input type="text" id="shortDescription" name="shortDescription" placeholder="e.g I am international player of the Chess."
+                    required>
+            </div>
+
+            <div class="form-group" style="grid-column: 1 / span 2;">
+                <label for="fullDescription">Full Description</label>
+                <textarea id="fullDescription" name="fullDescription" rows="5"
+                    placeholder="e.g Chess is two player game in which playes plays according its rules." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="skills">Skills</label>
+                <div class="skill-selection">
+                    <span class="skill-tag" data-skill="SvayamSevek">SvayamSevek</span>
+                    <span class="skill-tag" data-skill="Carpentry">Carpentry</span>
+                    <span class="skill-tag" data-skill="Teaching">Teaching</span>
+                    <span class="skill-tag" data-skill="Medical">Medical</span>
+                    <span class="skill-tag" data-skill="Ca">CA</span>
+                    <span class="skill-tag" data-skill="Graphic Design">Graphic Design</span>
+
+                    <!-- Add more predefined skills here -->
+                </div>
+
+                <div class="skill-input-container">
+                    <input type="text" id="newSkillInput" class="skill-input" placeholder="Add Skill">
+                    <button type="button" onclick="addSkill()">
+                        <i class="fas fa-plus-circle"></i>
+                    </button>
+                </div>
+
+                <div id="selectedSkillsDisplay">
+                    <!-- Display the selected skills here -->
+                </div>
+
+                <input type="hidden" id="skills" name="skills" value=""> <!-- Hidden field to store the skills -->
+
+            </div>
+
+
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const skillTags = document.querySelectorAll('.skill-tag');
+                    const newSkillInput = document.getElementById('newSkillInput');
+                    const selectedSkillsDisplay = document.getElementById('selectedSkillsDisplay');
+                    const skillsInput = document.getElementById('skills');
+                    const submitBTN = document.getElementsByClassName('register-button');
+
+
+                    let selectedSkills = []; // Keep track of the selected skills
+
+                    // Predefined Skills
+                    skillTags.forEach(tag => {
+                        tag.addEventListener('click', () => {
+                            tag.classList.toggle('selected');
+                            updateSkills();
+                        });
+                    });
+
+                    // Function to add skill from input
+                    window.addSkill = () => {
+                        const newSkill = newSkillInput.value.trim();
+                        if (newSkill !== "" && !selectedSkills.includes(newSkill)) {
+                            selectedSkills.push(newSkill);
+                            updateSkillsDisplay();
+                            newSkillInput.value = ""; // Clear input field
+                        }
+                    };
+
+                    // Update selected skill from existing element.
+                    function updateSkills() {
+                        selectedSkills = Array.from(skillTags)
+                            .filter(tag => tag.classList.contains('selected'))
+                            .map(tag => tag.dataset.skill);
+                        updateSkillsDisplay();
+                    }
+
+                    // Update view and the hidden input.
+                    function updateSkillsDisplay() {
+                        selectedSkillsDisplay.innerHTML = ""; // Clear display
+
+                        selectedSkills.forEach((skill, index) => {
+                            const skillSpan = document.createElement('span');
+                            skillSpan.textContent = skill;
+
+                            const removeButton = document.createElement('button');
+                            removeButton.textContent = 'x';
+                            removeButton.addEventListener('click', (event) => {
+                                event.stopPropagation(); // Prevent any click on span to be propagated to parent element
+                                removeSkill(index);
+                            });
+                            skillSpan.appendChild(removeButton);
+                            selectedSkillsDisplay.appendChild(skillSpan);
+                        });
+
+                        skillsInput.value = selectedSkills.join(','); // Update the hidden field
+                    }
+
+                    // Add remove functionality.
+                    function removeSkill(index) {
+                        selectedSkills.splice(index, 1); // Remove the skill from the array
+                        updateSkillsDisplay();
+                    }
+                });
+            </script>
+<div class="form-group">
+                <label for="startDate">Start Date</label>
+                <input type="date" id="startDate" name="startDate" required>
+            </div>
+
+            <div class="form-group">
+                <label for="endDate">End Date</label>
+                <input type="date" id="endDate" name="endDate" required>
+            </div>
+
+            <div class="form-group">
+                <label for="timeSlot">Starting Time</label>
+                <input type="time" id="timeSlot" name="start_time" required>
+            </div>
+
+            <div class="form-group">
+                <label for="timeSlot">Ending Time</label>
+                <input type="time" id="timeSlot" name="end_time" required>
+            </div>
+
+
+            <div class="form-group" style="grid-column: 1 / span 2;">
+                <label for="additionalInstructions">Message:</label>
+                <textarea id="additionalInstructions" name="VolunteerMessage" rows="3"
+                    placeholder="e.g I want to teach your students how to play chess during 5:00 p.m. to 6:00 p.m."></textarea>
+            </div>
+
+            <!-- Submit -->
+            <div class="submit-section">
+                <button type="submit"><i class="fa-solid fa-paper-plane"></i> Send Request</button>
+            </div>
+        </form>
+    </div>
+
+    {% if msg %}
+    <script>
+        alert("Invitation Sent!");
+
+        let volPk = {{VolPk}};
+
+        window.location.href = `/invitationsList/${volPk}/`;
+
+    </script>
+
+    {% endif %}
+
+    {% if CampMsg %}
+    <script>
+        alert("Campaign Posted ");
+        window.location.href = "{% url 'organizationHome' %}";
+    </script>
+    {% endif %}
+
+
+    <script>
+
+        const today = new Date().toISOString().split("T")[0];
+
+        document.getElementById("startDate").setAttribute("min",today);
+
+        // Ensure end date is always after start date
+        document.getElementById("startDate").addEventListener("change", function () {
+            document.getElementById("endDate").value = null;
+            document.getElementById("endDate").setAttribute("min", this.value);
+        });
+    </script>
+</body>
+
+</html>
+{% endblock %}

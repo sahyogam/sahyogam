@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Organization, Volunteer,Campaign,AppliedCampaign
+from .models import Organization, Volunteer,Campaign,AppliedCampaign,InviteCampaing,Certificate
 
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):
@@ -22,10 +22,22 @@ class CampaignAdmin(admin.ModelAdmin):
     search_fields = ('title','short_description','skills_required')
     
 from django.contrib import admin
-from .models import AppliedCampaign
 
 @admin.register(AppliedCampaign)
 class AppliedCampaignAdmin(admin.ModelAdmin):
     list_display = ('volunteer', 'campaign', 'applied_at', 'status','certificate_approved')
     search_fields = ('volunteer__name', 'campaign__title')
     list_filter = ('status', 'applied_at')
+
+# admin.site.register(InviteCampaing)
+
+@admin.register(InviteCampaing)
+class InviteCampaingAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'OrganizationID', 'VolunteerID', 'location')
+    search_fields = ('title', 'location', 'skills_required')
+    list_filter = ('location',)
+
+
+@admin.register(Certificate)
+class CertificateAdmin(admin.ModelAdmin):
+    list_display = ('volunteer', 'organization', 'campaign', 'invite_campaign', 'issue_date')

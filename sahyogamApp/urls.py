@@ -33,23 +33,40 @@ urlpatterns = [
     # path('404/', views.page_404, name='404'),
     path('base/', views.base_page, name='base'),
     path('campaign-detail/', views.campaign_detail, name='campaign-detail'),
-    path('certificates/', views.certificates, name='certificates'),
     path('explore/', views.explore, name='explore'),
+    path("request_for_campaing/<int:OrgPk>/<int:VolPk>/",views.request_for_campaing,name="request_for_campaing"),
+    path("invitationsList/<int:VolPk>/",views.invitationsList,name="invitationsList"),
+    path("cancel_invite/<int:pk>/<int:VolPk>/",views.cancel_invite,name="cancel_invite") ,
+    path("exploreOrg/",views.exploreOrg,name="exploreOrg"),
     path('volunteerHome/', views.volunteerHome, name='volunteerHome'),
     path('organizationHome/', views.organizationHome, name='organizationHome'),
     path('login/', views.login_page, name='login'),
     path('messages/', views.messages_page, name='messages'),
+    
     path('home/', views.home, name='home'), 
 
     path("logout/<str:userID>/",views.logout,name="logout"),
     
     path('totalVolunteerApplied/', views.totalVolunteerApplied, name='totalVolunteerApplied'),
     
-     path(
+    path(
         'certificate_pdf/<int:volunteer_id>/<int:campaign_id>/',
         views.certificate_pdf,
         name='download_certificate'
     ),
+    
+    path(
+        'invited_certificate_pdf/<int:volunteer_id>/<int:invited_campaign_id>/',
+        views.invited_certificate_pdf,
+        name='download_invited_certificate'
+    ),
+
+
+    path("totalInvitationsGot/<int:OrgPk>/",views.totalInvitationsGot,name="totalInvitationsGot"),
+    
+    
+    path("certificates/<int:volunteer_id>/", views.volunteer_certificates, name="volunteer_certificates"),
+    path("approve_certificate/<str:type>/<int:campaign_id>/<int:volunteer_id>/", views.approve_certificate, name="approve_certificate"),
     
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
